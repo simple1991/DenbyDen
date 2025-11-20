@@ -1,0 +1,364 @@
+[
+  {
+    "id": "1",
+    "slug": "cute-snowman-ceramic-mug",
+    "title": "Cute Snowman Ceramic Mug, 300ML | Christmas Gift",
+    "vendor": "DenbyDen",
+    "price": 9.99,
+    "regularPrice": 12.99,
+    "currency": "CAD",
+    "image": "/example_photo/产品主图/主图1.png",
+    "images": [
+      "/example_photo/产品主图/主图1.png",
+      "/example_photo/产品主图/主图2.png",
+      "/example_photo/产品主图/主图3.png",
+      "/example_photo/产品主图/主图4.png"
+    ],
+    "description": "Hand-painted Christmas ceramic mug with 3D snowman on handle and festive gift box.",
+    "inStock": false,
+    "stockStatus": "Sold out",
+    "category": "Ceramic Mugs",
+    "variants": [],
+    "features": [
+      "Generous 300ML Capacity: Perfect size for your favorite hot beverages",
+      "Hand-painted Design: Unique 3D snowman decoration on handle",
+      "Festive Gift Box: Comes with a beautiful Christmas-themed gift box",
+      "Microwave & Dishwasher Safe: Easy to clean and maintain",
+      "Perfect Christmas Gift: Ideal for friends, family, or anyone who loves holiday cheer"
+    ],
+    "details": {
+      "capacity": "300ML",
+      "dimensions": "Height: 10cm, Diameter: 8cm"
+    },
+    "materials": {
+      "cup": "High-quality ceramic",
+      "handle": "Ceramic with 3D snowman decoration"
+    },
+    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+    },
+    "giftWrapping": true,
+    "expectedDelivery": "Nov 23 - Nov 29"
+  },
+  {
+    "id": "2",
+    "slug": "santa-hat-ceramic-mug",
+    "title": "Santa Hat Ceramic Mug with Silicone Lid, 230ML | Christmas Gift",
+    "vendor": "DenbyDen",
+    "price": 9.99,
+    "regularPrice": 12.99,
+    "currency": "CAD",
+    "image": "/example_photo/产品主图/主图2.png",
+    "images": [
+      "/example_photo/产品主图/主图2.png",
+      "/example_photo/产品主图/主图1.png",
+      "/example_photo/产品主图/主图3.png",
+      "/example_photo/产品主图/主图4.png"
+    ],
+    "description": "Festive ceramic mug with adorable Christmas characters and a red silicone lid shaped like a Santa hat.",
+    "inStock": false,
+    "stockStatus": "Sold out",
+    "category": "Ceramic Mugs",
+    "variants": [],
+    "features": [
+      "230ML Capacity: Perfect for your morning coffee or tea",
+      "Santa Hat Silicone Lid: Adorable red lid shaped like Santa's hat",
+      "Christmas Characters: Cute festive illustrations on the mug",
+      "Microwave Safe: Just remove the lid before microwaving",
+      "Perfect Gift: Ideal for Christmas lovers and holiday enthusiasts"
+    ],
+    "details": {
+      "capacity": "230ML",
+      "dimensions": "Height: 9cm, Diameter: 7.5cm"
+    },
+    "materials": {
+      "cup": "High-quality ceramic",
+      "lid": "Food-grade silicone"
+    },
+    "careInstructions": "Microwave safe (remove lid). Hand wash recommended. Dishwasher safe for cup only.",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+    },
+    "giftWrapping": true,
+    "expectedDelivery": "Nov 23 - Nov 29"
+  },
+  {
+    "id": "3",
+    "slug": "strawberry-bunny-glass-container",
+    "title": "Strawberry Bunny Glass Food Container - 850ML Bento Box",
+    "vendor": "DenbyDen",
+    "price": 10.99,
+    "regularPrice": 14.99,
+    "currency": "CAD",
+    "image": "/example_photo/产品主图/主图3.png",
+    "images": [
+      "/example_photo/产品主图/主图3.png",
+      "/example_photo/产品主图/主图4.png",
+      "/example_photo/产品主图/主图2.png",
+      "/example_photo/产品主图/主图1.png"
+    ],
+    "description": "Clear glass food container with cute bunny and strawberry illustrations. Perfect for bento boxes and meal prep.",
+    "inStock": true,
+    "stockStatus": "In Stock",
+    "category": "Kitchen Essentials",
+    "variants": [],
+    "features": [
+      "Generous 850ML Capacity: Perfect size for bento boxes and meal prep",
+      "Cute Design: Adorable bunny and strawberry illustrations",
+      "Clear Glass: See your delicious meals at a glance",
+      "Leak-proof Lid: Secure seal keeps your food fresh",
+      "Microwave & Dishwasher Safe: Easy to clean and reheat"
+    ],
+    "details": {
+      "capacity": "850ML",
+      "dimensions": "Length: 18cm, Width: 12cm, Height: 8cm"
+    },
+    "materials": {
+      "container": "High-quality borosilicate glass",
+      "lid": "BPA-free plastic with silicone seal"
+    },
+    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+    },
+    "giftWrapping": true,
+    "expectedDelivery": "Nov 23 - Nov 29"
+  },
+  {
+    "id": "4",
+    "slug": "apple-bunny-ceramic-plate",
+    "title": "Apple Bunny Ceramic Deep Plate – 8.2 Inch",
+    "vendor": "DenbyDen",
+    "price": 15.49,
+    "regularPrice": 19.99,
+    "currency": "CAD",
+    "image": "/example_photo/产品主图/主图4.png",
+    "images": [
+      "/example_photo/产品主图/主图4.png",
+      "/example_photo/产品主图/主图2.png",
+      "/example_photo/产品主图/主图1.png",
+      "/example_photo/产品主图/主图3.png"
+    ],
+    "description": "Beautiful ceramic deep plate with colorful bunny and apple designs. Perfect for everyday meals.",
+    "inStock": false,
+    "stockStatus": "Sold out",
+    "category": "Plates",
+    "variants": [],
+    "features": [
+      "8.2 Inch Diameter: Perfect size for main dishes",
+      "Deep Design: Holds more food without spilling",
+      "Colorful Design: Cute bunny and apple illustrations",
+      "Microwave & Dishwasher Safe: Easy to clean and maintain",
+      "Perfect for Daily Use: Makes every meal more enjoyable"
+    ],
+    "details": {
+      "diameter": "8.2 Inch",
+      "depth": "2.5cm"
+    },
+    "materials": {
+      "plate": "High-quality ceramic"
+    },
+    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+    },
+    "giftWrapping": false,
+    "expectedDelivery": "Nov 23 - Nov 29"
+  },
+  {
+    "id": "5",
+    "slug": "twinkling-stars-ceramic-mug",
+    "title": "Twinkling Stars Ceramic Mug – 350ML Capacity",
+    "vendor": "DenbyDen",
+    "price": 10.99,
+    "regularPrice": 13.99,
+    "currency": "CAD",
+    "image": "/example_photo/产品主图/主图1.png",
+    "images": [
+      "/example_photo/产品主图/主图1.png",
+      "/example_photo/产品主图/主图3.png",
+      "/example_photo/产品主图/主图4.png",
+      "/example_photo/产品主图/主图2.png"
+    ],
+    "description": "Cream-colored ceramic mug decorated with twinkling stars. Perfect for your morning coffee.",
+    "inStock": false,
+    "stockStatus": "Sold out",
+    "category": "Ceramic Mugs",
+    "variants": [],
+    "features": [
+      "350ML Capacity: Perfect size for your favorite beverages",
+      "Twinkling Stars Design: Beautiful star pattern decoration",
+      "Cream Color: Elegant and timeless appearance",
+      "Microwave & Dishwasher Safe: Easy to clean and maintain",
+      "Perfect for Coffee Lovers: Makes your morning routine special"
+    ],
+    "details": {
+      "capacity": "350ML",
+      "dimensions": "Height: 11cm, Diameter: 8.5cm"
+    },
+    "materials": {
+      "cup": "High-quality ceramic"
+    },
+    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+    },
+    "giftWrapping": false,
+    "expectedDelivery": "Nov 23 - Nov 29"
+  },
+  {
+    "id": "6",
+    "slug": "christmas-apple-ceramic-mug",
+    "title": "Christmas Apple Ceramic Mug with Lid, 420ML | Christmas Gift",
+    "vendor": "DenbyDen",
+    "price": 14.99,
+    "regularPrice": 18.99,
+    "currency": "CAD",
+    "image": "/example_photo/产品主图/主图2.png",
+    "images": [
+      "/example_photo/产品主图/主图2.png",
+      "/example_photo/产品主图/主图4.png",
+      "/example_photo/产品主图/主图1.png",
+      "/example_photo/产品主图/主图3.png"
+    ],
+    "description": "White ceramic mug with Christmas-themed illustrations and a bright red apple-shaped lid.",
+    "inStock": true,
+    "stockStatus": "In Stock",
+    "category": "Ceramic Mugs",
+    "variants": [],
+    "features": [
+      "420ML Capacity: Generous size for your favorite drinks",
+      "Apple-shaped Lid: Adorable red ceramic lid",
+      "Christmas Theme: Festive holiday illustrations",
+      "Microwave Safe: Just remove the lid before microwaving",
+      "Perfect Gift: Ideal for Christmas celebrations"
+    ],
+    "details": {
+      "capacity": "420ML",
+      "dimensions": "Height: 12cm, Diameter: 9cm"
+    },
+    "materials": {
+      "cup": "High-quality ceramic",
+      "lid": "Ceramic"
+    },
+    "careInstructions": "Microwave safe (remove lid). Dishwasher safe. Hand wash recommended for best results.",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+    },
+    "giftWrapping": true,
+    "expectedDelivery": "Nov 23 - Nov 29"
+  },
+  {
+    "id": "7",
+    "slug": "bear-piggy-milk-tea-cup",
+    "title": "Bear & Piggy Milk Tea Ceramic Cup with Straw – 500ML",
+    "vendor": "DenbyDen",
+    "price": 13.00,
+    "regularPrice": 15.00,
+    "currency": "CAD",
+    "image": "/example_photo/产品主图/主图3.png",
+    "images": [
+      "/example_photo/产品主图/主图3.png",
+      "/example_photo/产品主图/主图2.png",
+      "/example_photo/产品主图/主图4.png",
+      "/example_photo/产品主图/主图1.png"
+    ],
+    "description": "Adorable ceramic cup featuring bear and piggy designs. Comes with a clear straw for your favorite drinks.",
+    "inStock": true,
+    "stockStatus": "Almost gone!",
+    "category": "Drinkware",
+    "variants": [
+      {
+        "name": "Pink Piggy",
+        "value": "pink-piggy",
+        "available": true,
+        "image": "/example_photo/产品主图/主图3.png"
+      },
+      {
+        "name": "Brown Bear",
+        "value": "brown-bear",
+        "available": false,
+        "image": "/example_photo/产品主图/主图3.png"
+      }
+    ],
+    "features": [
+      "Generous 500ML Capacity: Perfect size for bubble tea, smoothies, iced coffee, or any cold beverages. The wide opening makes it easy to add ice and toppings.",
+      "Two Cute Designs: Choose between Pink Piggy or Brown Bear, each with adorable 3D raised ears and sweet facial expressions. The playful boba pearl pattern adds extra charm.",
+      "Complete with Lid & Glass Straw: Comes with a matching ceramic lid and reusable glass straw for eco-friendly sipping. The straw slot keeps your straw in place while you enjoy your drink.",
+      "Microwave & Dishwasher Safe: Made from high-quality ceramic that's easy to clean and maintain. Just remove the lid and glass straw before microwaving.",
+      "Perfect Gift for Kawaii Lovers: An ideal gift for students, friends, or anyone who loves cute drinkware and playful home decor. Makes every sip more enjoyable!"
+    ],
+    "details": {
+      "capacity": "500ML"
+    },
+    "materials": {
+      "cup": "High-quality ceramic",
+      "lid": "High-quality ceramic",
+      "straw": "Durable glass"
+    },
+    "careInstructions": "Microwave, Dishwasher, and Oven Safe",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+    },
+    "giftWrapping": true,
+    "expectedDelivery": "Nov 23 - Nov 29"
+  },
+  {
+    "id": "8",
+    "slug": "bread-bagel-bunny-mug",
+    "title": "Cute Bread & Bagel Bunny Mug – 400ML",
+    "vendor": "DenbyDen",
+    "price": 13.00,
+    "regularPrice": 16.00,
+    "currency": "CAD",
+    "image": "/example_photo/产品主图/主图4.png",
+    "images": [
+      "/example_photo/产品主图/主图4.png",
+      "/example_photo/产品主图/主图3.png",
+      "/example_photo/产品主图/主图2.png",
+      "/example_photo/产品主图/主图1.png"
+    ],
+    "description": "Cream-colored ceramic mug with whimsical breakfast illustration and 'There is No Place Like Home' text.",
+    "inStock": true,
+    "stockStatus": "In Stock",
+    "category": "Ceramic Mugs",
+    "variants": [],
+    "features": [
+      "400ML Capacity: Perfect size for your morning coffee or tea",
+      "Whimsical Design: Cute bread and bagel bunny illustration",
+      "Inspiring Text: 'There is No Place Like Home' message",
+      "Cream Color: Warm and inviting appearance",
+      "Microwave & Dishwasher Safe: Easy to clean and maintain"
+    ],
+    "details": {
+      "capacity": "400ML",
+      "dimensions": "Height: 11.5cm, Diameter: 9cm"
+    },
+    "materials": {
+      "cup": "High-quality ceramic"
+    },
+    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+    },
+    "giftWrapping": false,
+    "expectedDelivery": "Nov 23 - Nov 29"
+  }
+]
