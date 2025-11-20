@@ -88,7 +88,7 @@ export default function EmailCaptureModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-md shadow-modal max-w-md w-full p-6 md:p-8 animate-scale-in"
+        className="bg-white rounded-md shadow-modal max-w-md w-full p-6 md:p-8 animate-scale-in relative"
         onClick={(e) => e.stopPropagation()}
       >
         {isSuccess ? (
@@ -103,26 +103,6 @@ export default function EmailCaptureModal({
           </div>
         ) : (
           <>
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-text-muted hover:text-text transition-colors"
-              aria-label="Close"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-
             <h2 className="text-2xl font-bold text-text mb-2">{title}</h2>
             <p className="text-text-muted mb-6">{description}</p>
 
@@ -155,6 +135,25 @@ export default function EmailCaptureModal({
             </form>
           </>
         )}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 md:top-4 md:right-4 text-text-muted hover:text-text transition-colors z-10 p-2 bg-white/80 rounded-full"
+          aria-label="Close"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   )
