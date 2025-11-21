@@ -40,9 +40,7 @@ export default function ReviewsCarousel() {
   const [index, setIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [isTransitioning, setIsTransitioning] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
-  const carouselRef = useRef<HTMLDivElement>(null)
 
   // 检测屏幕尺寸
   useEffect(() => {
@@ -54,15 +52,14 @@ export default function ReviewsCarousel() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // 使用虚拟索引实现无限循环（从中间部分开始，初始显示第0个评论）
+  // 桌面端使用虚拟索引实现无限循环
   const [virtualIndex, setVirtualIndex] = useState(reviews.length)
 
   useEffect(() => {
-    if (isPaused) return
+    if (isPaused || isMobile) return // 移动端不自动播放
     const timer = setInterval(() => {
       setVirtualIndex((prev) => {
         const nextIdx = prev + 1
-        // 如果超过原始数组的2倍，重置到中间部分
         if (nextIdx >= reviews.length * 2) {
           return reviews.length
         }
@@ -71,50 +68,54 @@ export default function ReviewsCarousel() {
       setIndex((prev) => (prev + 1) % reviews.length)
     }, 4000)
     return () => clearInterval(timer)
-  }, [isPaused])
+  }, [isPaused, isMobile])
 
   const next = () => {
-    setVirtualIndex((prev) => {
-      const nextIdx = prev + 1
-      if (nextIdx >= reviews.length * 2) {
-        // 无缝重置到中间部分
-        setTimeout(() => {
-          setIsTransitioning(false)
-          setVirtualIndex(reviews.length)
-          setTimeout(() => setIsTransitioning(true), 50)
-        }, 500)
+    if (isMobile) {
+      // 移动端：直接切换索引，无限循环
+      setIndex((prev) => (prev + 1) % reviews.length)
+    } else {
+      // 桌面端：使用虚拟索引
+      setVirtualIndex((prev) => {
+        const nextIdx = prev + 1
+        if (nextIdx >= reviews.length * 2) {
+          setTimeout(() => {
+            setVirtualIndex(reviews.length)
+          }, 500)
+          return nextIdx
+        }
         return nextIdx
-      }
-      return nextIdx
-    })
-    setIndex((prev) => (prev + 1) % reviews.length)
+      })
+      setIndex((prev) => (prev + 1) % reviews.length)
+    }
     setIsPaused(true)
     setTimeout(() => setIsPaused(false), 10000)
   }
 
   const prev = () => {
-    setVirtualIndex((prev) => {
-      const prevIdx = prev - 1
-      if (prevIdx < 0) {
-        // 无缝重置到中间部分
-        setTimeout(() => {
-          setIsTransitioning(false)
-          setVirtualIndex(reviews.length + reviews.length - 1)
-          setTimeout(() => setIsTransitioning(true), 50)
-        }, 500)
+    if (isMobile) {
+      // 移动端：直接切换索引，无限循环
+      setIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
+    } else {
+      // 桌面端：使用虚拟索引
+      setVirtualIndex((prev) => {
+        const prevIdx = prev - 1
+        if (prevIdx < 0) {
+          setTimeout(() => {
+            setVirtualIndex(reviews.length + reviews.length - 1)
+          }, 500)
+          return prevIdx
+        }
         return prevIdx
-      }
-      return prevIdx
-    })
-    setIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
+      })
+      setIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
+    }
     setIsPaused(true)
     setTimeout(() => setIsPaused(false), 10000)
   }
 
-  // 移动端：每次移动100%（显示1个），桌面端：每次移动50%（显示2个中的1个）
-  const translateX = isMobile 
-    ? virtualIndex * 100  // 移动端：每个评论100%宽度
-    : virtualIndex * (100 / 2)  // 桌面端：每个评论50%宽度（显示2个）
+  // 桌面端：每次移动50%（显示2个中的1个）
+  const translateX = virtualIndex * (100 / 2)
 
   return (
     <section className="py-12 md:py-16 bg-beige-light">
@@ -139,62 +140,135 @@ export default function ReviewsCarousel() {
         </div>
 
         <div className="relative">
-          {/* Carousel */}
-          {/* 移动端：左右对称padding，卡片在中间区域完全居中 */}
-          <div ref={containerRef} className="overflow-hidden px-14 md:px-16">
-            <div className="relative">
-              <div
-                ref={carouselRef}
-                className={`flex gap-6 ${isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''}`}
-                style={{ 
-                  transform: `translateX(-${translateX}%)`,
-                }}
-              >
-                {/* 重复数组3次以实现真正的无限循环 */}
-                {[...reviews, ...reviews, ...reviews].map((review, idx) => (
-                  <div
-                    key={`${review.name}-${idx}`}
-                    className="flex-shrink-0 w-full md:w-1/2 md:px-2"
-                  >
-                    <div className="bg-white rounded-md shadow-card p-3 md:p-6 flex gap-3 md:gap-5 h-full">
-                      <div className="relative w-16 h-16 md:w-24 md:h-24 rounded-md overflow-hidden flex-shrink-0">
-                        <Image
-                          src={review.image}
-                          alt={review.product}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <p className="text-xs md:text-base text-primary mb-1 leading-tight">{review.product}</p>
-                        <p className="text-xs md:text-lg font-semibold text-text mb-1.5 leading-snug">
-                          "{review.quote}"
-                        </p>
-                        <p className="text-xs md:text-base text-text-muted">— {review.name}</p>
-                      </div>
+          {/* 移动端：固定容器，一次只显示一个卡片 */}
+          {/* 桌面端：滑动轮播，显示多个卡片 */}
+          <div className="md:hidden">
+            {/* 固定高度容器，确保所有卡片大小一致 */}
+            <div 
+              ref={containerRef}
+              className="relative h-32 overflow-hidden mb-4"
+            >
+              {reviews.map((review, idx) => (
+                <div
+                  key={`${review.name}-${idx}`}
+                  className={`absolute inset-0 transition-opacity duration-300 ${
+                    idx === index ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}
+                >
+                  <div className="bg-white rounded-md shadow-card p-3 h-full flex gap-3">
+                    <div className="relative w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
+                      <Image
+                        src={review.image}
+                        alt={review.product}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0 flex flex-col justify-center">
+                      <p className="text-xs text-primary mb-1 leading-tight">{review.product}</p>
+                      <p className="text-xs font-semibold text-text mb-1.5 leading-snug">
+                        "{review.quote}"
+                      </p>
+                      <p className="text-xs text-text-muted">— {review.name}</p>
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
+            </div>
+            
+            {/* 滑轨指示器 */}
+            <div className="flex justify-center gap-1.5">
+              {reviews.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setIndex(idx)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    idx === index
+                      ? 'w-8 bg-[#DDA6B1]'
+                      : 'w-1.5 bg-[#DDA6B1]/30'
+                  }`}
+                  aria-label={`Go to review ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* 桌面端：滑动轮播 */}
+          <div className="hidden md:block">
+            <div ref={containerRef} className="overflow-hidden px-16">
+              <div className="relative">
+                <div
+                  className="flex gap-6 transition-transform duration-500 ease-in-out"
+                  style={{ 
+                    transform: `translateX(-${translateX}%)`,
+                  }}
+                >
+                  {/* 重复数组3次以实现真正的无限循环 */}
+                  {[...reviews, ...reviews, ...reviews].map((review, idx) => (
+                    <div
+                      key={`${review.name}-${idx}`}
+                      className="flex-shrink-0 w-1/2 px-2"
+                    >
+                      <div className="bg-white rounded-md shadow-card p-6 flex gap-5 h-full">
+                        <div className="relative w-24 h-24 rounded-md overflow-hidden flex-shrink-0">
+                          <Image
+                            src={review.image}
+                            alt={review.product}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                          <p className="text-base text-primary mb-1 line-clamp-1">{review.product}</p>
+                          <p className="text-lg font-semibold text-text mb-2 line-clamp-3">
+                            "{review.quote}"
+                          </p>
+                          <p className="text-base text-text-muted">— {review.name}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
           
-          {/* Navigation Buttons - 移动端：按钮在容器边缘，桌面端：正常位置 */}
+          {/* Navigation Buttons - 只在桌面端显示 */}
           <button
             onClick={prev}
-            className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 md:p-3 rounded-full shadow-card transition-colors"
+            className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-3 rounded-full shadow-card transition-colors"
             aria-label="Previous reviews"
           >
-            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
             onClick={next}
-            className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 md:p-3 rounded-full shadow-card transition-colors"
+            className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-3 rounded-full shadow-card transition-colors"
             aria-label="Next reviews"
           >
-            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          
+          {/* 移动端导航按钮 */}
+          <button
+            onClick={prev}
+            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 rounded-full shadow-card transition-colors"
+            aria-label="Previous reviews"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={next}
+            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 rounded-full shadow-card transition-colors"
+            aria-label="Next reviews"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
