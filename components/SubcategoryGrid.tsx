@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useEffect } from 'react'
 import ProductCard from './ProductCard'
+import FilterModal from './FilterModal'
 import type { Product } from '@/types/product'
 
 const PRICE_FILTERS = [
@@ -23,6 +24,7 @@ export default function SubcategoryGrid({ products, categoryName }: SubcategoryG
   const [priceFilter, setPriceFilter] = useState('all')
   const [stockFilter, setStockFilter] = useState<'all' | 'in'>('all')
   const [currentPage, setCurrentPage] = useState(1)
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
 
   useEffect(() => {
     setCurrentPage(1)
@@ -63,11 +65,43 @@ export default function SubcategoryGrid({ products, categoryName }: SubcategoryG
     <section className="py-10 md:py-16 bg-white">
       <div className="container-custom space-y-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
+          {/* Mobile Layout */}
+          <div className="md:hidden space-y-4">
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setIsFilterModalOpen(true)}
+                className="flex items-center gap-2"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-[#DDA6B1]"
+                >
+                  <path
+                    d="M17.8258 5H6.17422C5.31987 5 4.85896 6.00212 5.41496 6.65079L9.75926 11.7191C9.91461 11.9004 10 12.1312 10 12.3699V17.382C10 17.7607 10.214 18.107 10.5528 18.2764L12.5528 19.2764C13.2177 19.6088 14 19.1253 14 18.382V12.3699C14 12.1312 14.0854 11.9004 14.2407 11.7191L18.585 6.65079C19.141 6.00212 18.6801 5 17.8258 5Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="text-[#DDA6B1] font-medium">Filter</span>
+              </button>
+              <span className="text-sm text-text-muted">{filteredProducts.length} items</span>
+            </div>
+            <h2 className="text-2xl font-semibold text-text">Find your {categoryName}</h2>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:block">
             <p className="text-sm uppercase tracking-[0.2em] text-text-muted">Filter</p>
             <h2 className="text-2xl font-semibold text-text">Find your {categoryName}</h2>
           </div>
-          <div className="flex flex-wrap gap-3">
+
+          <div className="hidden md:flex flex-wrap gap-3">
             <select
               className="filter-select"
               value={priceFilter}
@@ -99,7 +133,7 @@ export default function SubcategoryGrid({ products, categoryName }: SubcategoryG
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6">
           {paginatedProducts.length > 0 ? (
             paginatedProducts.map((product) => <ProductCard key={product.id} product={product} />)
           ) : (
@@ -131,6 +165,21 @@ export default function SubcategoryGrid({ products, categoryName }: SubcategoryG
             })}
           </div>
         )}
+
+        {/* Filter Modal for Mobile */}
+        <FilterModal
+          isOpen={isFilterModalOpen}
+          onClose={() => setIsFilterModalOpen(false)}
+          sortBy={sortBy}
+          onSortByChange={setSortBy}
+          priceFilter={priceFilter}
+          onPriceFilterChange={setPriceFilter}
+          stockFilter={stockFilter}
+          onStockFilterChange={setStockFilter}
+          onApply={() => setIsFilterModalOpen(false)}
+          onRemoveAll={() => setIsFilterModalOpen(false)}
+          itemCount={filteredProducts.length}
+        />
       </div>
     </section>
   )

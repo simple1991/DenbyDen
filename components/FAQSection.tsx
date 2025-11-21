@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 const faqs = [
   {
@@ -32,7 +33,7 @@ export default function FAQSection() {
     <section className="py-12 md:py-16 bg-pink-light">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-text mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-text mb-4 italic">
             Frequently Asked Question
           </h2>
           <p className="text-text-muted">
@@ -42,23 +43,35 @@ export default function FAQSection() {
 
         <div className="max-w-4xl mx-auto space-y-4">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="bg-white rounded-full md:rounded-[999px] shadow-card">
+            <div key={idx} className="bg-beige-light rounded-lg shadow-card">
               <button
-                className="w-full flex items-center justify-between px-6 py-4 text-left"
+                className="w-full flex items-center justify-between px-4 md:px-6 py-4 text-left"
                 onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                 aria-expanded={openIndex === idx}
               >
-                <span className="font-semibold text-text">{faq.question}</span>
-                <span
-                  className={`w-8 h-8 rounded-full border border-border flex items-center justify-center text-primary transition-transform ${
-                    openIndex === idx ? 'rotate-45' : ''
-                  }`}
-                >
-                  +
+                <span className="font-semibold text-text text-sm md:text-base pr-4">{faq.question}</span>
+                <span className="w-5 h-5 rounded-full bg-[#A8D5BA] flex items-center justify-center flex-shrink-0">
+                  {openIndex === idx ? (
+                    <Image
+                      src="/example_photo/SVG图标素材/close.svg"
+                      alt="Close"
+                      width={12}
+                      height={12}
+                      className="w-3 h-3"
+                    />
+                  ) : (
+                    <Image
+                      src="/example_photo/SVG图标素材/Add.svg"
+                      alt="Add"
+                      width={12}
+                      height={12}
+                      className="w-3 h-3"
+                    />
+                  )}
                 </span>
               </button>
               {openIndex === idx && (
-                <div className="px-6 pb-6 text-text-muted text-sm md:text-base">
+                <div className="px-4 md:px-6 pb-4 md:pb-6 text-text-muted text-sm md:text-base">
                   {faq.answer}
                 </div>
               )}

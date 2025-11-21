@@ -41,8 +41,8 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-beige-light border-t border-border mt-8">
-      <div className="container-custom py-12 md:py-16">
+    <footer className="bg-beige-light border-t border-border mt-4">
+      <div className="container-custom py-12 md:py-12">
         {/* Newsletter Section */}
         <div className="text-center mb-12">
           <h3 className="text-2xl font-bold text-text mb-2">

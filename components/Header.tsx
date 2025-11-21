@@ -15,6 +15,7 @@ interface HeaderProps {
 export default function Header({ onCartClick }: HeaderProps = {}) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { getItemCount } = useCart()
   const cartCount = getItemCount()
 
@@ -41,17 +42,29 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
     <header className="bg-white border-b border-border sticky top-0 z-50">
       <div className="container-custom">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/example_photo/logo/logo.png"
-              alt="DenbyDen"
-              width={180}
-              height={60}
-              className="h-10 md:h-14 w-auto transition-transform duration-200 hover:scale-105"
-              priority
-            />
-          </Link>
+          {/* Mobile Menu Button + Logo */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="md:hidden p-2 -ml-2 text-text hover:text-primary transition-colors"
+              aria-label="Open menu"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/example_photo/logo/logo.png"
+                alt="DenbyDen"
+                width={180}
+                height={60}
+                className="h-10 md:h-14 w-auto transition-transform duration-200 hover:scale-105"
+                priority
+              />
+            </Link>
+          </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-6">
@@ -191,43 +204,6 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <nav className="md:hidden pb-4 border-t border-border pt-4">
-          <div className="flex flex-wrap gap-4">
-            <div className="w-full">
-              <details className="group">
-                <summary className="flex items-center justify-between text-text font-medium cursor-pointer">
-                  {shopLink.label}
-                  <svg
-                    className="w-4 h-4 transition-transform group-open:rotate-180"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="mt-3 flex flex-col gap-2 pl-3">
-                  {dropdownLinksFlat.map((link) => (
-                    <Link key={link.url} href={link.url} className="text-sm text-text hover:text-primary">
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </details>
-            </div>
-            {navItems.map((item) => (
-              <Link
-                key={item.url}
-                href={item.url}
-                className="text-text hover:text-primary transition-colors text-sm"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </nav>
-
         {/* Search Bar (when open) */}
         {isSearchOpen && (
           <div className="border-t border-border py-4">
@@ -240,6 +216,73 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
           </div>
         )}
       </div>
+
+      {/* Mobile Sidebar */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-[60]">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setIsMobileMenuOpen(false)} />
+          <div className="absolute top-0 left-0 h-full w-72 max-w-[80%] bg-white shadow-2xl p-6 flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-lg font-semibold text-text">导航</span>
+              <button
+                type="button"
+                aria-label="Close menu"
+                className="p-2 text-text hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex flex-col gap-4 overflow-y-auto">
+              <Link
+                href={homeLink.url}
+                className="text-base font-medium text-text hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {homeLink.label}
+              </Link>
+              <div>
+                <p className="text-sm font-semibold text-text mb-3">{shopLink.label}</p>
+                <div className="flex flex-col gap-2">
+                  {dropdownSections.map((section) => (
+                    <div key={section.title}>
+                      {section.title !== 'All Products' && (
+                        <p className="text-xs uppercase tracking-wide text-text-muted mb-2">{section.title}</p>
+                      )}
+                      <div className="flex flex-col gap-2 mb-3">
+                        {section.links.map((link) => (
+                          <Link
+                            key={link.url}
+                            href={link.url}
+                            className="text-sm text-text-muted hover:text-primary transition-colors"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-border pt-4 flex flex-col gap-3">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.url}
+                    href={item.url}
+                    className="text-base font-medium text-text hover:text-primary transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

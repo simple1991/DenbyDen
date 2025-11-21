@@ -10,7 +10,7 @@ export default function ShopPage() {
       <TopBar />
       <Header />
       <main className="min-h-screen">
-        <div className="container-custom py-8 md:py-12">
+        <div className="container-custom py-4 md:py-12">
           <h1 className="text-4xl md:text-5xl font-bold text-text mb-4">
             Shop All
           </h1>

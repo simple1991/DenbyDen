@@ -148,12 +148,37 @@ function HomeContent() {
           <h2 className="text-3xl md:text-4xl font-bold text-text mb-12 text-center">
             SHOP BY COLLECTIONS
           </h2>
+          <div className="md:hidden -mx-4">
+            <div className="flex gap-4 overflow-x-auto px-4 pb-3 scroll-smooth snap-x snap-mandatory">
+              {collections.map((collection) => (
+                <Link
+                  key={collection.name}
+                  href={collection.url}
+                  className="flex-none w-56 snap-start group"
+                >
+                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-card">
+                    <Image
+                      src={collection.image}
+                      alt={collection.name}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      sizes="(max-width: 640px) 70vw"
+                    />
+                  </div>
+                  <p className="mt-3 text-center text-[#DDA6B1] font-semibold text-base">
+                    {collection.name}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
           {(() => {
             const topCollections = collections.slice(0, 5)
             const bottomCollections = collections.slice(5)
 
             return (
-              <div className="space-y-10">
+              <div className="hidden md:block space-y-10">
                 {/* Top row - alternating text position */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
                   {topCollections.map((collection, idx) => {
@@ -218,6 +243,15 @@ function HomeContent() {
         </div>
       </section>
 
+      {/* Popular Restocks Section */}
+      <ProductGrid
+        products={productsData.slice(4, 8)}
+        title="Popular Restocks"
+        subtitle="Your favorites are back - limited stock available"
+        showViewMore={true}
+        onAddToCart={handleAddToCart}
+      />
+
       {/* About Section */}
       <section className="py-12 md:py-16 bg-beige-light">
         <div className="container-custom">
@@ -247,15 +281,6 @@ function HomeContent() {
           </div>
         </div>
       </section>
-
-      {/* Popular Restocks Section */}
-      <ProductGrid
-        products={productsData.slice(4, 8)}
-        title="Popular Restocks"
-        subtitle="Your favorites are back - limited stock available"
-        showViewMore={true}
-        onAddToCart={handleAddToCart}
-      />
 
       <ReviewsCarousel />
       <FAQSection />

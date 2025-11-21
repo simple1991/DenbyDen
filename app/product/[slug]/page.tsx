@@ -102,7 +102,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       <TopBar />
       <Header onCartClick={() => setShowCartModal(true)} />
       <main className="bg-beige-light">
-        <div className="container-custom py-8 md:py-12">
+        <div className="container-custom py-4 md:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-16">
             {/* Image Gallery */}
             <div>

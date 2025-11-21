@@ -35,7 +35,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   return (
     <div className="card card-hover overflow-hidden group">
       {/* Image Container */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-beige-light">
+      <div className="relative w-full aspect-[5/4] overflow-hidden bg-beige-light">
         <Link href={`/product/${product.slug}`} className="absolute inset-0 block">
           <Image
             src={product.image}
@@ -67,7 +67,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
       {/* Product Info */}
       <div className="p-4">
         <Link href={`/product/${product.slug}`} className="block">
-          <h3 className="text-lg font-semibold text-text mb-2 line-clamp-2 min-h-[3.5rem]">
+          <h3 className="text-sm font-semibold text-text mb-2 line-clamp-4 min-h-[4.5rem]">
             {product.title}
           </h3>
         </Link>
