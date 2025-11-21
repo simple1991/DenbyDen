@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 const reviews = [
   {
@@ -39,30 +39,82 @@ const reviews = [
 export default function ReviewsCarousel() {
   const [index, setIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(true)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const carouselRef = useRef<HTMLDivElement>(null)
+
+  // 检测屏幕尺寸
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // 使用虚拟索引实现无限循环（从中间部分开始，初始显示第0个评论）
+  const [virtualIndex, setVirtualIndex] = useState(reviews.length)
 
   useEffect(() => {
     if (isPaused) return
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % (reviews.length - 2))
+      setVirtualIndex((prev) => {
+        const nextIdx = prev + 1
+        // 如果超过原始数组的2倍，重置到中间部分
+        if (nextIdx >= reviews.length * 2) {
+          return reviews.length
+        }
+        return nextIdx
+      })
+      setIndex((prev) => (prev + 1) % reviews.length)
     }, 4000)
     return () => clearInterval(timer)
   }, [isPaused])
 
   const next = () => {
-    setIndex((prev) => (prev + 1) % (reviews.length - 2))
+    setVirtualIndex((prev) => {
+      const nextIdx = prev + 1
+      if (nextIdx >= reviews.length * 2) {
+        // 无缝重置到中间部分
+        setTimeout(() => {
+          setIsTransitioning(false)
+          setVirtualIndex(reviews.length)
+          setTimeout(() => setIsTransitioning(true), 50)
+        }, 500)
+        return nextIdx
+      }
+      return nextIdx
+    })
+    setIndex((prev) => (prev + 1) % reviews.length)
     setIsPaused(true)
     setTimeout(() => setIsPaused(false), 10000)
   }
 
   const prev = () => {
-    setIndex((prev) => (prev - 1 + (reviews.length - 2)) % (reviews.length - 2))
+    setVirtualIndex((prev) => {
+      const prevIdx = prev - 1
+      if (prevIdx < 0) {
+        // 无缝重置到中间部分
+        setTimeout(() => {
+          setIsTransitioning(false)
+          setVirtualIndex(reviews.length + reviews.length - 1)
+          setTimeout(() => setIsTransitioning(true), 50)
+        }, 500)
+        return prevIdx
+      }
+      return prevIdx
+    })
+    setIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
     setIsPaused(true)
     setTimeout(() => setIsPaused(false), 10000)
   }
 
-  const visibleReviews = Array.from({ length: 3 }).map(
-    (_, i) => reviews[(index + i) % reviews.length]
-  )
+  // 移动端：每次移动100%（显示1个），桌面端：每次移动33.33%（显示3个中的1个）
+  const translateX = isMobile 
+    ? virtualIndex * 100  // 移动端：每个评论100%宽度
+    : virtualIndex * (100 / 3)  // 桌面端：每个评论33.33%宽度
 
   return (
     <section className="py-12 md:py-16 bg-beige-light">
@@ -87,34 +139,18 @@ export default function ReviewsCarousel() {
         </div>
 
         <div className="relative">
-          {/* Navigation Buttons */}
-          <button
-            onClick={prev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 bg-pink-light hover:bg-pink text-text p-3 rounded-full shadow-card transition-colors"
-            aria-label="Previous reviews"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            onClick={next}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 bg-pink-light hover:bg-pink text-text p-3 rounded-full shadow-card transition-colors"
-            aria-label="Next reviews"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
           {/* Carousel */}
-          <div className="overflow-hidden px-8 md:px-16">
+          <div ref={containerRef} className="overflow-hidden px-12 md:px-16">
             <div className="relative">
               <div
-                className="flex transition-transform duration-500 ease-in-out gap-6"
-                style={{ transform: `translateX(-${index * (100 / 3)}%)` }}
+                ref={carouselRef}
+                className={`flex gap-6 ${isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''}`}
+                style={{ 
+                  transform: `translateX(-${translateX}%)`,
+                }}
               >
-                {reviews.map((review, idx) => (
+                {/* 重复数组3次以实现真正的无限循环 */}
+                {[...reviews, ...reviews, ...reviews].map((review, idx) => (
                   <div
                     key={`${review.name}-${idx}`}
                     className="flex-shrink-0 w-full md:w-1/3 px-2"
@@ -141,6 +177,26 @@ export default function ReviewsCarousel() {
               </div>
             </div>
           </div>
+          
+          {/* Navigation Buttons - 放在内容区域外面，不覆盖评论 */}
+          <button
+            onClick={prev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 md:p-3 rounded-full shadow-card transition-colors"
+            aria-label="Previous reviews"
+          >
+            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 md:p-3 rounded-full shadow-card transition-colors"
+            aria-label="Next reviews"
+          >
+            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
       </div>
     </section>

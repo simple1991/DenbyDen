@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
 import HeroBanner from '@/components/HeroBanner'
@@ -15,6 +15,85 @@ import { CartProvider, useCart } from '@/components/CartContext'
 import Link from 'next/link'
 import Image from 'next/image'
 import productsData from '@/data/products.json'
+
+interface Collection {
+  name: string
+  description: string
+  image: string
+  url: string
+}
+
+function ScrollableCollections({ collections }: { collections: Collection[] }) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const container = scrollContainerRef.current
+      if (!container) return
+      
+      const scrollLeft = container.scrollLeft
+      // 每个item宽度：w-56 (224px) + gap-4 (16px) = 240px
+      const itemWidthWithGap = 240
+      // 考虑snap特性，计算当前激活的item索引
+      const index = Math.round(scrollLeft / itemWidthWithGap)
+      setActiveIndex(Math.min(Math.max(0, index), collections.length - 1))
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    handleScroll() // 初始计算
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll)
+    }
+  }, [collections.length])
+
+  return (
+    <>
+      <div
+        ref={scrollContainerRef}
+        className="flex gap-4 overflow-x-auto px-4 pb-3 scroll-smooth snap-x snap-mandatory scrollbar-hide"
+      >
+        {collections.map((collection) => (
+          <Link
+            key={collection.name}
+            href={collection.url}
+            className="flex-none w-56 snap-start group"
+          >
+            <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-card">
+              <Image
+                src={collection.image}
+                alt={collection.name}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 640px) 70vw"
+              />
+            </div>
+            <p className="mt-3 text-center text-[#DDA6B1] font-semibold text-base">
+              {collection.name}
+            </p>
+          </Link>
+        ))}
+      </div>
+      {/* Scroll indicator - 在下方 */}
+      <div className="flex justify-center gap-1.5 px-4 pt-2">
+        {collections.map((_, idx) => (
+          <div
+            key={idx}
+            className={`h-1 rounded-full transition-all duration-300 ${
+              idx === activeIndex
+                ? 'w-8 bg-[#DDA6B1]'
+                : 'w-1.5 bg-[#DDA6B1]/30'
+            }`}
+          />
+        ))}
+      </div>
+    </>
+  )
+}
 
 const collections = [
   {
@@ -149,28 +228,7 @@ function HomeContent() {
             SHOP BY COLLECTIONS
           </h2>
           <div className="md:hidden -mx-4">
-            <div className="flex gap-4 overflow-x-auto px-4 pb-3 scroll-smooth snap-x snap-mandatory">
-              {collections.map((collection) => (
-                <Link
-                  key={collection.name}
-                  href={collection.url}
-                  className="flex-none w-56 snap-start group"
-                >
-                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-card">
-                    <Image
-                      src={collection.image}
-                      alt={collection.name}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      sizes="(max-width: 640px) 70vw"
-                    />
-                  </div>
-                  <p className="mt-3 text-center text-[#DDA6B1] font-semibold text-base">
-                    {collection.name}
-                  </p>
-                </Link>
-              ))}
-            </div>
+            <ScrollableCollections collections={collections} />
           </div>
 
           {(() => {
@@ -256,10 +314,21 @@ function HomeContent() {
       <section className="py-12 md:py-16 bg-beige-light">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div>
+            {/* Mobile: 图片在标题和"Since 2022"之间 */}
+            {/* Desktop: 文字在左，图片在右 */}
+            <div className="order-2 lg:order-1">
               <h2 className="text-2xl md:text-3xl font-bold text-text mb-4">
                 About DenbyDen
               </h2>
+              {/* 移动端图片 */}
+              <div className="relative aspect-square bg-pink-light rounded-md overflow-hidden mb-4 lg:hidden">
+                <Image
+                  src="/example_photo/产品主图/主图1.png"
+                  alt="DenbyDen Products"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <p className="text-lg text-text-muted mb-2">Since 2022</p>
               <p className="text-base md:text-lg text-text leading-relaxed mb-8">
                 DenbyDen has been bringing fun and style to everyday life since 2022. 
@@ -270,7 +339,8 @@ function HomeContent() {
                 Shop All
               </Link>
             </div>
-            <div className="relative aspect-square bg-pink-light rounded-md overflow-hidden">
+            {/* Desktop: 图片在右侧 */}
+            <div className="relative aspect-square bg-pink-light rounded-md overflow-hidden order-1 lg:order-2 hidden lg:block">
               <Image
                 src="/example_photo/产品主图/主图1.png"
                 alt="DenbyDen Products"

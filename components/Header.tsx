@@ -129,7 +129,12 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
           </nav>
 
           {/* Right Icons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Currency Selector - Mobile */}
+            <div className="md:hidden">
+              <CurrencySelector />
+            </div>
+
             {/* Search */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -150,9 +155,6 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
                 />
               </svg>
             </button>
-
-            {/* Currency Selector */}
-            <CurrencySelector className="hidden md:block" />
 
             {/* User Account */}
             <Link
@@ -201,6 +203,10 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
               )}
             </button>
 
+            {/* Currency Selector - Desktop */}
+            <div className="hidden md:flex items-center">
+              <CurrencySelector />
+            </div>
           </div>
         </div>
 

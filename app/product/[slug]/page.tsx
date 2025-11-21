@@ -286,15 +286,15 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <button
                   type="button"
                   onClick={() => setGiftWrapping(!giftWrapping)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                     giftWrapping ? 'bg-primary' : 'bg-gray-300'
                   }`}
                   role="switch"
                   aria-checked={giftWrapping}
                 >
                   <span
-                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition ${
-                      giftWrapping ? 'translate-x-4' : 'translate-x-1'
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200 ease-in-out ${
+                      giftWrapping ? 'translate-x-5' : 'translate-x-1'
                     }`}
                   />
                 </button>
