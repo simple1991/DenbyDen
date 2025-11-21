@@ -111,10 +111,10 @@ export default function ReviewsCarousel() {
     setTimeout(() => setIsPaused(false), 10000)
   }
 
-  // 移动端：每次移动100%（显示1个），桌面端：每次移动33.33%（显示3个中的1个）
+  // 移动端：每次移动100%（显示1个），桌面端：每次移动50%（显示2个中的1个）
   const translateX = isMobile 
     ? virtualIndex * 100  // 移动端：每个评论100%宽度
-    : virtualIndex * (100 / 3)  // 桌面端：每个评论33.33%宽度
+    : virtualIndex * (100 / 2)  // 桌面端：每个评论50%宽度（显示2个）
 
   return (
     <section className="py-12 md:py-16 bg-beige-light">
@@ -140,7 +140,8 @@ export default function ReviewsCarousel() {
 
         <div className="relative">
           {/* Carousel */}
-          <div ref={containerRef} className="overflow-hidden px-12 md:px-16">
+          {/* 移动端：左右对称padding，卡片在中间区域完全居中 */}
+          <div ref={containerRef} className="overflow-hidden px-14 md:px-16">
             <div className="relative">
               <div
                 ref={carouselRef}
@@ -153,10 +154,10 @@ export default function ReviewsCarousel() {
                 {[...reviews, ...reviews, ...reviews].map((review, idx) => (
                   <div
                     key={`${review.name}-${idx}`}
-                    className="flex-shrink-0 w-full md:w-1/3 px-2"
+                    className="flex-shrink-0 w-full md:w-1/2 md:px-2"
                   >
-                    <div className="bg-white rounded-md shadow-card p-4 flex gap-4 h-full">
-                      <div className="relative w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+                    <div className="bg-white rounded-md shadow-card p-3 md:p-6 flex gap-3 md:gap-5 h-full">
+                      <div className="relative w-16 h-16 md:w-24 md:h-24 rounded-md overflow-hidden flex-shrink-0">
                         <Image
                           src={review.image}
                           alt={review.product}
@@ -164,12 +165,12 @@ export default function ReviewsCarousel() {
                           className="object-cover"
                         />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-primary mb-1 line-clamp-1">{review.product}</p>
-                        <p className="text-base font-semibold text-text mb-2 line-clamp-2">
+                      <div className="flex-1 min-w-0 flex flex-col justify-center">
+                        <p className="text-xs md:text-base text-primary mb-1 leading-tight">{review.product}</p>
+                        <p className="text-xs md:text-lg font-semibold text-text mb-1.5 leading-snug">
                           "{review.quote}"
                         </p>
-                        <p className="text-sm text-text-muted">— {review.name}</p>
+                        <p className="text-xs md:text-base text-text-muted">— {review.name}</p>
                       </div>
                     </div>
                   </div>
@@ -178,10 +179,10 @@ export default function ReviewsCarousel() {
             </div>
           </div>
           
-          {/* Navigation Buttons - 放在内容区域外面，不覆盖评论 */}
+          {/* Navigation Buttons - 移动端：按钮在容器边缘，桌面端：正常位置 */}
           <button
             onClick={prev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 md:p-3 rounded-full shadow-card transition-colors"
+            className="absolute left-0 md:left-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 md:p-3 rounded-full shadow-card transition-colors"
             aria-label="Previous reviews"
           >
             <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -190,7 +191,7 @@ export default function ReviewsCarousel() {
           </button>
           <button
             onClick={next}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 md:p-3 rounded-full shadow-card transition-colors"
+            className="absolute right-0 md:right-0 top-1/2 -translate-y-1/2 z-10 bg-pink-light hover:bg-pink text-text p-2 md:p-3 rounded-full shadow-card transition-colors"
             aria-label="Next reviews"
           >
             <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
