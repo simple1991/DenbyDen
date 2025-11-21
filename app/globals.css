@@ -9,12 +9,22 @@
   body {
     @apply bg-bg text-text font-sans;
     font-family: 'Inter', 'Noto Sans SC', 'Helvetica', 'Arial', system-ui, sans-serif;
+    /* 针对1080p屏幕优化 - 确保文本清晰 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* 针对1080p高DPI屏幕优化图片显示 */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 }
 
 @layer components {
   .container-custom {
-    @apply max-w-container mx-auto px-6;
+    @apply max-w-container mx-auto px-4 sm:px-6;
   }
   
   .btn-primary {

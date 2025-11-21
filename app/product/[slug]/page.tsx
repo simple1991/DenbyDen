@@ -103,7 +103,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       <Header onCartClick={() => setShowCartModal(true)} />
       <main className="bg-beige-light">
         <div className="container-custom py-4 md:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-4">
             {/* Image Gallery */}
             <div>
               <div className="flex gap-4">
@@ -318,7 +318,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               )}
 
               {/* Guarantees */}
-              <div className="space-y-3 mb-8">
+              <div className="space-y-3 mb-4">
                 <div className="flex items-center gap-2 text-sm text-text">
                   <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -342,7 +342,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Product Details Sections */}
-          <section className="w-full bg-beige-light/70 py-10 mb-16">
+          <section className="w-full bg-beige-light/70 py-10 mb-6">
             <div className="container-custom space-y-5">
               {/* FEATURES - Default Open */}
               <CollapsibleSection title="FEATURES" defaultOpen={true}>

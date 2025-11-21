@@ -6,6 +6,14 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      'xs': '360px',   // 小屏手机
+      'sm': '640px',   // 大屏手机/小平板
+      'md': '768px',   // 平板
+      'lg': '1024px',  // 小桌面
+      'xl': '1280px',  // 桌面
+      '2xl': '1536px', // 大桌面
+    },
     extend: {
       colors: {
         primary: {
@@ -58,6 +66,13 @@ module.exports = {
       },
       maxWidth: {
         container: '1200px',
+      },
+      fontSize: {
+        // 针对1080p屏幕优化字体大小
+        'xs-mobile': ['0.75rem', { lineHeight: '1.5' }],    // 12px
+        'sm-mobile': ['0.875rem', { lineHeight: '1.5' }],  // 14px
+        'base-mobile': ['1rem', { lineHeight: '1.6' }],     // 16px
+        'lg-mobile': ['1.125rem', { lineHeight: '1.6' }],   // 18px
       },
     },
   },
