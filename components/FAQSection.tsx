@@ -1,13 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import Image from 'next/image'
+import { useCurrency } from './CurrencyContext'
 
-const faqs = [
+type FAQItem = {
+  question: string
+  answer: string | ((formatPrice: (value: number) => string) => ReactNode)
+}
+
+const faqs: FAQItem[] = [
   {
     question: 'What are the shipping costs?',
-    answer:
-      'Flat shipping fee of $7.95 for Canada & the US. Free shipping on orders over $49.',
+    answer: (formatPrice) => (
+      <>
+        Flat shipping fee of {formatPrice(7.95)} for Canada & the US. Free shipping on orders over{' '}
+        {formatPrice(49)}.
+      </>
+    ),
   },
   {
     question: 'What are the estimated delivery times for orders?',
@@ -28,6 +38,7 @@ const faqs = [
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const { formatPrice } = useCurrency()
 
   return (
     <section className="py-12 md:py-16 bg-pink-light">
@@ -42,7 +53,10 @@ export default function FAQSection() {
         </div>
 
         <div className="max-w-4xl mx-auto space-y-4">
-          {faqs.map((faq, idx) => (
+          {faqs.map((faq, idx) => {
+            const answerContent =
+              typeof faq.answer === 'function' ? faq.answer(formatPrice) : faq.answer
+            return (
             <div key={idx} className="bg-beige-light rounded-lg shadow-card">
               <button
                 className="w-full flex items-center justify-between px-4 md:px-6 py-4 text-left"
@@ -72,11 +86,12 @@ export default function FAQSection() {
               </button>
               {openIndex === idx && (
                 <div className="px-4 md:px-6 pb-4 md:pb-6 text-text-muted text-sm md:text-base">
-                  {faq.answer}
+                    {answerContent}
                 </div>
               )}
             </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>

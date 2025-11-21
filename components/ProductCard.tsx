@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from './CartContext'
+import { useCurrency } from './CurrencyContext'
 import type { Product } from '@/types/product'
 
 interface ProductCardProps {
@@ -12,6 +13,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
   const { addToCart } = useCart()
+  const { formatPrice } = useCurrency()
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -23,7 +25,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         title: product.title,
         vendor: product.vendor,
         price: product.price,
-        currency: product.currency,
+        currency: 'CNY',
         image: product.image,
       })
       if (onAddToCart) {
@@ -72,9 +74,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           </h3>
         </Link>
         <p className="text-sm text-text-muted mb-2">{product.vendor}</p>
-        <p className="text-base sm:text-lg font-semibold text-text">
-          {product.currency} ${product.price.toFixed(2)}
-        </p>
+        <p className="text-base sm:text-lg font-semibold text-text">{formatPrice(product.price)}</p>
       </div>
     </div>
   )

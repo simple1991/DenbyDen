@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useCurrency } from './CurrencyContext'
 
 interface CartItem {
   id: string
@@ -33,6 +34,7 @@ export default function CartModal({
 }: CartModalProps) {
   const [orderNote, setOrderNote] = useState('')
   const [showNote, setShowNote] = useState(false)
+  const { formatPrice } = useCurrency()
 
   useEffect(() => {
     if (isOpen) {
@@ -62,7 +64,8 @@ export default function CartModal({
   if (!isOpen) return null
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const hasFreeShipping = subtotal >= 49
+  const freeShippingThreshold = 49
+  const hasFreeShipping = subtotal >= freeShippingThreshold
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
@@ -97,7 +100,7 @@ export default function CartModal({
         {!hasFreeShipping && (
           <div className="bg-green-50 border-b border-green-200 px-6 py-3">
             <p className="text-sm text-green-700">
-              Free Shipping On Orders Above $49
+              Free shipping on orders above {formatPrice(freeShippingThreshold)}
             </p>
           </div>
         )}
@@ -136,7 +139,7 @@ export default function CartModal({
                       {item.title}
                     </Link>
                     <p className="text-sm sm:text-base font-semibold text-text mb-3">
-                      {item.currency} ${(item.price * item.quantity).toFixed(2)}
+                      {formatPrice(item.price * item.quantity)}
                     </p>
 
                     {/* Quantity Controls */}
@@ -210,7 +213,7 @@ export default function CartModal({
           <div className="sticky bottom-0 bg-white border-t border-border px-6 py-4 space-y-3">
             <div className="flex justify-between text-base md:text-lg font-semibold text-text">
               <span>Subtotal</span>
-              <span>{items[0]?.currency || 'CAD'} ${subtotal.toFixed(2)}</span>
+              <span>{formatPrice(subtotal)}</span>
             </div>
             <p className="text-xs text-text-muted">
               Tax included. <span className="underline">Shipping</span> calculated at checkout.
@@ -228,7 +231,7 @@ export default function CartModal({
                 className="flex-1 btn-primary text-center"
                 onClick={onClose}
               >
-                Check Out - {items[0]?.currency || 'CAD'} ${subtotal.toFixed(2)}
+                Check Out - {formatPrice(subtotal)}
               </Link>
             </div>
             <Link

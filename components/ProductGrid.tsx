@@ -45,7 +45,7 @@ export default function ProductGrid({
         </div>
 
         {showViewMore && (
-          <div className="text-center mt-8">
+          <div className="text-center mt-4">
             <Link href="/shop" className="btn-secondary inline-block">
               View More
             </Link>

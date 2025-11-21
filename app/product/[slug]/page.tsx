@@ -9,6 +9,7 @@ import TopBar from '@/components/TopBar'
 import Footer from '@/components/Footer'
 import CartModal from '@/components/CartModal'
 import { useCart } from '@/components/CartContext'
+import { useCurrency } from '@/components/CurrencyContext'
 import productsData from '@/data/products.json'
 
 interface ProductPageProps {
@@ -60,6 +61,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [quantity, setQuantity] = useState(1)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [giftWrapping, setGiftWrapping] = useState(false)
+  const { formatPrice } = useCurrency()
 
   if (!product) {
     notFound()
@@ -69,6 +71,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const availableVariant = product.variants?.find(v => v.value === selectedVariant)
   const isVariantAvailable = !selectedVariant || availableVariant?.available !== false
   const isProductAvailable = product.inStock && isVariantAvailable
+  const shippingThreshold = product.shipping?.freeShippingThreshold || 49
 
   const handleAddToCart = () => {
     if (isProductAvailable) {
@@ -78,7 +81,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         title: product.title,
         vendor: product.vendor,
         price: product.price,
-        currency: product.currency,
+        currency: 'CNY',
         image: product.image,
       }, quantity)
       setShowCartModal(true)
@@ -175,10 +178,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                 {product.regularPrice && product.regularPrice > product.price ? (
                   <div className="flex items-center gap-3">
                     <span className="text-xl md:text-2xl font-bold text-text">
-                      {product.currency} ${product.price.toFixed(2)}
+                      {formatPrice(product.price)}
                     </span>
                     <span className="text-base text-text-muted line-through">
-                      {product.currency} ${product.regularPrice.toFixed(2)}
+                      {formatPrice(product.regularPrice)}
                     </span>
                     <span className="text-sm font-semibold text-red-600">
                       Off
@@ -186,7 +189,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   </div>
                 ) : (
                   <span className="text-xl md:text-2xl font-bold text-text">
-                    {product.currency} ${product.price.toFixed(2)}
+                    {formatPrice(product.price)}
                   </span>
                 )}
                 <p className="text-sm text-text-muted mt-1">
@@ -333,7 +336,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                   </svg>
-                  <span>Free shipping on orders over ${product.shipping?.freeShippingThreshold || 49}</span>
+                  <span>Free shipping on orders over {formatPrice(shippingThreshold)}</span>
                 </div>
               </div>
             </div>
@@ -399,7 +402,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     <>
                       <p>
                         Orders are shipped from our warehouse in {product.shipping.location}. Free
-                        shipping on orders over ${product.shipping.freeShippingThreshold}.
+                        shipping on orders over {formatPrice(shippingThreshold)}.
                       </p>
                       <p>{product.shipping.returnPolicy}</p>
                     </>
@@ -470,7 +473,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                         {item.title}
                       </h3>
                       <p className="text-base md:text-lg font-bold text-text">
-                        {item.currency} ${item.price.toFixed(2)}
+                        {formatPrice(item.price)}
                       </p>
                     </Link>
                   ))}

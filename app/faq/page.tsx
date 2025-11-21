@@ -1,15 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import Image from 'next/image'
 import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { useCurrency } from '@/components/CurrencyContext'
 
-const faqs = [
+type FAQItem = {
+  question: string
+  answer: string | ((formatPrice: (value: number) => string) => ReactNode)
+}
+
+const faqs: FAQItem[] = [
   {
     question: 'What are the shipping costs?',
-    answer: 'Flat shipping fee of $7.95 for Canada & the US. Free shipping on orders over $49.',
+    answer: (formatPrice) =>
+      `Flat shipping fee of ${formatPrice(7.95)} for Canada & the US. Free shipping on orders over ${formatPrice(
+        49
+      )}.`,
   },
   {
     question: 'What are the estimated delivery times for orders?',
@@ -29,6 +38,7 @@ const faqs = [
 
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const { formatPrice } = useCurrency()
 
   return (
     <>
@@ -42,7 +52,10 @@ export default function FAQPage() {
             </h1>
 
             <div className="space-y-4">
-              {faqs.map((faq, index) => (
+              {faqs.map((faq, index) => {
+                const answerContent =
+                  typeof faq.answer === 'function' ? faq.answer(formatPrice) : faq.answer
+                return (
                 <div
                   key={index}
                   className="bg-beige-light rounded-lg shadow-card overflow-hidden"
@@ -74,11 +87,12 @@ export default function FAQPage() {
                   </button>
                   {openIndex === index && (
                     <div className="px-4 md:px-6 pb-4 md:pb-6 text-text-muted text-sm md:text-base leading-relaxed">
-                      {faq.answer}
+                      {answerContent}
                     </div>
                   )}
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { CartProvider } from '@/components/CartContext'
+import { CurrencyProvider } from '@/components/CurrencyContext'
 
 export const metadata: Metadata = {
   title: 'DenbyDen - Creating cozy moments in every corner',
@@ -22,9 +23,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <CartProvider>
-          {children}
-        </CartProvider>
+        <CurrencyProvider>
+          <CartProvider>{children}</CartProvider>
+        </CurrencyProvider>
       </body>
     </html>
   )

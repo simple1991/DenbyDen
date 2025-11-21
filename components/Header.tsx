@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { categoryConfigs } from '@/data/categoryConfigs'
 
 import { useCart } from './CartContext'
+import CurrencySelector from './CurrencySelector'
 
 interface HeaderProps {
   onCartClick?: () => void
@@ -150,6 +151,9 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
               </svg>
             </button>
 
+            {/* Currency Selector */}
+            <CurrencySelector className="hidden md:block" />
+
             {/* User Account */}
             <Link
               href="/account"
@@ -197,10 +201,6 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
               )}
             </button>
 
-            {/* Currency Selector */}
-            <div className="hidden md:flex items-center gap-2 text-sm">
-              <span className="text-text-muted">CAD $</span>
-            </div>
           </div>
         </div>
 
@@ -278,6 +278,10 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
                     {item.label}
                   </Link>
                 ))}
+                <div className="pt-4">
+                  <p className="text-xs uppercase tracking-wide text-text-muted mb-2">Currency</p>
+                  <CurrencySelector fullWidth />
+                </div>
               </div>
             </div>
           </div>

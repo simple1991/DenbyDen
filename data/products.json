@@ -6,7 +6,7 @@
     "vendor": "DenbyDen",
     "price": 9.99,
     "regularPrice": 12.99,
-    "currency": "CAD",
+    "currency": "CNY",
     "image": "/example_photo/产品主图/主图1.png",
     "images": [
       "/example_photo/产品主图/主图1.png",
@@ -50,7 +50,7 @@
     "vendor": "DenbyDen",
     "price": 9.99,
     "regularPrice": 12.99,
-    "currency": "CAD",
+    "currency": "CNY",
     "image": "/example_photo/产品主图/主图2.png",
     "images": [
       "/example_photo/产品主图/主图2.png",
@@ -94,7 +94,7 @@
     "vendor": "DenbyDen",
     "price": 10.99,
     "regularPrice": 14.99,
-    "currency": "CAD",
+    "currency": "CNY",
     "image": "/example_photo/产品主图/主图3.png",
     "images": [
       "/example_photo/产品主图/主图3.png",
@@ -138,7 +138,7 @@
     "vendor": "DenbyDen",
     "price": 15.49,
     "regularPrice": 19.99,
-    "currency": "CAD",
+    "currency": "CNY",
     "image": "/example_photo/产品主图/主图4.png",
     "images": [
       "/example_photo/产品主图/主图4.png",
@@ -181,7 +181,7 @@
     "vendor": "DenbyDen",
     "price": 10.99,
     "regularPrice": 13.99,
-    "currency": "CAD",
+    "currency": "CNY",
     "image": "/example_photo/产品主图/主图1.png",
     "images": [
       "/example_photo/产品主图/主图1.png",
@@ -224,7 +224,7 @@
     "vendor": "DenbyDen",
     "price": 14.99,
     "regularPrice": 18.99,
-    "currency": "CAD",
+    "currency": "CNY",
     "image": "/example_photo/产品主图/主图2.png",
     "images": [
       "/example_photo/产品主图/主图2.png",
@@ -268,7 +268,7 @@
     "vendor": "DenbyDen",
     "price": 13.00,
     "regularPrice": 15.00,
-    "currency": "CAD",
+    "currency": "CNY",
     "image": "/example_photo/产品主图/主图3.png",
     "images": [
       "/example_photo/产品主图/主图3.png",
@@ -325,7 +325,7 @@
     "vendor": "DenbyDen",
     "price": 13.00,
     "regularPrice": 16.00,
-    "currency": "CAD",
+    "currency": "CNY",
     "image": "/example_photo/产品主图/主图4.png",
     "images": [
       "/example_photo/产品主图/主图4.png",
