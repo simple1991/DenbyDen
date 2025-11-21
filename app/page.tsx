@@ -145,7 +145,7 @@ function HomeContent() {
       {/* Shop by Collections */}
       <section className="py-12 md:py-16 bg-beige-light">
         <div className="container-custom">
-          <h2 className="text-3xl md:text-4xl font-bold text-text mb-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-text mb-10 text-center">
             SHOP BY COLLECTIONS
           </h2>
           <div className="md:hidden -mx-4">
@@ -257,7 +257,7 @@ function HomeContent() {
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-text mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-text mb-4">
                 About DenbyDen
               </h2>
               <p className="text-lg text-text-muted mb-2">Since 2022</p>

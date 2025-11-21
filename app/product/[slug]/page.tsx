@@ -166,7 +166,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             {/* Product Info */}
             <div className="flex flex-col">
               {/* Product Title */}
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text mb-4">
+              <h1 className="text-2xl md:text-3xl font-bold text-text mb-4">
                 {product.title}
               </h1>
 
@@ -174,10 +174,10 @@ export default function ProductPage({ params }: ProductPageProps) {
               <div className="mb-6">
                 {product.regularPrice && product.regularPrice > product.price ? (
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl md:text-3xl font-bold text-text">
+                    <span className="text-xl md:text-2xl font-bold text-text">
                       {product.currency} ${product.price.toFixed(2)}
                     </span>
-                    <span className="text-lg text-text-muted line-through">
+                    <span className="text-base text-text-muted line-through">
                       {product.currency} ${product.regularPrice.toFixed(2)}
                     </span>
                     <span className="text-sm font-semibold text-red-600">
@@ -185,7 +185,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     </span>
                   </div>
                 ) : (
-                  <span className="text-2xl md:text-3xl font-bold text-text">
+                  <span className="text-xl md:text-2xl font-bold text-text">
                     {product.currency} ${product.price.toFixed(2)}
                   </span>
                 )}
@@ -279,31 +279,29 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Gift Wrapping */}
-              {product.giftWrapping && (
-                <div className="mb-6 border border-border rounded-xl p-4 flex items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setGiftWrapping(!giftWrapping)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      giftWrapping ? 'bg-primary' : 'bg-gray-300'
+              <div className="mb-6 border border-border rounded-xl p-4 flex items-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => setGiftWrapping(!giftWrapping)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    giftWrapping ? 'bg-primary' : 'bg-gray-300'
+                  }`}
+                  role="switch"
+                  aria-checked={giftWrapping}
+                >
+                  <span
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition ${
+                      giftWrapping ? 'translate-x-4' : 'translate-x-1'
                     }`}
-                    role="switch"
-                    aria-checked={giftWrapping}
-                  >
-                    <span
-                      className={`inline-block h-5 w-5 transform rounded-full bg-white transition ${
-                        giftWrapping ? 'translate-x-5' : 'translate-x-1'
-                      }`}
-                    />
-                  </button>
-                  <div>
-                    <p className="text-sm font-semibold text-text">Christmas Gift Wrapping</p>
-                    <p className="text-xs text-text-muted mt-1">
-                      Gift wrapping may take an additional 1–2 business days for processing.
-                    </p>
-                  </div>
+                  />
+                </button>
+                <div>
+                  <p className="text-sm font-semibold text-text">Christmas Gift Wrapping</p>
+                  <p className="text-xs text-text-muted mt-1">
+                    Gift wrapping may take an additional 1–2 business days for processing.
+                  </p>
                 </div>
-              )}
+              </div>
 
               {/* Expected Delivery */}
               {product.expectedDelivery && (
@@ -444,7 +442,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <div className="flex items-center justify-between mb-8">
                   <div>
                     <p className="text-sm uppercase tracking-wide text-text-muted">You May Also Like</p>
-                    <h2 className="text-3xl md:text-4xl font-bold text-text">More Kawaii Finds</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold text-text">More Kawaii Finds</h2>
                   </div>
                   <Link href="/shop" className="text-sm font-semibold text-primary hover:underline">
                     Shop All Products
@@ -471,7 +469,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                       <h3 className="text-base font-semibold text-text mb-3 line-clamp-2 flex-1">
                         {item.title}
                       </h3>
-                      <p className="text-lg font-bold text-text">
+                      <p className="text-base md:text-lg font-bold text-text">
                         {item.currency} ${item.price.toFixed(2)}
                       </p>
                     </Link>
@@ -484,7 +482,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* About DenbyDen Section */}
           <section className="bg-pink-light py-10 md:py-14 mb-15">
             <div className="container-custom">
-              <h2 className="text-3xl md:text-4xl font-bold text-text mb-8 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-text mb-8 text-center">
                 About DenbyDen
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

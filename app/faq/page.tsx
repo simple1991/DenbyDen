@@ -37,7 +37,7 @@ export default function FAQPage() {
       <main className="min-h-screen bg-pink-light">
         <div className="container-custom py-12 md:py-16">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold text-text mb-8 text-center italic">
+            <h1 className="text-2xl md:text-3xl font-bold text-text mb-8 text-center italic">
               Frequently Asked Question
             </h1>
 

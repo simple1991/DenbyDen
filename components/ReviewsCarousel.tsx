@@ -72,7 +72,7 @@ export default function ReviewsCarousel() {
             <p className="text-sm uppercase tracking-[0.3em] text-text-muted">
               Verified Reviews
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-text">
+            <h2 className="text-2xl md:text-3xl font-bold text-text">
               Reviews from Our DenbyDen Family
             </h2>
             <p className="text-text-muted">

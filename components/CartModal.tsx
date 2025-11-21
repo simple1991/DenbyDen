@@ -135,7 +135,7 @@ export default function CartModal({
                     >
                       {item.title}
                     </Link>
-                    <p className="text-base font-semibold text-text mb-3">
+                    <p className="text-sm sm:text-base font-semibold text-text mb-3">
                       {item.currency} ${(item.price * item.quantity).toFixed(2)}
                     </p>
 
@@ -208,7 +208,7 @@ export default function CartModal({
         {/* Footer */}
         {items.length > 0 && (
           <div className="sticky bottom-0 bg-white border-t border-border px-6 py-4 space-y-3">
-            <div className="flex justify-between text-lg font-semibold text-text">
+            <div className="flex justify-between text-base md:text-lg font-semibold text-text">
               <span>Subtotal</span>
               <span>{items[0]?.currency || 'CAD'} ${subtotal.toFixed(2)}</span>
             </div>

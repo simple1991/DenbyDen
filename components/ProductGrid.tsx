@@ -26,7 +26,7 @@ export default function ProductGrid({
         {(title || subtitle) && (
           <div className="text-center mb-8 md:mb-12">
             {title && (
-              <h2 className="text-3xl md:text-4xl font-bold text-text mb-2">
+              <h2 className="text-2xl md:text-3xl font-bold text-text mb-2">
                 {title}
               </h2>
             )}

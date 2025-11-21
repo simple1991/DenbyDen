@@ -33,7 +33,7 @@ export default function FAQSection() {
     <section className="py-12 md:py-16 bg-pink-light">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-text mb-4 italic">
+          <h2 className="text-2xl md:text-3xl font-bold text-text mb-4 italic">
             Frequently Asked Question
           </h2>
           <p className="text-text-muted">

@@ -72,7 +72,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           </h3>
         </Link>
         <p className="text-sm text-text-muted mb-2">{product.vendor}</p>
-        <p className="text-lg font-semibold text-text">
+        <p className="text-base sm:text-lg font-semibold text-text">
           {product.currency} ${product.price.toFixed(2)}
         </p>
       </div>
