@@ -75,7 +75,13 @@ interface CurrencyContextValue {
   setSelectedCurrency: (currency: CurrencyCode) => void
   formatPrice: (valueInCny: number, currency?: CurrencyCode) => string
   convertPrice: (valueInCny: number, currency?: CurrencyCode) => number
-  currencyOptions: Array<{ code: CurrencyCode; label: string; symbol: string; flag: string }>
+  currencyOptions: Array<{
+    code: CurrencyCode
+    label: string
+    symbol: string
+    flag: string
+    flagSrc: string
+  }>
   baseCurrency: 'CNY'
 }
 

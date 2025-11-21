@@ -78,7 +78,6 @@ export default function CurrencySelector({ className = '', fullWidth = false }: 
                 <span>
                   {option.code} <span className="text-text-muted">{option.symbol}</span>
                 </span>
-                {option.code === 'CNY' && <span className="text-xs text-text-muted">人民币</span>}
               </div>
             </button>
           ))}
