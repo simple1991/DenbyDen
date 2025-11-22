@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCurrency } from './CurrencyContext'
@@ -34,7 +34,24 @@ export default function CartModal({
 }: CartModalProps) {
   const [orderNote, setOrderNote] = useState('')
   const [showNote, setShowNote] = useState(false)
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
+  const selectAllRef = useRef<HTMLInputElement>(null)
   const { formatPrice } = useCurrency()
+
+  // 初始化时全选所有商品
+  useEffect(() => {
+    if (isOpen && items.length > 0) {
+      setSelectedItems(new Set(items.map(item => item.id)))
+    }
+  }, [isOpen, items])
+
+  // 设置全选复选框的 indeterminate 状态
+  useEffect(() => {
+    if (selectAllRef.current) {
+      const someSelected = selectedItems.size > 0 && selectedItems.size < items.length
+      selectAllRef.current.indeterminate = someSelected
+    }
+  }, [selectedItems.size, items.length])
 
   useEffect(() => {
     if (isOpen) {
@@ -63,10 +80,36 @@ export default function CartModal({
 
   if (!isOpen) return null
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  // 切换单个商品的选中状态
+  const toggleItemSelection = (itemId: string) => {
+    setSelectedItems(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(itemId)) {
+        newSet.delete(itemId)
+      } else {
+        newSet.add(itemId)
+      }
+      return newSet
+    })
+  }
+
+  // 全选/取消全选
+  const toggleSelectAll = () => {
+    if (selectedItems.size === items.length) {
+      setSelectedItems(new Set())
+    } else {
+      setSelectedItems(new Set(items.map(item => item.id)))
+    }
+  }
+
+  // 只计算选中商品的总价和数量
+  const selectedItemsList = items.filter(item => selectedItems.has(item.id))
+  const subtotal = selectedItemsList.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const freeShippingThreshold = 49
   const hasFreeShipping = subtotal >= freeShippingThreshold
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+  const itemCount = selectedItemsList.reduce((sum, item) => sum + item.quantity, 0)
+  const allSelected = items.length > 0 && selectedItems.size === items.length
+  const someSelected = selectedItems.size > 0 && selectedItems.size < items.length
 
   return (
     <div
@@ -82,7 +125,7 @@ export default function CartModal({
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold text-text">Your Cart</h2>
             <span className="bg-pink-light text-text px-2 py-1 rounded-full text-sm font-semibold">
-              {itemCount}
+              {items.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           </div>
           <button
@@ -95,6 +138,24 @@ export default function CartModal({
             </svg>
           </button>
         </div>
+
+        {/* 全选功能 */}
+        {items.length > 0 && (
+          <div className="px-6 py-3 bg-beige-light border-b border-border">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                ref={selectAllRef}
+                type="checkbox"
+                checked={allSelected}
+                onChange={toggleSelectAll}
+                className="w-5 h-5 rounded border-border text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer"
+              />
+              <span className="text-sm font-semibold text-text">
+                {allSelected ? 'Deselect All' : 'Select All'} ({selectedItems.size}/{items.length})
+              </span>
+            </label>
+          </div>
+        )}
 
         {/* Free Shipping Banner */}
         {!hasFreeShipping && (
@@ -115,9 +176,21 @@ export default function CartModal({
               </Link>
             </div>
           ) : (
-            items.map((item) => (
-              <div key={item.id} className="bg-white rounded-md shadow-card p-4">
+            items.map((item) => {
+              const isSelected = selectedItems.has(item.id)
+              return (
+              <div key={item.id} className={`bg-white rounded-md shadow-card p-4 transition-all ${isSelected ? 'ring-2 ring-primary' : ''}`}>
                 <div className="flex gap-4">
+                  {/* 复选框 */}
+                  <div className="flex items-start pt-1">
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleItemSelection(item.id)}
+                      className="w-5 h-5 rounded border-border text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer mt-1"
+                    />
+                  </div>
+
                   {/* Product Image */}
                   <div className="relative w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-beige-light">
                     <Image
@@ -175,7 +248,8 @@ export default function CartModal({
                   </div>
                 </div>
               </div>
-            ))
+            )
+            })
           )}
         </div>
 
@@ -212,35 +286,46 @@ export default function CartModal({
         {items.length > 0 && (
           <div className="sticky bottom-0 bg-white border-t border-border px-6 py-4 space-y-3">
             <div className="flex justify-between text-base md:text-lg font-semibold text-text">
-              <span>Subtotal</span>
+              <span>Subtotal {selectedItems.size > 0 && selectedItems.size < items.length && `(${selectedItems.size} selected)`}</span>
               <span>{formatPrice(subtotal)}</span>
             </div>
+            {selectedItems.size === 0 && (
+              <p className="text-sm text-amber-600 font-medium">
+                Please select at least one item to checkout
+              </p>
+            )}
             <p className="text-xs text-text-muted">
               Tax included. <span className="underline">Shipping</span> calculated at checkout.
             </p>
             <div className="flex gap-3">
               <Link
-                href="/cart"
+                href="/shop"
                 className="flex-1 btn-secondary text-center"
                 onClick={onClose}
               >
-                View Cart ({itemCount})
+                Continue Shopping
               </Link>
-              <Link
-                href="/checkout"
-                className="flex-1 btn-primary text-center"
-                onClick={onClose}
-              >
-                Check Out - {formatPrice(subtotal)}
-              </Link>
+              {selectedItems.size > 0 ? (
+                <Link
+                  href="/checkout"
+                  className="flex-1 btn-primary text-center"
+                  onClick={(e) => {
+                    // 将选中的商品ID保存到sessionStorage，供结账页面使用
+                    sessionStorage.setItem('selectedCartItems', JSON.stringify(Array.from(selectedItems)))
+                    onClose()
+                  }}
+                >
+                  Check Out - {formatPrice(subtotal)} ({itemCount})
+                </Link>
+              ) : (
+                <button
+                  disabled
+                  className="flex-1 btn-primary text-center opacity-50 cursor-not-allowed"
+                >
+                  Check Out
+                </button>
+              )}
             </div>
-            <Link
-              href="/shop"
-              className="block text-center text-sm text-text-muted hover:text-primary transition-colors"
-              onClick={onClose}
-            >
-              Continue Shopping
-            </Link>
           </div>
         )}
       </div>
