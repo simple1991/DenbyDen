@@ -343,77 +343,80 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           {/* Product Details Sections */}
-          <section className="w-full bg-beige-light/70 py-10 mb-6">
-            <div className="container-custom space-y-5">
-              {/* FEATURES - Default Open */}
-              <CollapsibleSection title="FEATURES" defaultOpen={true}>
-                <div className="space-y-4">
-                  {product.features &&
-                    product.features.map((feature, index) => {
-                      const [label, ...rest] = feature.split(':')
-                      return (
-                        <p key={index} className="text-base text-text leading-relaxed">
-                          <strong>{label?.trim()}:</strong> {rest.join(':').trim()}
+          <section className="w-full bg-beige-light/70 py-4 mb-6">
+            {/* 内部容器：左右边距为0，只遵守页面页边距 */}
+            <div className="container-custom">
+              <div className="-mx-4 sm:-mx-6 px-4 sm:px-6 space-y-5">
+                {/* FEATURES - Default Open */}
+                <CollapsibleSection title="FEATURES" defaultOpen={true}>
+                  <div className="space-y-4">
+                    {product.features &&
+                      product.features.map((feature, index) => {
+                        const [label, ...rest] = feature.split(':')
+                        return (
+                          <p key={index} className="text-base text-text leading-relaxed">
+                            <strong>{label?.trim()}:</strong> {rest.join(':').trim()}
+                          </p>
+                        )
+                      })}
+                  </div>
+                </CollapsibleSection>
+
+                {/* DETAILS */}
+                <CollapsibleSection title="DETAILS">
+                  <div className="space-y-2">
+                    {product.details &&
+                      Object.entries(product.details).map(([key, value]) => (
+                        <p key={key} className="text-base text-text">
+                          <strong className="capitalize">
+                            {key.replace(/([A-Z])/g, ' $1').trim()}:
+                          </strong>{' '}
+                          {value}
                         </p>
-                      )
-                    })}
-                </div>
-              </CollapsibleSection>
+                      ))}
+                  </div>
+                </CollapsibleSection>
 
-              {/* DETAILS */}
-              <CollapsibleSection title="DETAILS">
-                <div className="space-y-2">
-                  {product.details &&
-                    Object.entries(product.details).map(([key, value]) => (
-                      <p key={key} className="text-base text-text">
-                        <strong className="capitalize">
-                          {key.replace(/([A-Z])/g, ' $1').trim()}:
-                        </strong>{' '}
-                        {value}
-                      </p>
-                    ))}
-                </div>
-              </CollapsibleSection>
+                {/* MATERIALS */}
+                <CollapsibleSection title="MATERIALS">
+                  <div className="space-y-2">
+                    {product.materials &&
+                      Object.entries(product.materials).map(([key, value]) => (
+                        <p key={key} className="text-base text-text">
+                          <strong className="capitalize">
+                            {key.replace(/([A-Z])/g, ' $1').trim()}:
+                          </strong>{' '}
+                          {value}
+                        </p>
+                      ))}
+                  </div>
+                </CollapsibleSection>
 
-              {/* MATERIALS */}
-              <CollapsibleSection title="MATERIALS">
-                <div className="space-y-2">
-                  {product.materials &&
-                    Object.entries(product.materials).map(([key, value]) => (
-                      <p key={key} className="text-base text-text">
-                        <strong className="capitalize">
-                          {key.replace(/([A-Z])/g, ' $1').trim()}:
-                        </strong>{' '}
-                        {value}
-                      </p>
-                    ))}
-                </div>
-              </CollapsibleSection>
+                {/* CARE INSTRUCTION */}
+                <CollapsibleSection title="CARE INSTRUCTION">
+                  <p className="text-base text-text">{product.careInstructions}</p>
+                </CollapsibleSection>
 
-              {/* CARE INSTRUCTION */}
-              <CollapsibleSection title="CARE INSTRUCTION">
-                <p className="text-base text-text">{product.careInstructions}</p>
-              </CollapsibleSection>
-
-              {/* SHIPPING & RETURN */}
-              <CollapsibleSection title="SHIPPING & RETURN">
-                <div className="space-y-2 text-base text-text">
-                  {product.shipping && (
-                    <>
-                      <p>
-                        Orders are shipped from our warehouse in {product.shipping.location}. Free
-                        shipping on orders over {formatPrice(shippingThreshold)}.
-                      </p>
-                      <p>{product.shipping.returnPolicy}</p>
-                    </>
-                  )}
-                </div>
-              </CollapsibleSection>
+                {/* SHIPPING & RETURN */}
+                <CollapsibleSection title="SHIPPING & RETURN">
+                  <div className="space-y-2 text-base text-text">
+                    {product.shipping && (
+                      <>
+                        <p>
+                          Orders are shipped from our warehouse in {product.shipping.location}. Free
+                          shipping on orders over {formatPrice(shippingThreshold)}.
+                        </p>
+                        <p>{product.shipping.returnPolicy}</p>
+                      </>
+                    )}
+                  </div>
+                </CollapsibleSection>
+              </div>
             </div>
           </section>
 
           {/* Customer Reviews Section */}
-          <section className="mb-16">
+          <section className="mb-4">
             <div className="container-custom">
               <div className="bg-white rounded-2xl shadow-card px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -440,9 +443,9 @@ export default function ProductPage({ params }: ProductPageProps) {
 
           {/* You May Also Like */}
           {youMayAlsoLike.some((item) => item.inStock) && (
-            <section className="py-12 md:py-16 bg-beige-light mb-16">
-              <div className="container-custom">
-                <div className="flex items-center justify-between mb-8">
+            <section className="py-4 md:py-8 bg-beige-light mb-4">
+              <div className="container-custom mb-4">
+                <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm uppercase tracking-wide text-text-muted">You May Also Like</p>
                     <h2 className="text-2xl md:text-3xl font-bold text-text">More Kawaii Finds</h2>
@@ -451,32 +454,37 @@ export default function ProductPage({ params }: ProductPageProps) {
                     Shop All Products
                   </Link>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {youMayAlsoLike
-                    .filter((item) => item.inStock)
-                    .map((item) => (
-                    <Link
-                      key={item.id}
-                      href={`/product/${item.slug}`}
-                      className="bg-white rounded-2xl shadow-card p-4 group flex flex-col"
-                    >
-                      <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-4">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                      <p className="text-sm text-text-muted mb-1">{item.vendor}</p>
-                      <h3 className="text-base font-semibold text-text mb-3 line-clamp-2 flex-1">
-                        {item.title}
-                      </h3>
-                      <p className="text-base md:text-lg font-bold text-text">
-                        {formatPrice(item.price)}
-                      </p>
-                    </Link>
-                  ))}
+              </div>
+              {/* 网格容器：左右边距为0，只遵守页面页边距 */}
+              <div className="container-custom">
+                <div className="-mx-4 sm:-mx-6 px-4 sm:px-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    {youMayAlsoLike
+                      .filter((item) => item.inStock)
+                      .map((item) => (
+                      <Link
+                        key={item.id}
+                        href={`/product/${item.slug}`}
+                        className="bg-white rounded-2xl shadow-card p-4 group flex flex-col"
+                      >
+                        <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-4">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            fill
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                        <p className="text-sm text-text-muted mb-1">{item.vendor}</p>
+                        <h3 className="text-base font-semibold text-text mb-3 line-clamp-2 flex-1">
+                          {item.title}
+                        </h3>
+                        <p className="text-base md:text-lg font-bold text-text">
+                          {formatPrice(item.price)}
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>
