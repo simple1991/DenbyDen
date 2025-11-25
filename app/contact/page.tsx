@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { usePageView, usePageDwell, useContactFormSubmit } from '@/hooks/useAnalytics'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -14,10 +15,25 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const formStartTimeRef = useRef<number>(Date.now())
+  
+  // 页面埋点
+  usePageView('contact')
+  usePageDwell('contact')
+  
+  // 联系表单提交埋点
+  const handleContactFormSubmit = useContactFormSubmit()
+  
+  useEffect(() => {
+    formStartTimeRef.current = Date.now()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+
+    // 计算表单填写时长
+    const formCompletionTime = Math.floor((Date.now() - formStartTimeRef.current) / 1000)
 
     // 模拟提交
     await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -27,9 +43,20 @@ export default function ContactPage() {
     contacts.push({ ...formData, date: new Date().toISOString() })
     localStorage.setItem('contacts', JSON.stringify(contacts))
 
+    // 联系表单提交埋点
+    handleContactFormSubmit(
+      !!formData.name,
+      !!formData.email,
+      !!formData.phone,
+      !!formData.message,
+      formCompletionTime,
+      'contact'
+    )
+
     setIsSubmitting(false)
     setIsSuccess(true)
     setFormData({ name: '', email: '', phone: '', message: '' })
+    formStartTimeRef.current = Date.now()
 
     setTimeout(() => setIsSuccess(false), 5000)
   }

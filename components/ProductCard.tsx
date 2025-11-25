@@ -4,16 +4,56 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from './CartContext'
 import { useCurrency } from './CurrencyContext'
+import { useProductExposure, useProductClick, useAddToCart } from '@/hooks/useAnalytics'
 import type { Product } from '@/types/product'
 
 interface ProductCardProps {
   product: Product
   onAddToCart?: () => void
+  position?: number
+  listType?: string
+  pageType?: 'home' | 'shop' | 'category' | 'christmas'
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export default function ProductCard({ 
+  product, 
+  onAddToCart, 
+  position = 0,
+  listType = 'all_products',
+  pageType = 'home'
+}: ProductCardProps) {
   const { addToCart } = useCart()
   const { formatPrice } = useCurrency()
+  
+  // 产品曝光埋点
+  const exposureRef = useProductExposure(
+    product.id,
+    product.slug,
+    position,
+    listType,
+    pageType,
+    true
+  )
+  
+  // 产品点击埋点
+  const handleProductClick = useProductClick(
+    product.id,
+    product.slug,
+    position,
+    'card_click',
+    pageType
+  )
+  
+  // 加入购物车埋点
+  const handleAddToCartTracking = useAddToCart(
+    product.id,
+    product.slug,
+    1,
+    product.price,
+    null,
+    false,
+    position
+  )
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -28,6 +68,8 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         currency: 'CNY',
         image: product.image,
       })
+      // 触发加入购物车埋点
+      handleAddToCartTracking()
       if (onAddToCart) {
         onAddToCart()
       }
@@ -35,10 +77,14 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   }
 
   return (
-    <div className="card card-hover overflow-hidden group">
+    <div ref={exposureRef} className="card card-hover overflow-hidden group">
       {/* Image Container */}
       <div className="relative w-full aspect-[5/4] overflow-hidden bg-beige-light">
-        <Link href={`/product/${product.slug}`} className="absolute inset-0 block">
+        <Link 
+          href={`/product/${product.slug}`} 
+          className="absolute inset-0 block"
+          onClick={handleProductClick}
+        >
           <Image
             src={product.image}
             alt={product.title}
@@ -68,7 +114,11 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
 
       {/* Product Info */}
       <div className="p-4">
-        <Link href={`/product/${product.slug}`} className="block">
+        <Link 
+          href={`/product/${product.slug}`} 
+          className="block"
+          onClick={handleProductClick}
+        >
           <h3 className="text-sm font-semibold text-text mb-2 line-clamp-4 min-h-[4.5rem]">
             {product.title}
           </h3>

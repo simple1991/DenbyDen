@@ -6,6 +6,7 @@ import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useCurrency } from '@/components/CurrencyContext'
+import { usePageView, usePageDwell, useFAQExpand } from '@/hooks/useAnalytics'
 
 type FAQItem = {
   question: string
@@ -39,6 +40,31 @@ const faqs: FAQItem[] = [
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const { formatPrice } = useCurrency()
+  
+  // 页面埋点
+  usePageView('faq')
+  usePageDwell('faq')
+  
+  // FAQ展开埋点
+  const handleFAQExpand = useFAQExpand()
+  
+  const handleToggle = (idx: number) => {
+    const isExpanding = openIndex !== idx
+    const action = isExpanding ? 'expand' : 'collapse'
+    const clickTarget = isExpanding ? 'add_icon' : 'close_icon'
+    
+    // FAQ展开埋点
+    handleFAQExpand(
+      action,
+      idx,
+      faqs[idx].question,
+      clickTarget,
+      'faq_page',
+      'faq'
+    )
+    
+    setOpenIndex(openIndex === idx ? null : idx)
+  }
 
   return (
     <>
@@ -61,7 +87,7 @@ export default function FAQPage() {
                   className="bg-beige-light rounded-lg shadow-card overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                    onClick={() => handleToggle(index)}
                     className="w-full px-4 md:px-6 py-4 flex items-center justify-between text-left transition-colors"
                   >
                     <span className="font-semibold text-text text-sm md:text-base pr-4">{faq.question}</span>

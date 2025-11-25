@@ -17,9 +17,10 @@ const ITEMS_PER_PAGE = 12
 interface SubcategoryGridProps {
   products: Product[]
   categoryName: string
+  pageType?: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
 }
 
-export default function SubcategoryGrid({ products, categoryName }: SubcategoryGridProps) {
+export default function SubcategoryGrid({ products, categoryName, pageType = 'category' }: SubcategoryGridProps) {
   const [sortBy, setSortBy] = useState('featured')
   const [priceFilter, setPriceFilter] = useState('all')
   const [stockFilter, setStockFilter] = useState<'all' | 'in'>('all')
@@ -135,7 +136,15 @@ export default function SubcategoryGrid({ products, categoryName }: SubcategoryG
 
         <div className="grid grid-cols-2 gap-4 sm:gap-6">
           {paginatedProducts.length > 0 ? (
-            paginatedProducts.map((product) => <ProductCard key={product.id} product={product} />)
+            paginatedProducts.map((product, index) => (
+              <ProductCard 
+                key={product.id} 
+                product={product}
+                position={(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
+                listType={pageType === 'christmas' ? 'christmas' : 'category'}
+                pageType={pageType === 'christmas' ? 'christmas' : 'category'}
+              />
+            ))
           ) : (
             <div className="col-span-full text-center py-16">
               <p className="text-lg text-text-muted">No products match the selected filters.</p>

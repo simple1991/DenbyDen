@@ -2,6 +2,8 @@
 
 import Image from 'next/image'
 import { useEffect, useState, useRef } from 'react'
+import { useReviewCarouselNav } from '@/hooks/useAnalytics'
+import { usePathname } from 'next/navigation'
 
 const reviews = [
   {
@@ -41,6 +43,25 @@ export default function ReviewsCarousel() {
   const [isPaused, setIsPaused] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname()
+  
+  // 获取当前页面类型
+  const getPageType = (): 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas' => {
+    if (pathname === '/') return 'home'
+    if (pathname.startsWith('/product/')) return 'product_detail'
+    if (pathname === '/shop') return 'shop'
+    if (pathname.startsWith('/shop/')) return 'category'
+    if (pathname === '/about') return 'about'
+    if (pathname === '/contact') return 'contact'
+    if (pathname === '/faq') return 'faq'
+    if (pathname === '/christmas') return 'christmas'
+    return 'home'
+  }
+  
+  const pageType = getPageType()
+  
+  // 评价轮播导航埋点
+  const handleReviewCarouselNav = useReviewCarouselNav()
 
   // 检测屏幕尺寸
   useEffect(() => {
@@ -71,9 +92,12 @@ export default function ReviewsCarousel() {
   }, [isPaused, isMobile])
 
   const next = () => {
+    const currentIndex = index
+    const targetIndex = (index + 1) % reviews.length
+    
     if (isMobile) {
       // 移动端：直接切换索引，无限循环
-      setIndex((prev) => (prev + 1) % reviews.length)
+      setIndex(targetIndex)
     } else {
       // 桌面端：使用虚拟索引
       setVirtualIndex((prev) => {
@@ -86,16 +110,23 @@ export default function ReviewsCarousel() {
         }
         return nextIdx
       })
-      setIndex((prev) => (prev + 1) % reviews.length)
+      setIndex(targetIndex)
     }
+    
+    // 评价轮播导航埋点
+    handleReviewCarouselNav('next', currentIndex, targetIndex, reviews.length, isMobile ? 'mobile' : 'desktop', pageType)
+    
     setIsPaused(true)
     setTimeout(() => setIsPaused(false), 10000)
   }
 
   const prev = () => {
+    const currentIndex = index
+    const targetIndex = (index - 1 + reviews.length) % reviews.length
+    
     if (isMobile) {
       // 移动端：直接切换索引，无限循环
-      setIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
+      setIndex(targetIndex)
     } else {
       // 桌面端：使用虚拟索引
       setVirtualIndex((prev) => {
@@ -108,10 +139,22 @@ export default function ReviewsCarousel() {
         }
         return prevIdx
       })
-      setIndex((prev) => (prev - 1 + reviews.length) % reviews.length)
+      setIndex(targetIndex)
     }
+    
+    // 评价轮播导航埋点
+    handleReviewCarouselNav('prev', currentIndex, targetIndex, reviews.length, isMobile ? 'mobile' : 'desktop', pageType)
+    
     setIsPaused(true)
     setTimeout(() => setIsPaused(false), 10000)
+  }
+  
+  const handleIndicatorClick = (targetIdx: number) => {
+    const currentIndex = index
+    setIndex(targetIdx)
+    
+    // 评价轮播导航埋点
+    handleReviewCarouselNav('indicator_click', currentIndex, targetIdx, reviews.length, isMobile ? 'mobile' : 'desktop', pageType)
   }
 
   // 桌面端：每次移动50%（显示2个中的1个）
@@ -181,7 +224,7 @@ export default function ReviewsCarousel() {
               {reviews.map((_, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setIndex(idx)}
+                  onClick={() => handleIndicatorClick(idx)}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     idx === index
                       ? 'w-8 bg-[#DDA6B1]'

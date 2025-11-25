@@ -13,15 +13,33 @@ export type EventType =
   | 'email_submit'
   | 'page_dwell'
   | 'page_bounce'
+  | 'page_view'
   | 'product_detail_view'
   | 'image_swipe'
   | 'section_expand'
   | 'gift_wrapping_toggle'
   | 'scroll_depth'
   | 'filter_select'
+  | 'navigation_click'
+  | 'button_click'
+  | 'review_carousel_nav'
+  | 'currency_selector_open'
+  | 'currency_change'
+  | 'search_icon_click'
+  | 'mobile_menu_click'
+  | 'collection_click'
+  | 'collection_scroll'
+  | 'cart_modal_open'
+  | 'cart_modal_close'
+  | 'cart_item_update'
+  | 'cart_item_remove'
+  | 'cart_modal_link_click'
+  | 'contact_form_submit'
+  | 'faq_expand'
+  | 'modal_close'
 
 export type EventCategory = 'exposure' | 'click' | 'conversion' | 'interaction' | 'lead'
-export type PageType = 'home' | 'product_detail' | 'shop' | 'category'
+export type PageType = 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
 
 // 用户标识和会话管理
 const USER_ID_KEY = 'analytics_user_id'
@@ -221,6 +239,271 @@ export interface FilterSelectEvent extends BaseEvent {
   }
 }
 
+/**
+ * 页面查看事件
+ */
+export interface PageViewEvent extends BaseEvent {
+  event_type: 'page_view'
+  event_category: 'exposure'
+  interaction_type: 'page_view'
+}
+
+/**
+ * 导航点击事件
+ */
+export interface NavigationClickEvent extends BaseEvent {
+  event_type: 'navigation_click'
+  event_category: 'click'
+  interaction_type: 'navigation_click'
+  interaction_data: {
+    link_text: string
+    link_url: string
+    link_type: 'nav_item' | 'dropdown_item' | 'mobile_menu_item'
+    location: 'header' | 'mobile_menu'
+  }
+}
+
+/**
+ * 按钮点击事件
+ */
+export interface ButtonClickEvent extends BaseEvent {
+  event_type: 'button_click'
+  event_category: 'click'
+  interaction_type: 'button_click'
+  product_id?: string
+  interaction_data: {
+    button_text: string
+    button_url: string
+    button_type: 'primary_cta' | 'secondary_cta' | 'text_link'
+    button_location: string
+    section_name?: string
+  }
+}
+
+/**
+ * 评价轮播导航事件
+ */
+export interface ReviewCarouselNavEvent extends BaseEvent {
+  event_type: 'review_carousel_nav'
+  event_category: 'interaction'
+  interaction_type: 'review_carousel_nav'
+  interaction_data: {
+    action: 'prev' | 'next' | 'indicator_click'
+    current_review_index: number
+    target_review_index: number
+    review_count: number
+    device_type: 'desktop' | 'mobile'
+  }
+}
+
+/**
+ * 货币选择器打开事件
+ */
+export interface CurrencySelectorOpenEvent extends BaseEvent {
+  event_type: 'currency_selector_open'
+  event_category: 'interaction'
+  interaction_type: 'currency_selector_open'
+  interaction_data: {
+    current_currency: string
+    location: 'header_desktop' | 'header_mobile' | 'mobile_menu'
+  }
+}
+
+/**
+ * 货币变更事件
+ */
+export interface CurrencyChangeEvent extends BaseEvent {
+  event_type: 'currency_change'
+  event_category: 'interaction'
+  interaction_type: 'currency_change'
+  interaction_data: {
+    previous_currency: string
+    new_currency: string
+    currency_code: string
+    currency_symbol: string
+    location: 'header_desktop' | 'header_mobile' | 'mobile_menu'
+  }
+}
+
+/**
+ * 搜索图标点击事件
+ */
+export interface SearchIconClickEvent extends BaseEvent {
+  event_type: 'search_icon_click'
+  event_category: 'click'
+  interaction_type: 'search_icon_click'
+  interaction_data: {
+    action: 'open_search'
+    location: 'header'
+    device_type: 'desktop' | 'mobile'
+  }
+}
+
+/**
+ * 移动端菜单点击事件
+ */
+export interface MobileMenuClickEvent extends BaseEvent {
+  event_type: 'mobile_menu_click'
+  event_category: 'click'
+  interaction_type: 'mobile_menu_click'
+  interaction_data: {
+    action: 'open_mobile_menu'
+    location: 'header_mobile'
+    device_type: 'mobile'
+  }
+}
+
+/**
+ * Collection点击事件
+ */
+export interface CollectionClickEvent extends BaseEvent {
+  event_type: 'collection_click'
+  event_category: 'click'
+  interaction_type: 'collection_click'
+  interaction_data: {
+    collection_name: string
+    collection_url: string
+    position: number
+    device_type: 'desktop' | 'mobile'
+  }
+}
+
+/**
+ * Collection滚动事件
+ */
+export interface CollectionScrollEvent extends BaseEvent {
+  event_type: 'collection_scroll'
+  event_category: 'interaction'
+  interaction_type: 'collection_scroll'
+  interaction_data: {
+    scroll_direction: 'left' | 'right'
+    current_index: number
+    total_collections: number
+    device_type: 'mobile'
+  }
+}
+
+/**
+ * 购物车弹窗打开事件
+ */
+export interface CartModalOpenEvent extends BaseEvent {
+  event_type: 'cart_modal_open'
+  event_category: 'interaction'
+  interaction_type: 'cart_modal_open'
+  interaction_data: {
+    cart_item_count: number
+    cart_total: number
+    trigger_source: 'header_cart_icon' | 'add_to_cart_button'
+  }
+}
+
+/**
+ * 购物车弹窗关闭事件
+ */
+export interface CartModalCloseEvent extends BaseEvent {
+  event_type: 'cart_modal_close'
+  event_category: 'interaction'
+  interaction_type: 'cart_modal_close'
+  interaction_data: {
+    cart_item_count: number
+    modal_display_time_seconds: number
+    close_method: 'close_button' | 'background_click' | 'escape_key' | 'link_click'
+  }
+}
+
+/**
+ * 购物车商品更新事件
+ */
+export interface CartItemUpdateEvent extends BaseEvent {
+  event_type: 'cart_item_update'
+  event_category: 'conversion'
+  product_id: string
+  product_slug: string
+  quantity: number
+  action_type: 'update'
+  interaction_data: {
+    change_type: 'increase' | 'decrease'
+    previous_quantity: number
+    new_quantity: number
+  }
+}
+
+/**
+ * 购物车商品删除事件
+ */
+export interface CartItemRemoveEvent extends BaseEvent {
+  event_type: 'cart_item_remove'
+  event_category: 'conversion'
+  product_id: string
+  product_slug: string
+  action_type: 'remove'
+  interaction_data: {
+    removed_quantity: number
+  }
+}
+
+/**
+ * 购物车弹窗链接点击事件
+ */
+export interface CartModalLinkClickEvent extends BaseEvent {
+  event_type: 'cart_modal_link_click'
+  event_category: 'click'
+  interaction_type: 'cart_modal_link_click'
+  interaction_data: {
+    link_type: 'view_cart' | 'checkout' | 'continue_shopping'
+    link_url: string
+    link_text: string
+  }
+}
+
+/**
+ * 联系表单提交事件
+ */
+export interface ContactFormSubmitEvent extends BaseEvent {
+  event_type: 'contact_form_submit'
+  event_category: 'lead'
+  interaction_type: 'contact_form_submit'
+  interaction_data: {
+    form_type: 'contact_form'
+    has_name: boolean
+    has_email: boolean
+    has_phone: boolean
+    has_message: boolean
+    form_completion_time_seconds: number
+  }
+}
+
+/**
+ * FAQ展开事件
+ */
+export interface FAQExpandEvent extends BaseEvent {
+  event_type: 'faq_expand'
+  event_category: 'interaction'
+  interaction_type: 'faq_expand'
+  interaction_data: {
+    action: 'expand' | 'collapse'
+    faq_index: number
+    faq_question: string
+    click_target: 'add_icon' | 'close_icon'
+    location?: 'home_faq_section' | 'faq_page'
+  }
+}
+
+/**
+ * 模态框关闭事件
+ */
+export interface ModalCloseEvent extends BaseEvent {
+  event_type: 'modal_close'
+  event_category: 'interaction'
+  interaction_type: 'modal_close'
+  interaction_data: {
+    modal_type: 'email_capture' | 'cart_modal' | 'other'
+    close_method: 'close_button' | 'background_click' | 'escape_key'
+    modal_display_time_seconds: number
+    was_submitted?: boolean
+  }
+}
+
 export type AnalyticsEvent =
   | ProductExposureEvent
   | ProductClickEvent
@@ -233,6 +516,24 @@ export type AnalyticsEvent =
   | GiftWrappingToggleEvent
   | ScrollDepthEvent
   | FilterSelectEvent
+  | PageViewEvent
+  | NavigationClickEvent
+  | ButtonClickEvent
+  | ReviewCarouselNavEvent
+  | CurrencySelectorOpenEvent
+  | CurrencyChangeEvent
+  | SearchIconClickEvent
+  | MobileMenuClickEvent
+  | CollectionClickEvent
+  | CollectionScrollEvent
+  | CartModalOpenEvent
+  | CartModalCloseEvent
+  | CartItemUpdateEvent
+  | CartItemRemoveEvent
+  | CartModalLinkClickEvent
+  | ContactFormSubmitEvent
+  | FAQExpandEvent
+  | ModalCloseEvent
 
 // 批量上报队列
 const eventQueue: AnalyticsEvent[] = []
@@ -356,19 +657,67 @@ async function flushEventQueue() {
           case 'section_expand':
           case 'gift_wrapping_toggle':
           case 'scroll_depth':
-          case 'filter_select': {
+          case 'filter_select':
+          case 'page_view':
+          case 'navigation_click':
+          case 'button_click':
+          case 'review_carousel_nav':
+          case 'currency_selector_open':
+          case 'currency_change':
+          case 'search_icon_click':
+          case 'mobile_menu_click':
+          case 'collection_click':
+          case 'collection_scroll':
+          case 'cart_modal_open':
+          case 'cart_modal_close':
+          case 'cart_modal_link_click':
+          case 'contact_form_submit':
+          case 'faq_expand':
+          case 'modal_close': {
             const e = event as
               | ImageSwipeEvent
               | SectionExpandEvent
               | GiftWrappingToggleEvent
               | ScrollDepthEvent
               | FilterSelectEvent
+              | PageViewEvent
+              | NavigationClickEvent
+              | ButtonClickEvent
+              | ReviewCarouselNavEvent
+              | CurrencySelectorOpenEvent
+              | CurrencyChangeEvent
+              | SearchIconClickEvent
+              | MobileMenuClickEvent
+              | CollectionClickEvent
+              | CollectionScrollEvent
+              | CartModalOpenEvent
+              | CartModalCloseEvent
+              | CartModalLinkClickEvent
+              | ContactFormSubmitEvent
+              | FAQExpandEvent
+              | ModalCloseEvent
             await supabase.from('page_interactions').insert({
               event_id: eventId,
               interaction_type: e.interaction_type,
               product_id: 'product_id' in e ? e.product_id : null,
               interaction_data: e.interaction_data || {},
               scroll_depth: 'scroll_depth' in e ? e.scroll_depth : null,
+            })
+            break
+          }
+
+          case 'cart_item_update':
+          case 'cart_item_remove': {
+            const e = event as CartItemUpdateEvent | CartItemRemoveEvent
+            await supabase.from('cart_actions').insert({
+              event_id: eventId,
+              product_id: e.product_id,
+              product_slug: e.product_slug,
+              quantity: 'quantity' in e ? e.quantity : 0,
+              action_type: e.action_type,
+              variant: null,
+              gift_wrapping: false,
+              total_price: 0, // 购物车内更新/删除不记录价格
             })
             break
           }
@@ -416,6 +765,11 @@ export async function trackEvent(event: AnalyticsEvent) {
     'email_submit',
     'product_click',
     'product_detail_view',
+    'cart_item_update',
+    'cart_item_remove',
+    'cart_modal_link_click',
+    'contact_form_submit',
+    'currency_change',
   ]
 
   if (immediateEvents.includes(event.event_type)) {

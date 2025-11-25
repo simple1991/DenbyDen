@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,6 +11,17 @@ import CartModal from '@/components/CartModal'
 import { useCart } from '@/components/CartContext'
 import { useCurrency } from '@/components/CurrencyContext'
 import productsData from '@/data/products.json'
+import {
+  useProductDetailView,
+  usePageDwell,
+  useImageSwipe,
+  useSectionExpand,
+  useGiftWrappingToggle,
+  useAddToCart,
+  useButtonClick,
+  useCartModalOpen,
+  useCartModalClose,
+} from '@/hooks/useAnalytics'
 
 interface ProductPageProps {
   params: {
@@ -24,13 +35,25 @@ interface CollapsibleSectionProps {
   defaultOpen?: boolean
 }
 
-function CollapsibleSection({ title, children, defaultOpen = false }: CollapsibleSectionProps) {
+function CollapsibleSection({ 
+  title, 
+  children, 
+  defaultOpen = false,
+  onExpand,
+}: CollapsibleSectionProps & { onExpand?: (sectionName: string) => void }) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
+
+  const handleToggle = () => {
+    if (!isOpen && onExpand) {
+      onExpand(title)
+    }
+    setIsOpen(!isOpen)
+  }
 
   return (
     <div className="bg-white rounded-2xl shadow-card p-5 md:p-6">
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className="w-full flex items-center justify-between text-left gap-4"
       >
         <h3 className="text-lg md:text-xl font-bold text-text flex items-center gap-2">
@@ -53,8 +76,9 @@ function CollapsibleSection({ title, children, defaultOpen = false }: Collapsibl
 export default function ProductPage({ params }: ProductPageProps) {
   const { slug } = params
   const product = productsData.find((p) => p.slug === slug)
-  const { addToCart, items, updateQuantity, removeItem } = useCart()
+  const { addToCart, items, updateQuantity, removeItem, getTotal } = useCart()
   const [showCartModal, setShowCartModal] = useState(false)
+  const [cartModalOpenTime, setCartModalOpenTime] = useState<number | null>(null)
   const [selectedVariant, setSelectedVariant] = useState<string | null>(
     product?.variants && product.variants.length > 0 ? product.variants[0].value : null
   )
@@ -68,6 +92,64 @@ export default function ProductPage({ params }: ProductPageProps) {
   }
 
   const images = product.images || [product.image]
+  
+  // 产品详情页埋点
+  useProductDetailView(product.id, product.slug)
+  usePageDwell('product_detail', product.id)
+  
+  // 图片滑动埋点
+  const handleImageSwipe = useImageSwipe(product.id, images.length)
+  
+  // 折叠区展开埋点
+  const handleSectionExpand = useSectionExpand(product.id)
+  
+  // 礼品包装切换埋点
+  const handleGiftWrappingToggle = useGiftWrappingToggle(product.id)
+  
+  // 加入购物车埋点
+  const handleAddToCartTracking = useAddToCart(
+    product.id,
+    product.slug,
+    quantity,
+    product.price,
+    selectedVariant,
+    giftWrapping
+  )
+  
+  // 按钮点击埋点
+  const handleButtonClick = useButtonClick()
+  
+  // 购物车弹窗埋点
+  const handleCartModalOpen = useCartModalOpen()
+  const handleCartModalClose = useCartModalClose()
+  
+  // 购物车弹窗打开
+  useEffect(() => {
+    if (showCartModal) {
+      setCartModalOpenTime(Date.now())
+      handleCartModalOpen(
+        items.reduce((sum, item) => sum + item.quantity, 0),
+        getTotal(),
+        'add_to_cart_button',
+        'product_detail'
+      )
+    }
+  }, [showCartModal])
+  
+  const handleCloseCartModal = (closeMethod: 'close_button' | 'background_click' | 'escape_key' | 'link_click' = 'close_button') => {
+    if (cartModalOpenTime) {
+      const displayTime = Math.floor((Date.now() - cartModalOpenTime) / 1000)
+      handleCartModalClose(
+        items.reduce((sum, item) => sum + item.quantity, 0),
+        displayTime,
+        closeMethod,
+        'product_detail'
+      )
+      setCartModalOpenTime(null)
+    }
+    setShowCartModal(false)
+  }
+
   const availableVariant = product.variants?.find(v => v.value === selectedVariant)
   const isVariantAvailable = !selectedVariant || availableVariant?.available !== false
   const isProductAvailable = product.inStock && isVariantAvailable
@@ -83,9 +165,24 @@ export default function ProductPage({ params }: ProductPageProps) {
         price: product.price,
         currency: 'CNY',
         image: product.image,
+        giftWrapping: giftWrapping,
       }, quantity)
+      // 加入购物车埋点
+      handleAddToCartTracking()
       setShowCartModal(true)
     }
+  }
+  
+  const handleImageChange = (index: number) => {
+    setSelectedImageIndex(index)
+    // 图片滑动埋点
+    handleImageSwipe(index)
+  }
+  
+  const handleGiftWrappingChange = (checked: boolean) => {
+    setGiftWrapping(checked)
+    // 礼品包装切换埋点
+    handleGiftWrappingToggle(checked)
   }
 
   const decreaseQuantity = () => {
@@ -115,7 +212,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     {images.map((img, idx) => (
                       <button
                         key={idx}
-                        onClick={() => setSelectedImageIndex(idx)}
+                        onClick={() => handleImageChange(idx)}
                         className={`relative w-full aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
                           selectedImageIndex === idx
                             ? 'border-primary'
@@ -147,7 +244,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   {images.map((img, idx) => (
                     <button
                       key={idx}
-                      onClick={() => setSelectedImageIndex(idx)}
+                      onClick={() => handleImageChange(idx)}
                       className={`relative aspect-square rounded-md overflow-hidden border-2 transition-colors ${
                         selectedImageIndex === idx
                           ? 'border-primary'
@@ -285,7 +382,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               <div className="mb-6 border border-border rounded-xl p-4 flex items-center gap-4">
                 <button
                   type="button"
-                  onClick={() => setGiftWrapping(!giftWrapping)}
+                  onClick={() => handleGiftWrappingChange(!giftWrapping)}
                   className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                     giftWrapping ? 'bg-primary' : 'bg-gray-300'
                   }`}
@@ -348,7 +445,11 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div className="container-custom">
               <div className="-mx-4 sm:-mx-6 px-4 sm:px-6 space-y-5">
                 {/* FEATURES - Default Open */}
-                <CollapsibleSection title="FEATURES" defaultOpen={true}>
+                <CollapsibleSection 
+                  title="FEATURES" 
+                  defaultOpen={true}
+                  onExpand={handleSectionExpand}
+                >
                   <div className="space-y-4">
                     {product.features &&
                       product.features.map((feature, index) => {
@@ -363,7 +464,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </CollapsibleSection>
 
                 {/* DETAILS */}
-                <CollapsibleSection title="DETAILS">
+                <CollapsibleSection 
+                  title="DETAILS"
+                  onExpand={handleSectionExpand}
+                >
                   <div className="space-y-2">
                     {product.details &&
                       Object.entries(product.details).map(([key, value]) => (
@@ -378,7 +482,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </CollapsibleSection>
 
                 {/* MATERIALS */}
-                <CollapsibleSection title="MATERIALS">
+                <CollapsibleSection 
+                  title="MATERIALS"
+                  onExpand={handleSectionExpand}
+                >
                   <div className="space-y-2">
                     {product.materials &&
                       Object.entries(product.materials).map(([key, value]) => (
@@ -393,12 +500,18 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </CollapsibleSection>
 
                 {/* CARE INSTRUCTION */}
-                <CollapsibleSection title="CARE INSTRUCTION">
+                <CollapsibleSection 
+                  title="CARE INSTRUCTION"
+                  onExpand={handleSectionExpand}
+                >
                   <p className="text-base text-text">{product.careInstructions}</p>
                 </CollapsibleSection>
 
                 {/* SHIPPING & RETURN */}
-                <CollapsibleSection title="SHIPPING & RETURN">
+                <CollapsibleSection 
+                  title="SHIPPING & RETURN"
+                  onExpand={handleSectionExpand}
+                >
                   <div className="space-y-2 text-base text-text">
                     {product.shipping && (
                       <>
@@ -450,7 +563,11 @@ export default function ProductPage({ params }: ProductPageProps) {
                     <p className="text-sm uppercase tracking-wide text-text-muted">You May Also Like</p>
                     <h2 className="text-2xl md:text-3xl font-bold text-text">More Kawaii Finds</h2>
                   </div>
-                  <Link href="/shop" className="text-sm font-semibold text-primary hover:underline">
+                  <Link 
+                    href="/shop" 
+                    className="text-sm font-semibold text-primary hover:underline"
+                    onClick={() => handleButtonClick('Shop All Products', '/shop', 'text_link', 'you_may_also_like_section', 'product_detail', product.id, 'You May Also Like')}
+                  >
                     Shop All Products
                   </Link>
                 </div>
@@ -529,10 +646,11 @@ export default function ProductPage({ params }: ProductPageProps) {
       <Footer />
       <CartModal
         isOpen={showCartModal}
-        onClose={() => setShowCartModal(false)}
+        onClose={handleCloseCartModal}
         items={items}
         onUpdateQuantity={updateQuantity}
         onRemoveItem={removeItem}
+        pageType="product_detail"
       />
     </>
   )

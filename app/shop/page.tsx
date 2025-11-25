@@ -1,10 +1,18 @@
+'use client'
+
+import { useEffect } from 'react'
 import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
 import ProductGrid from '@/components/ProductGrid'
 import Footer from '@/components/Footer'
 import productsData from '@/data/products.json'
+import { usePageView, usePageDwell, useScrollDepth } from '@/hooks/useAnalytics'
 
 export default function ShopPage() {
+  // 页面埋点
+  usePageView('shop')
+  usePageDwell('shop')
+  useScrollDepth('shop')
   return (
     <>
       <TopBar />
@@ -18,7 +26,11 @@ export default function ShopPage() {
             Discover our complete collection of home essentials
           </p>
         </div>
-        <ProductGrid products={productsData} />
+        <ProductGrid 
+          products={productsData} 
+          title="All Products"
+          pageType="shop"
+        />
       </main>
       <Footer />
     </>

@@ -4,6 +4,12 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCurrency } from './CurrencyContext'
+import {
+  useCartItemUpdate,
+  useCartItemRemove,
+  useCartModalLinkClick,
+} from '@/hooks/useAnalytics'
+import type { PageType } from '@/lib/analytics'
 
 interface CartItem {
   id: string
@@ -15,6 +21,7 @@ interface CartItem {
   image: string
   quantity: number
   note?: string
+  giftWrapping?: boolean
 }
 
 interface CartModalProps {
@@ -23,6 +30,7 @@ interface CartModalProps {
   items: CartItem[]
   onUpdateQuantity: (id: string, quantity: number) => void
   onRemoveItem: (id: string) => void
+  pageType?: PageType
 }
 
 export default function CartModal({
@@ -31,12 +39,18 @@ export default function CartModal({
   items,
   onUpdateQuantity,
   onRemoveItem,
+  pageType = 'home',
 }: CartModalProps) {
   const [orderNote, setOrderNote] = useState('')
   const [showNote, setShowNote] = useState(false)
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
   const selectAllRef = useRef<HTMLInputElement>(null)
   const { formatPrice } = useCurrency()
+  
+  // 购物车埋点
+  const handleCartItemUpdate = useCartItemUpdate()
+  const handleCartItemRemove = useCartItemRemove()
+  const handleCartModalLinkClick = useCartModalLinkClick()
 
   // 初始化时全选所有商品
   useEffect(() => {
@@ -77,6 +91,37 @@ export default function CartModal({
       window.removeEventListener('keydown', handleEscape)
     }
   }, [isOpen, onClose])
+
+  // 处理数量更新（带埋点）
+  const handleUpdateQuantity = (id: string, newQuantity: number) => {
+    const item = items.find(i => i.id === id)
+    if (item) {
+      const changeType = newQuantity > item.quantity ? 'increase' : 'decrease'
+      handleCartItemUpdate(
+        item.id,
+        item.slug,
+        newQuantity,
+        changeType,
+        item.quantity,
+        pageType
+      )
+    }
+    onUpdateQuantity(id, newQuantity)
+  }
+
+  // 处理删除商品（带埋点）
+  const handleRemoveItem = (id: string) => {
+    const item = items.find(i => i.id === id)
+    if (item) {
+      handleCartItemRemove(
+        item.id,
+        item.slug,
+        item.quantity,
+        pageType
+      )
+    }
+    onRemoveItem(id)
+  }
 
   if (!isOpen) return null
 
@@ -129,7 +174,7 @@ export default function CartModal({
             </span>
           </div>
           <button
-            onClick={onClose}
+            onClick={() => onClose()}
             className="p-2 hover:bg-beige-light rounded-full transition-colors"
             aria-label="Close cart"
           >
@@ -171,7 +216,14 @@ export default function CartModal({
           {items.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-text-muted mb-4">Your cart is empty</p>
-              <Link href="/shop" className="btn-primary inline-block" onClick={onClose}>
+              <Link 
+                href="/shop" 
+                className="btn-primary inline-block" 
+                onClick={() => {
+                  handleCartModalLinkClick('continue_shopping', '/shop', 'Continue Shopping', pageType)
+                  onClose()
+                }}
+              >
                 Continue Shopping
               </Link>
             </div>
@@ -204,22 +256,29 @@ export default function CartModal({
                   {/* Product Info */}
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-text-muted mb-1">{item.vendor}</p>
-                    <Link
-                      href={`/product/${item.slug}`}
-                      className="text-sm font-semibold text-text hover:text-primary line-clamp-2 mb-2"
-                      onClick={onClose}
-                    >
-                      {item.title}
-                    </Link>
+                    <div className="flex items-center gap-2 mb-1">
+                      <Link
+                        href={`/product/${item.slug}`}
+                        className="text-sm font-semibold text-text hover:text-primary line-clamp-2 flex-1"
+                        onClick={onClose}
+                      >
+                        {item.title}
+                      </Link>
+                      {item.giftWrapping && (
+                        <span className="flex-shrink-0 bg-primary text-white text-xs px-2 py-0.5 rounded-full font-semibold">
+                          包装
+                        </span>
+                      )}
+                    </div>
                     <p className="text-sm sm:text-base font-semibold text-text mb-3">
                       {formatPrice(item.price * item.quantity)}
                     </p>
 
                     {/* Quantity Controls */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-3 border border-border rounded-md">
                         <button
-                          onClick={() => onUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                          onClick={() => handleUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
                           className="px-3 py-1 hover:bg-beige-light transition-colors"
                           aria-label="Decrease quantity"
                         >
@@ -229,7 +288,7 @@ export default function CartModal({
                         </button>
                         <span className="px-2 text-sm font-semibold">{item.quantity}</span>
                         <button
-                          onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
                           className="px-3 py-1 hover:bg-beige-light transition-colors"
                           aria-label="Increase quantity"
                         >
@@ -239,8 +298,8 @@ export default function CartModal({
                         </button>
                       </div>
                       <button
-                        onClick={() => onRemoveItem(item.id)}
-                        className="text-sm text-text-muted hover:text-primary transition-colors"
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="bg-primary text-white text-xs px-3 py-1.5 rounded-md font-semibold hover:bg-primary-hover transition-colors whitespace-nowrap"
                       >
                         Remove
                       </button>
@@ -300,18 +359,22 @@ export default function CartModal({
             <div className="flex gap-3">
               <Link
                 href="/shop"
-                className="flex-1 btn-secondary text-center"
-                onClick={onClose}
+                className="flex-1 btn-secondary text-center text-sm md:text-base py-2.5"
+                onClick={() => {
+                  handleCartModalLinkClick('continue_shopping', '/shop', 'Continue Shopping', pageType)
+                  onClose()
+                }}
               >
                 Continue Shopping
               </Link>
               {selectedItems.size > 0 ? (
                 <Link
                   href="/checkout"
-                  className="flex-1 btn-primary text-center"
+                  className="flex-1 btn-primary text-center text-sm md:text-base py-2.5"
                   onClick={(e) => {
                     // 将选中的商品ID保存到sessionStorage，供结账页面使用
                     sessionStorage.setItem('selectedCartItems', JSON.stringify(Array.from(selectedItems)))
+                    handleCartModalLinkClick('checkout', '/checkout', `Check Out - ${formatPrice(subtotal)} (${itemCount})`, pageType)
                     onClose()
                   }}
                 >
@@ -320,7 +383,7 @@ export default function CartModal({
               ) : (
                 <button
                   disabled
-                  className="flex-1 btn-primary text-center opacity-50 cursor-not-allowed"
+                  className="flex-1 btn-primary text-center text-sm md:text-base py-2.5 opacity-50 cursor-not-allowed"
                 >
                   Check Out
                 </button>

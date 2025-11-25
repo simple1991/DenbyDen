@@ -3,6 +3,8 @@
 import { useState, type ReactNode } from 'react'
 import Image from 'next/image'
 import { useCurrency } from './CurrencyContext'
+import { useFAQExpand } from '@/hooks/useAnalytics'
+import { usePathname } from 'next/navigation'
 
 type FAQItem = {
   question: string
@@ -39,6 +41,44 @@ const faqs: FAQItem[] = [
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
   const { formatPrice } = useCurrency()
+  const pathname = usePathname()
+  
+  // 获取当前页面类型
+  const getPageType = (): 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas' => {
+    if (pathname === '/') return 'home'
+    if (pathname.startsWith('/product/')) return 'product_detail'
+    if (pathname === '/shop') return 'shop'
+    if (pathname.startsWith('/shop/')) return 'category'
+    if (pathname === '/about') return 'about'
+    if (pathname === '/contact') return 'contact'
+    if (pathname === '/faq') return 'faq'
+    if (pathname === '/christmas') return 'christmas'
+    return 'home'
+  }
+  
+  const pageType = getPageType()
+  const location = pageType === 'home' ? 'home_faq_section' : 'faq_page'
+  
+  // FAQ展开埋点
+  const handleFAQExpand = useFAQExpand()
+  
+  const handleToggle = (idx: number) => {
+    const isExpanding = openIndex !== idx
+    const action = isExpanding ? 'expand' : 'collapse'
+    const clickTarget = isExpanding ? 'add_icon' : 'close_icon'
+    
+    // FAQ展开埋点
+    handleFAQExpand(
+      action,
+      idx,
+      faqs[idx].question,
+      clickTarget,
+      location,
+      pageType
+    )
+    
+    setOpenIndex(openIndex === idx ? null : idx)
+  }
 
   return (
     <section className="py-12 md:py-16 bg-pink-light">
@@ -60,7 +100,7 @@ export default function FAQSection() {
             <div key={idx} className="bg-beige-light rounded-lg shadow-card">
               <button
                 className="w-full flex items-center justify-between px-4 md:px-6 py-4 text-left"
-                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+                onClick={() => handleToggle(idx)}
                 aria-expanded={openIndex === idx}
               >
                 <span className="font-semibold text-text text-sm md:text-base pr-4">{faq.question}</span>

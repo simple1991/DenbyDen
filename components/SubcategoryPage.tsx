@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import Image from 'next/image'
 import TopBar from './TopBar'
 import Header from './Header'
@@ -7,6 +8,8 @@ import Footer from './Footer'
 import SubcategoryGrid from './SubcategoryGrid'
 import type { CategoryConfig } from '@/data/categoryConfigs'
 import type { Product } from '@/types/product'
+import { usePageView, usePageDwell } from '@/hooks/useAnalytics'
+import { usePathname } from 'next/navigation'
 
 interface SubcategoryPageProps {
   config: Omit<CategoryConfig, 'matchProduct'>
@@ -14,6 +17,21 @@ interface SubcategoryPageProps {
 }
 
 export default function SubcategoryPage({ config, products }: SubcategoryPageProps) {
+  const pathname = usePathname()
+  
+  // 获取页面类型
+  const getPageType = (): 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas' => {
+    if (pathname === '/christmas') return 'christmas'
+    if (pathname.startsWith('/shop/')) return 'category'
+    return 'category'
+  }
+  
+  const pageType = getPageType()
+  
+  // 页面埋点
+  usePageView(pageType)
+  usePageDwell(pageType)
+  
   const heroGradient = {
     background: `linear-gradient(180deg, ${config.gradientTo} 0%, ${config.gradientFrom} 100%)`,
   }
@@ -51,7 +69,11 @@ export default function SubcategoryPage({ config, products }: SubcategoryPagePro
           </div>
         </section>
 
-        <SubcategoryGrid products={products} categoryName={config.title} />
+        <SubcategoryGrid 
+          products={products} 
+          categoryName={config.title}
+          pageType={pageType}
+        />
       </main>
       <Footer />
     </>

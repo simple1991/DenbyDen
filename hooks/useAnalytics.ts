@@ -18,6 +18,24 @@ import {
   type SectionExpandEvent,
   type GiftWrappingToggleEvent,
   type ScrollDepthEvent,
+  type PageViewEvent,
+  type NavigationClickEvent,
+  type ButtonClickEvent,
+  type ReviewCarouselNavEvent,
+  type CurrencySelectorOpenEvent,
+  type CurrencyChangeEvent,
+  type SearchIconClickEvent,
+  type MobileMenuClickEvent,
+  type CollectionClickEvent,
+  type CollectionScrollEvent,
+  type CartModalOpenEvent,
+  type CartModalCloseEvent,
+  type CartItemUpdateEvent,
+  type CartItemRemoveEvent,
+  type CartModalLinkClickEvent,
+  type ContactFormSubmitEvent,
+  type FAQExpandEvent,
+  type ModalCloseEvent,
   getSourcePage,
   isNewUser,
 } from '@/lib/analytics'
@@ -30,7 +48,7 @@ export function useProductExposure(
   productSlug: string,
   position: number,
   listType: string,
-  pageType: 'home' | 'shop' | 'category',
+  pageType: 'home' | 'shop' | 'category' | 'christmas',
   enabled: boolean = true
 ) {
   const hasTracked = useRef(false)
@@ -102,7 +120,7 @@ export function useProductClick(
   productSlug: string,
   position: number,
   clickType: 'card_click' | 'add_to_cart_button' | 'buy_now_button',
-  pageType: 'home' | 'shop' | 'category'
+  pageType: 'home' | 'shop' | 'category' | 'christmas'
 ) {
   const handleClick = useCallback(() => {
     const event: ProductClickEvent = {
@@ -160,7 +178,7 @@ export function useAddToCart(
 /**
  * Hook: 追踪邮箱提交
  */
-export function useEmailSubmit(pageType: 'home' | 'product_detail' | 'shop' | 'category') {
+export function useEmailSubmit(pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas') {
   const handleSubmit = useCallback((email: string) => {
     const event: EmailSubmitEvent = {
       event_type: 'email_submit',
@@ -179,10 +197,26 @@ export function useEmailSubmit(pageType: 'home' | 'product_detail' | 'shop' | 'c
 }
 
 /**
+ * Hook: 追踪页面查看
+ */
+export function usePageView(pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas') {
+  useEffect(() => {
+    const event: PageViewEvent = {
+      event_type: 'page_view',
+      event_category: 'exposure',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'page_view',
+    }
+    trackEvent(event)
+  }, [pageType])
+}
+
+/**
  * Hook: 追踪页面停留时长
  */
 export function usePageDwell(
-  pageType: 'home' | 'product_detail' | 'shop' | 'category',
+  pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas',
   productId?: string
 ) {
   const startTimeRef = useRef<number>(Date.now())
@@ -372,5 +406,509 @@ export function useScrollDepth(
       window.removeEventListener('scroll', handleScroll)
     }
   }, [pageType, onDepthReached])
+}
+
+/**
+ * Hook: 追踪导航点击
+ */
+export function useNavigationClick() {
+  const handleClick = useCallback((
+    linkText: string,
+    linkUrl: string,
+    linkType: 'nav_item' | 'dropdown_item' | 'mobile_menu_item',
+    location: 'header' | 'mobile_menu',
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: NavigationClickEvent = {
+      event_type: 'navigation_click',
+      event_category: 'click',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'navigation_click',
+      interaction_data: {
+        link_text: linkText,
+        link_url: linkUrl,
+        link_type: linkType,
+        location,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleClick
+}
+
+/**
+ * Hook: 追踪按钮点击
+ */
+export function useButtonClick() {
+  const handleClick = useCallback((
+    buttonText: string,
+    buttonUrl: string,
+    buttonType: 'primary_cta' | 'secondary_cta' | 'text_link',
+    buttonLocation: string,
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas',
+    productId?: string,
+    sectionName?: string
+  ) => {
+    const event: ButtonClickEvent = {
+      event_type: 'button_click',
+      event_category: 'click',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      product_id: productId,
+      interaction_type: 'button_click',
+      interaction_data: {
+        button_text: buttonText,
+        button_url: buttonUrl,
+        button_type: buttonType,
+        button_location: buttonLocation,
+        section_name: sectionName,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleClick
+}
+
+/**
+ * Hook: 追踪评价轮播导航
+ */
+export function useReviewCarouselNav() {
+  const handleNav = useCallback((
+    action: 'prev' | 'next' | 'indicator_click',
+    currentIndex: number,
+    targetIndex: number,
+    reviewCount: number,
+    deviceType: 'desktop' | 'mobile',
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: ReviewCarouselNavEvent = {
+      event_type: 'review_carousel_nav',
+      event_category: 'interaction',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'review_carousel_nav',
+      interaction_data: {
+        action,
+        current_review_index: currentIndex,
+        target_review_index: targetIndex,
+        review_count: reviewCount,
+        device_type: deviceType,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleNav
+}
+
+/**
+ * Hook: 追踪货币选择器打开
+ */
+export function useCurrencySelectorOpen() {
+  const handleOpen = useCallback((
+    currentCurrency: string,
+    location: 'header_desktop' | 'header_mobile' | 'mobile_menu',
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CurrencySelectorOpenEvent = {
+      event_type: 'currency_selector_open',
+      event_category: 'interaction',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'currency_selector_open',
+      interaction_data: {
+        current_currency: currentCurrency,
+        location,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleOpen
+}
+
+/**
+ * Hook: 追踪货币变更
+ */
+export function useCurrencyChange() {
+  const handleChange = useCallback((
+    previousCurrency: string,
+    newCurrency: string,
+    currencyCode: string,
+    currencySymbol: string,
+    location: 'header_desktop' | 'header_mobile' | 'mobile_menu',
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CurrencyChangeEvent = {
+      event_type: 'currency_change',
+      event_category: 'interaction',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'currency_change',
+      interaction_data: {
+        previous_currency: previousCurrency,
+        new_currency: newCurrency,
+        currency_code: currencyCode,
+        currency_symbol: currencySymbol,
+        location,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleChange
+}
+
+/**
+ * Hook: 追踪搜索图标点击
+ */
+export function useSearchIconClick() {
+  const handleClick = useCallback((
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas',
+    deviceType: 'desktop' | 'mobile' = 'desktop'
+  ) => {
+    const event: SearchIconClickEvent = {
+      event_type: 'search_icon_click',
+      event_category: 'click',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'search_icon_click',
+      interaction_data: {
+        action: 'open_search',
+        location: 'header',
+        device_type: deviceType,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleClick
+}
+
+/**
+ * Hook: 追踪移动端菜单点击
+ */
+export function useMobileMenuClick() {
+  const handleClick = useCallback((
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: MobileMenuClickEvent = {
+      event_type: 'mobile_menu_click',
+      event_category: 'click',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'mobile_menu_click',
+      interaction_data: {
+        action: 'open_mobile_menu',
+        location: 'header_mobile',
+        device_type: 'mobile',
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleClick
+}
+
+/**
+ * Hook: 追踪Collection点击
+ */
+export function useCollectionClick() {
+  const handleClick = useCallback((
+    collectionName: string,
+    collectionUrl: string,
+    position: number,
+    deviceType: 'desktop' | 'mobile',
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CollectionClickEvent = {
+      event_type: 'collection_click',
+      event_category: 'click',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'collection_click',
+      interaction_data: {
+        collection_name: collectionName,
+        collection_url: collectionUrl,
+        position,
+        device_type: deviceType,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleClick
+}
+
+/**
+ * Hook: 追踪Collection滚动
+ */
+export function useCollectionScroll() {
+  const handleScroll = useCallback((
+    scrollDirection: 'left' | 'right',
+    currentIndex: number,
+    totalCollections: number,
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CollectionScrollEvent = {
+      event_type: 'collection_scroll',
+      event_category: 'interaction',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'collection_scroll',
+      interaction_data: {
+        scroll_direction: scrollDirection,
+        current_index: currentIndex,
+        total_collections: totalCollections,
+        device_type: 'mobile',
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleScroll
+}
+
+/**
+ * Hook: 追踪购物车弹窗打开
+ */
+export function useCartModalOpen() {
+  const handleOpen = useCallback((
+    cartItemCount: number,
+    cartTotal: number,
+    triggerSource: 'header_cart_icon' | 'add_to_cart_button',
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CartModalOpenEvent = {
+      event_type: 'cart_modal_open',
+      event_category: 'interaction',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'cart_modal_open',
+      interaction_data: {
+        cart_item_count: cartItemCount,
+        cart_total: cartTotal,
+        trigger_source: triggerSource,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleOpen
+}
+
+/**
+ * Hook: 追踪购物车弹窗关闭
+ */
+export function useCartModalClose() {
+  const handleClose = useCallback((
+    cartItemCount: number,
+    modalDisplayTimeSeconds: number,
+    closeMethod: 'close_button' | 'background_click' | 'escape_key' | 'link_click',
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CartModalCloseEvent = {
+      event_type: 'cart_modal_close',
+      event_category: 'interaction',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'cart_modal_close',
+      interaction_data: {
+        cart_item_count: cartItemCount,
+        modal_display_time_seconds: modalDisplayTimeSeconds,
+        close_method: closeMethod,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleClose
+}
+
+/**
+ * Hook: 追踪购物车商品更新
+ */
+export function useCartItemUpdate() {
+  const handleUpdate = useCallback((
+    productId: string,
+    productSlug: string,
+    quantity: number,
+    changeType: 'increase' | 'decrease',
+    previousQuantity: number,
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CartItemUpdateEvent = {
+      event_type: 'cart_item_update',
+      event_category: 'conversion',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      product_id: productId,
+      product_slug: productSlug,
+      quantity,
+      action_type: 'update',
+      interaction_data: {
+        change_type: changeType,
+        previous_quantity: previousQuantity,
+        new_quantity: quantity,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleUpdate
+}
+
+/**
+ * Hook: 追踪购物车商品删除
+ */
+export function useCartItemRemove() {
+  const handleRemove = useCallback((
+    productId: string,
+    productSlug: string,
+    removedQuantity: number,
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CartItemRemoveEvent = {
+      event_type: 'cart_item_remove',
+      event_category: 'conversion',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      product_id: productId,
+      product_slug: productSlug,
+      action_type: 'remove',
+      interaction_data: {
+        removed_quantity: removedQuantity,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleRemove
+}
+
+/**
+ * Hook: 追踪购物车弹窗链接点击
+ */
+export function useCartModalLinkClick() {
+  const handleClick = useCallback((
+    linkType: 'view_cart' | 'checkout' | 'continue_shopping',
+    linkUrl: string,
+    linkText: string,
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: CartModalLinkClickEvent = {
+      event_type: 'cart_modal_link_click',
+      event_category: 'click',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'cart_modal_link_click',
+      interaction_data: {
+        link_type: linkType,
+        link_url: linkUrl,
+        link_text: linkText,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleClick
+}
+
+/**
+ * Hook: 追踪联系表单提交
+ */
+export function useContactFormSubmit() {
+  const handleSubmit = useCallback((
+    hasName: boolean,
+    hasEmail: boolean,
+    hasPhone: boolean,
+    hasMessage: boolean,
+    formCompletionTimeSeconds: number,
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: ContactFormSubmitEvent = {
+      event_type: 'contact_form_submit',
+      event_category: 'lead',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'contact_form_submit',
+      interaction_data: {
+        form_type: 'contact_form',
+        has_name: hasName,
+        has_email: hasEmail,
+        has_phone: hasPhone,
+        has_message: hasMessage,
+        form_completion_time_seconds: formCompletionTimeSeconds,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleSubmit
+}
+
+/**
+ * Hook: 追踪FAQ展开
+ */
+export function useFAQExpand() {
+  const handleExpand = useCallback((
+    action: 'expand' | 'collapse',
+    faqIndex: number,
+    faqQuestion: string,
+    clickTarget: 'add_icon' | 'close_icon',
+    location: 'home_faq_section' | 'faq_page',
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: FAQExpandEvent = {
+      event_type: 'faq_expand',
+      event_category: 'interaction',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'faq_expand',
+      interaction_data: {
+        action,
+        faq_index: faqIndex,
+        faq_question: faqQuestion,
+        click_target: clickTarget,
+        location,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleExpand
+}
+
+/**
+ * Hook: 追踪模态框关闭
+ */
+export function useModalClose() {
+  const handleClose = useCallback((
+    modalType: 'email_capture' | 'cart_modal' | 'other',
+    closeMethod: 'close_button' | 'background_click' | 'escape_key',
+    modalDisplayTimeSeconds: number,
+    wasSubmitted: boolean = false,
+    pageType: 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas'
+  ) => {
+    const event: ModalCloseEvent = {
+      event_type: 'modal_close',
+      event_category: 'interaction',
+      page_type: pageType,
+      page_url: window.location.pathname,
+      interaction_type: 'modal_close',
+      interaction_data: {
+        modal_type: modalType,
+        close_method: closeMethod,
+        modal_display_time_seconds: modalDisplayTimeSeconds,
+        was_submitted: wasSubmitted,
+      },
+    }
+    trackEvent(event)
+  }, [])
+
+  return handleClose
 }
 

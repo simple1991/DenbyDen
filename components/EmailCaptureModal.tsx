@@ -1,6 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useEmailSubmit, useModalClose } from '@/hooks/useAnalytics'
+import { usePathname } from 'next/navigation'
 
 interface EmailCaptureModalProps {
   isOpen: boolean
@@ -19,6 +21,34 @@ export default function EmailCaptureModal({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState('')
+  const modalOpenTimeRef = useRef<number | null>(null)
+  const pathname = usePathname()
+  
+  // 获取当前页面类型
+  const getPageType = (): 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas' => {
+    if (pathname === '/') return 'home'
+    if (pathname.startsWith('/product/')) return 'product_detail'
+    if (pathname === '/shop') return 'shop'
+    if (pathname.startsWith('/shop/')) return 'category'
+    if (pathname === '/about') return 'about'
+    if (pathname === '/contact') return 'contact'
+    if (pathname === '/faq') return 'faq'
+    if (pathname === '/christmas') return 'christmas'
+    return 'home'
+  }
+  
+  const pageType = getPageType()
+  
+  // 埋点hooks
+  const handleEmailSubmit = useEmailSubmit(pageType)
+  const handleModalClose = useModalClose()
+  
+  // 记录弹窗打开时间
+  useEffect(() => {
+    if (isOpen) {
+      modalOpenTimeRef.current = Date.now()
+    }
+  }, [isOpen])
 
   useEffect(() => {
     if (isOpen) {
@@ -34,6 +64,11 @@ export default function EmailCaptureModal({
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        if (modalOpenTimeRef.current) {
+          const displayTime = Math.floor((Date.now() - modalOpenTimeRef.current) / 1000)
+          handleModalClose('email_capture', 'escape_key', displayTime, false, pageType)
+          modalOpenTimeRef.current = null
+        }
         onClose()
       }
     }
@@ -43,7 +78,7 @@ export default function EmailCaptureModal({
     return () => {
       window.removeEventListener('keydown', handleEscape)
     }
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, pageType, handleModalClose])
 
   if (!isOpen) return null
 
@@ -66,6 +101,10 @@ export default function EmailCaptureModal({
       const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]')
       subscriptions.push({ email, date: new Date().toISOString() })
       localStorage.setItem('subscriptions', JSON.stringify(subscriptions))
+      localStorage.setItem('hasSubscribed', 'true')
+
+      // 邮箱提交埋点
+      handleEmailSubmit(email)
 
       setIsSuccess(true)
       setEmail('')
@@ -73,6 +112,11 @@ export default function EmailCaptureModal({
       // 3秒后关闭
       setTimeout(() => {
         setIsSuccess(false)
+        if (modalOpenTimeRef.current) {
+          const displayTime = Math.floor((Date.now() - modalOpenTimeRef.current) / 1000)
+          handleModalClose('email_capture', 'close_button', displayTime, true, pageType)
+          modalOpenTimeRef.current = null
+        }
         onClose()
       }, 3000)
     } catch (err) {
@@ -81,11 +125,29 @@ export default function EmailCaptureModal({
       setIsSubmitting(false)
     }
   }
+  
+  const handleClose = () => {
+    if (modalOpenTimeRef.current) {
+      const displayTime = Math.floor((Date.now() - modalOpenTimeRef.current) / 1000)
+      handleModalClose('email_capture', 'close_button', displayTime, false, pageType)
+      modalOpenTimeRef.current = null
+    }
+    onClose()
+  }
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-fade-in"
-      onClick={onClose}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          if (modalOpenTimeRef.current) {
+            const displayTime = Math.floor((Date.now() - modalOpenTimeRef.current) / 1000)
+            handleModalClose('email_capture', 'background_click', displayTime, false, pageType)
+            modalOpenTimeRef.current = null
+          }
+          onClose()
+        }
+      }}
     >
       <div
         className="bg-white rounded-md shadow-modal max-w-md w-full p-6 md:p-8 animate-scale-in relative"
@@ -136,7 +198,7 @@ export default function EmailCaptureModal({
           </>
         )}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-2 right-2 md:top-4 md:right-4 text-text-muted hover:text-text transition-colors z-10 p-2 bg-white/80 rounded-full"
           aria-label="Close"
         >

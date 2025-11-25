@@ -2,12 +2,19 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { categoryConfigs } from '@/data/categoryConfigs'
 
 import { useCart } from './CartContext'
 import CurrencySelector from './CurrencySelector'
+import {
+  useNavigationClick,
+  useSearchIconClick,
+  useMobileMenuClick,
+  useCartModalOpen,
+} from '@/hooks/useAnalytics'
+import { usePathname } from 'next/navigation'
 
 interface HeaderProps {
   onCartClick?: () => void
@@ -17,8 +24,39 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { getItemCount } = useCart()
+  const { getItemCount, items, getTotal } = useCart()
   const cartCount = getItemCount()
+  const pathname = usePathname()
+  
+  // 获取当前页面类型
+  const getPageType = (): 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas' => {
+    if (pathname === '/') return 'home'
+    if (pathname.startsWith('/product/')) return 'product_detail'
+    if (pathname === '/shop') return 'shop'
+    if (pathname.startsWith('/shop/')) return 'category'
+    if (pathname === '/about') return 'about'
+    if (pathname === '/contact') return 'contact'
+    if (pathname === '/faq') return 'faq'
+    if (pathname === '/christmas') return 'christmas'
+    return 'home'
+  }
+  
+  const pageType = getPageType()
+  
+  // 埋点hooks
+  const handleNavigationClick = useNavigationClick()
+  const handleSearchIconClick = useSearchIconClick()
+  const handleMobileMenuClick = useMobileMenuClick()
+  const handleCartModalOpen = useCartModalOpen()
+  
+  // 检测设备类型
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const homeLink = { label: 'Home', url: '/' }
   const navItems = [
@@ -49,7 +87,10 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
               type="button"
               className="md:hidden p-2 -ml-2 text-text hover:text-primary transition-colors"
               aria-label="Open menu"
-              onClick={() => setIsMobileMenuOpen(true)}
+              onClick={() => {
+                handleMobileMenuClick(pageType)
+                setIsMobileMenuOpen(true)
+              }}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -72,6 +113,7 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
             <Link
               href={homeLink.url}
               className="text-text hover:text-primary transition-colors duration-200 text-sm font-medium"
+              onClick={() => handleNavigationClick(homeLink.label, homeLink.url, 'nav_item', 'header', pageType)}
             >
               {homeLink.label}
             </Link>
@@ -105,7 +147,10 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
                               key={link.url}
                               href={link.url}
                               className="text-sm text-text-muted hover:text-primary transition-colors"
-                              onClick={() => setIsDropdownOpen(false)}
+                              onClick={() => {
+                                handleNavigationClick(link.label, link.url, 'dropdown_item', 'header', pageType)
+                                setIsDropdownOpen(false)
+                              }}
                             >
                               {link.label}
                             </Link>
@@ -122,6 +167,7 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
                 key={item.url}
                 href={item.url}
                 className="text-text hover:text-primary transition-colors duration-200 text-sm font-medium"
+                onClick={() => handleNavigationClick(item.label, item.url, 'nav_item', 'header', pageType)}
               >
                 {item.label}
               </Link>
@@ -137,7 +183,10 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
 
             {/* Search */}
             <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              onClick={() => {
+                handleSearchIconClick(pageType, isMobile ? 'mobile' : 'desktop')
+                setIsSearchOpen(!isSearchOpen)
+              }}
               className="p-2 hover:text-primary transition-colors"
               aria-label="Search"
             >
@@ -179,9 +228,22 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
 
             {/* Cart */}
             <button
-              onClick={onCartClick}
-              className="p-2 hover:text-primary transition-colors relative"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                handleCartModalOpen(
+                  cartCount,
+                  getTotal(),
+                  'header_cart_icon',
+                  pageType
+                )
+                if (onCartClick) {
+                  onCartClick()
+                }
+              }}
+              className="p-2 hover:text-primary transition-colors relative z-10"
               aria-label="Shopping Cart"
+              type="button"
             >
               <svg
                 className="w-5 h-5"
@@ -245,7 +307,10 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
               <Link
                 href={homeLink.url}
                 className="text-base font-medium text-text hover:text-primary transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  handleNavigationClick(homeLink.label, homeLink.url, 'mobile_menu_item', 'mobile_menu', pageType)
+                  setIsMobileMenuOpen(false)
+                }}
               >
                 {homeLink.label}
               </Link>
@@ -263,7 +328,10 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
                             key={link.url}
                             href={link.url}
                             className="text-sm text-text-muted hover:text-primary transition-colors"
-                            onClick={() => setIsMobileMenuOpen(false)}
+                            onClick={() => {
+                              handleNavigationClick(link.label, link.url, 'mobile_menu_item', 'mobile_menu', pageType)
+                              setIsMobileMenuOpen(false)
+                            }}
                           >
                             {link.label}
                           </Link>
@@ -279,7 +347,10 @@ export default function Header({ onCartClick }: HeaderProps = {}) {
                     key={item.url}
                     href={item.url}
                     className="text-base font-medium text-text hover:text-primary transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      handleNavigationClick(item.label, item.url, 'mobile_menu_item', 'mobile_menu', pageType)
+                      setIsMobileMenuOpen(false)
+                    }}
                   >
                     {item.label}
                   </Link>

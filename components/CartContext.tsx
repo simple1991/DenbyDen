@@ -11,6 +11,7 @@ interface CartItem {
   currency: string
   image: string
   quantity: number
+  giftWrapping?: boolean
 }
 
 interface CartContextType {

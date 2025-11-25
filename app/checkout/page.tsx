@@ -69,23 +69,23 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-black/50 animate-fade-in overflow-y-auto">
       <div
-        className="bg-white rounded-lg shadow-modal max-w-4xl w-full overflow-hidden animate-scale-in relative"
+        className="bg-white rounded-lg shadow-modal max-w-4xl w-full max-h-[95vh] overflow-y-auto animate-scale-in relative my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {isSuccess ? (
-          <div className="p-8 md:p-12 text-center">
-            <div className="text-5xl mb-6">🎉</div>
-            <h2 className="text-3xl md:text-4xl font-bold text-text mb-4">
+          <div className="p-6 md:p-8 lg:p-12 text-center">
+            <div className="text-4xl md:text-5xl mb-4 md:mb-6">🎉</div>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text mb-3 md:mb-4">
               Thank You for Supporting My Dream!
             </h2>
-            <p className="text-lg text-text-muted mb-6">
+            <p className="text-base md:text-lg text-text-muted mb-4 md:mb-6">
               I'll notify you the second the first production run is ready, and you'll receive your <span className="font-semibold text-primary">30% OFF</span> discount code!
             </p>
             <Link
               href="/"
-              className="btn-primary inline-block"
+              className="btn-primary inline-block text-sm md:text-base"
             >
               Back to Home
             </Link>
@@ -93,7 +93,7 @@ export default function CheckoutPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* 左侧/上方：照片 */}
-            <div className="relative w-full h-64 lg:h-auto bg-beige-light overflow-hidden">
+            <div className="relative w-full h-48 sm:h-64 lg:h-auto bg-beige-light overflow-hidden">
               {/* 
                 请将您的工作照片放在 public/example_photo/ 目录下，命名为 "student-working.jpg"
                 或者修改下面的 src 路径指向您的图片
@@ -139,12 +139,12 @@ export default function CheckoutPage() {
             </div>
 
             {/* 右侧/下方：文字和表单 */}
-            <div className="p-6 md:p-8 lg:p-10 flex flex-col justify-center">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text mb-4">
+            <div className="p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-text mb-3 md:mb-4">
                 Wait! Can I be 100% honest with you?
               </h1>
               
-              <div className="text-base md:text-lg text-text-muted leading-relaxed mb-6 space-y-4">
+              <div className="text-sm sm:text-base md:text-lg text-text-muted leading-relaxed mb-4 md:mb-6 space-y-3 md:space-y-4">
                 <p>
                   I'm not a big corporation. I'm actually a college student working from my dorm room with a dream to build this brand.
                 </p>
@@ -156,7 +156,7 @@ export default function CheckoutPage() {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
                 <div>
                   <input
                     type="email"
@@ -166,19 +166,19 @@ export default function CheckoutPage() {
                       setError('')
                     }}
                     placeholder="Enter your email to join my journey"
-                    className="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors text-base"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors text-sm sm:text-base"
                     required
                     autoFocus
                   />
                   {error && (
-                    <p className="text-red-500 text-sm mt-2">{error}</p>
+                    <p className="text-red-500 text-xs sm:text-sm mt-2">{error}</p>
                   )}
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-primary w-full py-3 text-base md:text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-primary w-full py-2.5 sm:py-3 text-sm sm:text-base md:text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Sending...' : 'Send me the 30% discount'}
                 </button>

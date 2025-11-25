@@ -11,6 +11,7 @@ interface ProductGridProps {
   subtitle?: string
   showViewMore?: boolean
   onAddToCart?: () => void
+  pageType?: 'home' | 'shop' | 'category' | 'christmas'
 }
 
 export default function ProductGrid({
@@ -19,6 +20,7 @@ export default function ProductGrid({
   subtitle,
   showViewMore = false,
   onAddToCart,
+  pageType = 'home',
 }: ProductGridProps) {
   return (
     <section className="py-4 md:py-12">
@@ -39,8 +41,15 @@ export default function ProductGrid({
         )}
 
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />
+          {products.map((product, index) => (
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              onAddToCart={onAddToCart}
+              position={index + 1}
+              listType={title === 'New Arrivals' ? 'new_arrivals' : title === 'Popular Restocks' ? 'popular_restocks' : pageType === 'shop' ? 'all_products' : 'all_products'}
+              pageType={pageType}
+            />
           ))}
         </div>
 

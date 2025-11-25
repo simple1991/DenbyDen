@@ -1,9 +1,16 @@
+'use client'
+
+import { useEffect } from 'react'
 import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Image from 'next/image'
+import { usePageView, usePageDwell } from '@/hooks/useAnalytics'
 
 export default function AboutPage() {
+  // 页面埋点
+  usePageView('about')
+  usePageDwell('about')
   return (
     <>
       <TopBar />

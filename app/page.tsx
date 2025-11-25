@@ -15,6 +15,15 @@ import { CartProvider, useCart } from '@/components/CartContext'
 import Link from 'next/link'
 import Image from 'next/image'
 import productsData from '@/data/products.json'
+import {
+  usePageView,
+  usePageDwell,
+  useButtonClick,
+  useCollectionClick,
+  useCollectionScroll,
+  useCartModalOpen,
+  useCartModalClose,
+} from '@/hooks/useAnalytics'
 
 interface Collection {
   name: string
@@ -26,6 +35,9 @@ interface Collection {
 function ScrollableCollections({ collections }: { collections: Collection[] }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const lastScrollIndex = useRef(0)
+  const handleCollectionScroll = useCollectionScroll()
+  const handleCollectionClick = useCollectionClick()
 
   useEffect(() => {
     const container = scrollContainerRef.current
@@ -40,7 +52,15 @@ function ScrollableCollections({ collections }: { collections: Collection[] }) {
       const itemWidthWithGap = 240
       // 考虑snap特性，计算当前激活的item索引
       const index = Math.round(scrollLeft / itemWidthWithGap)
-      setActiveIndex(Math.min(Math.max(0, index), collections.length - 1))
+      const newIndex = Math.min(Math.max(0, index), collections.length - 1)
+      setActiveIndex(newIndex)
+      
+      // 埋点：Collection滚动
+      if (newIndex !== lastScrollIndex.current) {
+        const scrollDirection = newIndex > lastScrollIndex.current ? 'right' : 'left'
+        handleCollectionScroll(scrollDirection, newIndex, collections.length, 'home')
+        lastScrollIndex.current = newIndex
+      }
     }
 
     container.addEventListener('scroll', handleScroll)
@@ -49,7 +69,7 @@ function ScrollableCollections({ collections }: { collections: Collection[] }) {
     return () => {
       container.removeEventListener('scroll', handleScroll)
     }
-  }, [collections.length])
+  }, [collections.length, handleCollectionScroll])
 
   return (
     <>
@@ -57,11 +77,16 @@ function ScrollableCollections({ collections }: { collections: Collection[] }) {
         ref={scrollContainerRef}
         className="flex gap-4 overflow-x-auto px-4 pb-3 scroll-smooth snap-x snap-mandatory scrollbar-hide"
       >
-        {collections.map((collection) => (
+        {collections.map((collection, index) => (
           <Link
             key={collection.name}
             href={collection.url}
             className="flex-none w-56 snap-start group"
+            onClick={() => {
+              if (handleCollectionClick) {
+                handleCollectionClick(collection.name, collection.url, index + 1, 'mobile', 'home')
+              }
+            }}
           >
             <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-card">
               <Image
@@ -155,8 +180,23 @@ const collections = [
 function HomeContent() {
   const [showEmailModal, setShowEmailModal] = useState(false)
   const [showCartModal, setShowCartModal] = useState(false)
-  const { items, updateQuantity, removeItem } = useCart()
+  const [cartModalOpenTime, setCartModalOpenTime] = useState<number | null>(null)
+  const { items, updateQuantity, removeItem, getTotal } = useCart()
   const newArrivals = productsData.slice(0, 8)
+
+  // 页面埋点
+  usePageView('home')
+  usePageDwell('home')
+
+  // 按钮点击埋点
+  const handleButtonClick = useButtonClick()
+  
+  // Collection点击埋点（在ScrollableCollections和桌面端使用）
+  const handleCollectionClick = useCollectionClick()
+  
+  // 购物车弹窗埋点
+  const handleCartModalOpen = useCartModalOpen()
+  const handleCartModalClose = useCartModalClose()
 
   // 页面加载后延迟显示邮箱弹窗
   useEffect(() => {
@@ -169,8 +209,35 @@ function HomeContent() {
     return () => clearTimeout(timer)
   }, [])
 
+  // 购物车弹窗打开
+  useEffect(() => {
+    if (showCartModal) {
+      setCartModalOpenTime(Date.now())
+      handleCartModalOpen(
+        items.reduce((sum, item) => sum + item.quantity, 0),
+        getTotal(),
+        'add_to_cart_button',
+        'home'
+      )
+    }
+  }, [showCartModal])
+
   const handleAddToCart = () => {
     setShowCartModal(true)
+  }
+
+  const handleCloseCartModal = (closeMethod: 'close_button' | 'background_click' | 'escape_key' | 'link_click' = 'close_button') => {
+    if (cartModalOpenTime) {
+      const displayTime = Math.floor((Date.now() - cartModalOpenTime) / 1000)
+      handleCartModalClose(
+        items.reduce((sum, item) => sum + item.quantity, 0),
+        displayTime,
+        closeMethod,
+        'home'
+      )
+      setCartModalOpenTime(null)
+    }
+    setShowCartModal(false)
   }
 
   return (
@@ -213,6 +280,7 @@ function HomeContent() {
               <Link
                 href="/christmas"
                 className="inline-block px-8 py-4 rounded-full bg-text text-white font-semibold text-base md:text-lg hover:bg-primary transition-colors duration-200 shadow-card hover:shadow-modal"
+                onClick={() => handleButtonClick('Shop Gifts', '/christmas', 'primary_cta', 'christmas_section', 'home')}
               >
                 Shop Gifts
               </Link>
@@ -246,6 +314,7 @@ function HomeContent() {
                         key={collection.name}
                         href={collection.url}
                         className="group flex flex-col gap-3 lg:gap-4"
+                        onClick={() => handleCollectionClick(collection.name, collection.url, idx + 1, 'desktop', 'home')}
                       >
                         <p
                           className={`text-center text-[#DDA6B1] font-semibold text-base lg:text-lg transition-colors ${
@@ -274,11 +343,12 @@ function HomeContent() {
 
                 {/* Bottom row - larger squares */}
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {bottomCollections.map((collection) => (
+                  {bottomCollections.map((collection, idx) => (
                     <Link
                       key={collection.name}
                       href={collection.url}
                       className="group flex flex-col gap-3"
+                      onClick={() => handleCollectionClick(collection.name, collection.url, idx + 6, 'desktop', 'home')}
                     >
                       <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-card">
                         <Image
@@ -335,7 +405,11 @@ function HomeContent() {
                 We create adorable, quality home essentials that make every moment feel special. 
                 We're based in Toronto. Thanks for making us part of your home!
               </p>
-              <Link href="/shop" className="btn-primary inline-block">
+              <Link 
+                href="/shop" 
+                className="btn-primary inline-block"
+                onClick={() => handleButtonClick('Shop All', '/shop', 'primary_cta', 'about_section', 'home')}
+              >
                 Shop All
               </Link>
             </div>
@@ -369,10 +443,11 @@ function HomeContent() {
       {/* Cart Modal */}
       <CartModal
         isOpen={showCartModal}
-        onClose={() => setShowCartModal(false)}
+        onClose={handleCloseCartModal}
         items={items}
         onUpdateQuantity={updateQuantity}
         onRemoveItem={removeItem}
+        pageType="home"
       />
     </main>
   )

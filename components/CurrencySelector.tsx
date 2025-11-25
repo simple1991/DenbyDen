@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { useCurrency } from './CurrencyContext'
+import { useCurrencySelectorOpen, useCurrencyChange } from '@/hooks/useAnalytics'
+import { usePathname } from 'next/navigation'
 
 interface CurrencySelectorProps {
   className?: string
@@ -14,6 +16,36 @@ export default function CurrencySelector({ className = '', fullWidth = false }: 
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const current = currencyOptions.find((option) => option.code === selectedCurrency)!
+  const pathname = usePathname()
+  
+  // 获取当前页面类型
+  const getPageType = (): 'home' | 'product_detail' | 'shop' | 'category' | 'about' | 'contact' | 'faq' | 'christmas' => {
+    if (pathname === '/') return 'home'
+    if (pathname.startsWith('/product/')) return 'product_detail'
+    if (pathname === '/shop') return 'shop'
+    if (pathname.startsWith('/shop/')) return 'category'
+    if (pathname === '/about') return 'about'
+    if (pathname === '/contact') return 'contact'
+    if (pathname === '/faq') return 'faq'
+    if (pathname === '/christmas') return 'christmas'
+    return 'home'
+  }
+  
+  const pageType = getPageType()
+  
+  // 获取位置
+  const getLocation = (): 'header_desktop' | 'header_mobile' | 'mobile_menu' => {
+    if (fullWidth) return 'mobile_menu'
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return 'header_mobile'
+    return 'header_desktop'
+  }
+  
+  // 埋点hooks
+  const handleCurrencySelectorOpen = useCurrencySelectorOpen()
+  const handleCurrencyChange = useCurrencyChange()
+  
+  // 记录打开状态
+  const hasTrackedOpen = useRef(false)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -26,8 +58,36 @@ export default function CurrencySelector({ className = '', fullWidth = false }: 
   }, [])
 
   const handleSelect = (code: typeof selectedCurrency) => {
+    const previousCurrency = selectedCurrency
+    const newOption = currencyOptions.find((option) => option.code === code)!
+    
+    // 货币变更埋点
+    handleCurrencyChange(
+      previousCurrency,
+      code,
+      newOption.code,
+      newOption.symbol,
+      getLocation(),
+      pageType
+    )
+    
     setSelectedCurrency(code)
     setIsOpen(false)
+  }
+  
+  const handleOpen = () => {
+    setIsOpen((prev) => {
+      const newState = !prev
+      if (newState && !hasTrackedOpen.current) {
+        // 货币选择器打开埋点
+        handleCurrencySelectorOpen(selectedCurrency, getLocation(), pageType)
+        hasTrackedOpen.current = true
+      }
+      if (!newState) {
+        hasTrackedOpen.current = false
+      }
+      return newState
+    })
   }
 
   return (
@@ -37,7 +97,7 @@ export default function CurrencySelector({ className = '', fullWidth = false }: 
         className={`inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-text hover:border-primary transition-colors whitespace-nowrap ${
           fullWidth ? 'w-full justify-between' : 'justify-center min-w-[130px]'
         }`}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={handleOpen}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
