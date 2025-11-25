@@ -700,7 +700,7 @@ async function flushEventQueue() {
               event_id: eventId,
               interaction_type: e.interaction_type,
               product_id: 'product_id' in e ? e.product_id : null,
-              interaction_data: e.interaction_data || {},
+              interaction_data: 'interaction_data' in e ? e.interaction_data : {},
               scroll_depth: 'scroll_depth' in e ? e.scroll_depth : null,
             })
             break
