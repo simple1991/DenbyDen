@@ -275,31 +275,31 @@ export default function CartModal({
                     </p>
 
                     {/* Quantity Controls */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-3 border border-border rounded-md">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <div className="flex items-center gap-1 border border-border rounded-md">
                         <button
                           onClick={() => handleUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                          className="px-3 py-1 hover:bg-beige-light transition-colors"
+                          className="px-2 py-1 hover:bg-beige-light transition-colors"
                           aria-label="Decrease quantity"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
                           </svg>
                         </button>
-                        <span className="px-2 text-sm font-semibold">{item.quantity}</span>
+                        <span className="px-1.5 text-xs sm:text-sm font-semibold min-w-[1.5rem] text-center">{item.quantity}</span>
                         <button
                           onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                          className="px-3 py-1 hover:bg-beige-light transition-colors"
+                          className="px-2 py-1 hover:bg-beige-light transition-colors"
                           aria-label="Increase quantity"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                           </svg>
                         </button>
                       </div>
                       <button
                         onClick={() => handleRemoveItem(item.id)}
-                        className="bg-primary text-white text-xs px-3 py-1.5 rounded-md font-semibold hover:bg-primary-hover transition-colors whitespace-nowrap"
+                        className="bg-primary text-white text-xs px-2.5 py-1.5 rounded-md font-semibold hover:bg-primary-hover transition-colors whitespace-nowrap"
                       >
                         Remove
                       </button>
