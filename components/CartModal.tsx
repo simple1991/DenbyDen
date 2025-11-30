@@ -45,7 +45,7 @@ export default function CartModal({
   const [showNote, setShowNote] = useState(false)
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
   const selectAllRef = useRef<HTMLInputElement>(null)
-  const { formatPrice } = useCurrency()
+  const { formatPrice, convertToCny } = useCurrency()
   
   // 购物车埋点
   const handleCartItemUpdate = useCartItemUpdate()
@@ -149,7 +149,11 @@ export default function CartModal({
 
   // 只计算选中商品的总价和数量
   const selectedItemsList = items.filter(item => selectedItems.has(item.id))
-  const subtotal = selectedItemsList.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  // 将所有商品价格转换为 CNY 后再相加
+  const subtotal = selectedItemsList.reduce((sum, item) => {
+    const priceInCny = convertToCny(item.price, (item.currency as any) || 'CNY')
+    return sum + priceInCny * item.quantity
+  }, 0)
   const freeShippingThreshold = 49
   const hasFreeShipping = subtotal >= freeShippingThreshold
   const itemCount = selectedItemsList.reduce((sum, item) => sum + item.quantity, 0)
@@ -271,7 +275,7 @@ export default function CartModal({
                       )}
                     </div>
                     <p className="text-sm sm:text-base font-semibold text-text mb-3">
-                      {formatPrice(item.price * item.quantity)}
+                      {formatPrice(item.price * item.quantity, undefined, item.currency as any)}
                     </p>
 
                     {/* Quantity Controls */}

@@ -23,6 +23,26 @@ import {
   useCartModalClose,
 } from '@/hooks/useAnalytics'
 
+// 计算预计送达日期（5-10天后）
+function calculateExpectedDelivery(): string {
+  const today = new Date()
+  const startDate = new Date(today)
+  startDate.setDate(today.getDate() + 5)
+  
+  const endDate = new Date(today)
+  endDate.setDate(today.getDate() + 10)
+  
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  
+  const formatDate = (date: Date) => {
+    const month = months[date.getMonth()]
+    const day = date.getDate()
+    return `${month} ${day}`
+  }
+  
+  return `${formatDate(startDate)} - ${formatDate(endDate)}`
+}
+
 interface ProductPageProps {
   params: {
     slug: string
@@ -163,7 +183,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         title: product.title,
         vendor: product.vendor,
         price: product.price,
-        currency: 'CNY',
+        currency: (product as any).currency || 'CNY',
         image: product.image,
         giftWrapping: giftWrapping,
       }, quantity)
@@ -195,7 +215,12 @@ export default function ProductPage({ params }: ProductPageProps) {
     setQuantity(quantity + 1)
   }
 
-  const youMayAlsoLike = productsData.filter((p) => p.id !== product.id).slice(0, 6)
+  // 根据产品的 relatedProducts 属性获取相关产品，只显示有库存的产品
+  const youMayAlsoLike = product.relatedProducts
+    ? productsData
+        .filter((p) => product.relatedProducts?.includes(p.id) && p.inStock)
+        .slice(0, 6)
+    : productsData.filter((p) => p.id !== product.id && p.inStock).slice(0, 6)
 
   return (
     <>
@@ -275,10 +300,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                 {product.regularPrice && product.regularPrice > product.price ? (
                   <div className="flex items-center gap-3">
                     <span className="text-xl md:text-2xl font-bold text-text">
-                      {formatPrice(product.price)}
+                      {formatPrice(product.price, undefined, (product as any).currency as any)}
                     </span>
                     <span className="text-base text-text-muted line-through">
-                      {formatPrice(product.regularPrice)}
+                      {formatPrice(product.regularPrice, undefined, (product as any).currency as any)}
                     </span>
                     <span className="text-sm font-semibold text-red-600">
                       Off
@@ -286,7 +311,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   </div>
                 ) : (
                   <span className="text-xl md:text-2xl font-bold text-text">
-                    {formatPrice(product.price)}
+                    {formatPrice(product.price, undefined, (product as any).currency as any)}
                   </span>
                 )}
                 <p className="text-sm text-text-muted mt-1">
@@ -404,16 +429,14 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Expected Delivery */}
-              {product.expectedDelivery && (
-                <div className="mb-6 flex items-center gap-2 text-sm text-text">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                  </svg>
-                  <span>
-                    Expected delivery date: <strong>{product.expectedDelivery}</strong>
-                  </span>
-                </div>
-              )}
+              <div className="mb-6 flex items-center gap-2 text-sm text-text">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+                <span>
+                  Expected delivery date: <strong>{calculateExpectedDelivery()}</strong>
+                </span>
+              </div>
 
               {/* Guarantees */}
               <div className="space-y-3 mb-4">
@@ -470,14 +493,14 @@ export default function ProductPage({ params }: ProductPageProps) {
                 >
                   <div className="space-y-2">
                     {product.details &&
-                      Object.entries(product.details).map(([key, value]) => (
-                        <p key={key} className="text-base text-text">
-                          <strong className="capitalize">
-                            {key.replace(/([A-Z])/g, ' $1').trim()}:
-                          </strong>{' '}
-                          {value}
-                        </p>
-                      ))}
+                      product.details.map((detail, index) => {
+                        const [label, ...rest] = detail.split(':')
+                        return (
+                          <p key={index} className="text-base text-text">
+                            <strong>{label?.trim()}:</strong> {rest.join(':').trim()}
+                          </p>
+                        )
+                      })}
                   </div>
                 </CollapsibleSection>
 
@@ -488,14 +511,14 @@ export default function ProductPage({ params }: ProductPageProps) {
                 >
                   <div className="space-y-2">
                     {product.materials &&
-                      Object.entries(product.materials).map(([key, value]) => (
-                        <p key={key} className="text-base text-text">
-                          <strong className="capitalize">
-                            {key.replace(/([A-Z])/g, ' $1').trim()}:
-                          </strong>{' '}
-                          {value}
-                        </p>
-                      ))}
+                      product.materials.map((material, index) => {
+                        const [label, ...rest] = material.split(':')
+                        return (
+                          <p key={index} className="text-base text-text">
+                            <strong>{label?.trim()}:</strong> {rest.join(':').trim()}
+                          </p>
+                        )
+                      })}
                   </div>
                 </CollapsibleSection>
 
@@ -555,7 +578,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           </section>
 
           {/* You May Also Like */}
-          {youMayAlsoLike.some((item) => item.inStock) && (
+          {youMayAlsoLike.length > 0 && (
             <section className="py-4 md:py-8 bg-beige-light mb-4">
               <div className="container-custom mb-4">
                 <div className="flex items-center justify-between">
@@ -576,9 +599,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               <div className="container-custom">
                 <div className="-mx-4 sm:-mx-6 px-4 sm:px-6">
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                    {youMayAlsoLike
-                      .filter((item) => item.inStock)
-                      .map((item) => (
+                    {youMayAlsoLike.map((item) => (
                       <Link
                         key={item.id}
                         href={`/product/${item.slug}`}
@@ -597,7 +618,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                           {item.title}
                         </h3>
                         <p className="text-base md:text-lg font-bold text-text">
-                          {formatPrice(item.price)}
+                          {formatPrice(item.price, undefined, (item as any).currency as any)}
                         </p>
                       </Link>
                     ))}

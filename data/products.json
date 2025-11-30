@@ -1,179 +1,221 @@
 [
   {
-    "id": "1",
-    "slug": "cute-snowman-ceramic-mug",
-    "title": "Cute Snowman Ceramic Mug, 300ML | Christmas Gift",
+    "id": "czm-001-spray",
+    "slug": "czm-bio-enzyme-pet-odor-eliminator",
+    "title": "CZM Bio-Enzyme Pet Odor Eliminator Spray | Lick-Safe & Plant-Based | 500ml",
     "vendor": "DenbyDen",
-    "price": 9.99,
-    "regularPrice": 12.99,
+    "price": 89.00,
+    "regularPrice": 129.00,
     "currency": "CNY",
-    "image": "/example_photo/产品主图/主图1.png",
+    "image": "/example_photo/产品主图/bio-enzyme-spray/bio-enzyme-spray_0.webp",
     "images": [
-      "/example_photo/产品主图/主图1.png",
-      "/example_photo/产品主图/主图2.png",
-      "/example_photo/产品主图/主图3.png",
-      "/example_photo/产品主图/主图4.png"
+      "/example_photo/产品主图/bio-enzyme-spray/bio-enzyme-spray_1.webp",
+      "/example_photo/产品主图/bio-enzyme-spray/bio-enzyme-spray_2.webp",
+      "/example_photo/产品主图/bio-enzyme-spray/bio-enzyme-spray_3.webp",
+      "/example_photo/产品主图/bio-enzyme-spray/bio-enzyme-spray_4.webp"
     ],
-    "description": "Hand-painted Christmas ceramic mug with 3D snowman on handle and festive gift box.",
-    "inStock": false,
-    "stockStatus": "Sold out",
-    "category": "Ceramic Mugs",
-    "variants": [],
-    "features": [
-      "Generous 300ML Capacity: Perfect size for your favorite hot beverages",
-      "Hand-painted Design: Unique 3D snowman decoration on handle",
-      "Festive Gift Box: Comes with a beautiful Christmas-themed gift box",
-      "Microwave & Dishwasher Safe: Easy to clean and maintain",
-      "Perfect Christmas Gift: Ideal for friends, family, or anyone who loves holiday cheer"
-    ],
-    "details": {
-      "capacity": "300ML",
-      "dimensions": "Height: 10cm, Diameter: 8cm"
-    },
-    "materials": {
-      "cup": "High-quality ceramic",
-      "handle": "Ceramic with 3D snowman decoration"
-    },
-    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
-    "shipping": {
-      "freeShippingThreshold": 49,
-      "location": "Toronto, Canada",
-      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
-    },
-    "giftWrapping": true,
-    "expectedDelivery": "Nov 23 - Nov 29"
-  },
-  {
-    "id": "2",
-    "slug": "santa-hat-ceramic-mug",
-    "title": "Santa Hat Ceramic Mug with Silicone Lid, 230ML | Christmas Gift",
-    "vendor": "DenbyDen",
-    "price": 9.99,
-    "regularPrice": 12.99,
-    "currency": "CNY",
-    "image": "/example_photo/产品主图/主图2.png",
-    "images": [
-      "/example_photo/产品主图/主图2.png",
-      "/example_photo/产品主图/主图1.png",
-      "/example_photo/产品主图/主图3.png",
-      "/example_photo/产品主图/主图4.png"
-    ],
-    "description": "Festive ceramic mug with adorable Christmas characters and a red silicone lid shaped like a Santa hat.",
-    "inStock": false,
-    "stockStatus": "Sold out",
-    "category": "Ceramic Mugs",
-    "variants": [],
-    "features": [
-      "230ML Capacity: Perfect for your morning coffee or tea",
-      "Santa Hat Silicone Lid: Adorable red lid shaped like Santa's hat",
-      "Christmas Characters: Cute festive illustrations on the mug",
-      "Microwave Safe: Just remove the lid before microwaving",
-      "Perfect Gift: Ideal for Christmas lovers and holiday enthusiasts"
-    ],
-    "details": {
-      "capacity": "230ML",
-      "dimensions": "Height: 9cm, Diameter: 7.5cm"
-    },
-    "materials": {
-      "cup": "High-quality ceramic",
-      "lid": "Food-grade silicone"
-    },
-    "careInstructions": "Microwave safe (remove lid). Hand wash recommended. Dishwasher safe for cup only.",
-    "shipping": {
-      "freeShippingThreshold": 49,
-      "location": "Toronto, Canada",
-      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
-    },
-    "giftWrapping": true,
-    "expectedDelivery": "Nov 23 - Nov 29"
-  },
-  {
-    "id": "3",
-    "slug": "strawberry-bunny-glass-container",
-    "title": "Strawberry Bunny Glass Food Container - 850ML Bento Box",
-    "vendor": "DenbyDen",
-    "price": 10.99,
-    "regularPrice": 14.99,
-    "currency": "CNY",
-    "image": "/example_photo/产品主图/主图3.png",
-    "images": [
-      "/example_photo/产品主图/主图3.png",
-      "/example_photo/产品主图/主图4.png",
-      "/example_photo/产品主图/主图2.png",
-      "/example_photo/产品主图/主图1.png"
-    ],
-    "description": "Clear glass food container with cute bunny and strawberry illustrations. Perfect for bento boxes and meal prep.",
+    "description": "Don't let odors push your best friend away. The CZM Bio-Enzyme Eliminator is designed for the 'Wet Dog Cycle' and stubborn urine traces. Unlike perfumes that mask smells, our plant-based enzymes break down odor-causing bacteria at the molecular level. It creates a safe, subtle botanical freshness that invites cuddles back to the sofa, without the chemical 'scent trauma' of harsh sprays.",
     "inStock": true,
     "stockStatus": "In Stock",
-    "category": "Kitchen Essentials",
-    "variants": [],
-    "features": [
-      "Generous 850ML Capacity: Perfect size for bento boxes and meal prep",
-      "Cute Design: Adorable bunny and strawberry illustrations",
-      "Clear Glass: See your delicious meals at a glance",
-      "Leak-proof Lid: Secure seal keeps your food fresh",
-      "Microwave & Dishwasher Safe: Easy to clean and reheat"
+    "category": "Pet Cleaning & Grooming",
+    "variants": [
+      {
+        "id": "v1",
+        "name": "Standard Bottle",
+        "value": "standard-bottle",
+        "size": "500ml",
+        "available": true
+      }
     ],
-    "details": {
-      "capacity": "850ML",
-      "dimensions": "Length: 18cm, Width: 12cm, Height: 8cm"
-    },
-    "materials": {
-      "container": "High-quality borosilicate glass",
-      "lid": "BPA-free plastic with silicone seal"
-    },
-    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
+    "features": [
+      "Breaks the 'Wet Dog Cycle': Specifically formulated for high-humidity environments. Penetrates undercoats and fabrics to stop bacterial growth before the smell starts.",
+      "Bio-Enzyme Technology (No Masking): Enzymes actively digest urine crystals and organic residue in carpets/tiles, solving the 'Bio-Chemical Invasion' permanently rather than covering it up.",
+      "Lick-Safe & Non-Toxic: 100% Plant-based formula. Zero alcohol, zero harsh chemicals. Safe for puppies, senior dogs, and immediate contact after spraying.",
+      "Anti-Scent Trauma: Features a 'Subtle Botanical' note that neutralizes instantly and fades quickly. No heavy artificial perfumes that cause sneezing or smell like cheap air freshener.",
+      "Colorless & Non-Sticky: Water-based texture that will NOT stain white fur yellow (No discoloration risks) and leaves no sticky residue on floors or paws."
+    ],
+    "details": [
+      "Volume: 16.9 fl oz / 500ml",
+      "Scent Profile: Subtle Botanicals (eucalyptus & chamomile hints, non-lingering)",
+      "Nozzle Type: High-precision mist (Leak-proof design)",
+      "pH Level: Neutral (Gentle on sensitive skin)"
+    ],
+    "materials": [
+      "Active Ingredients: Proprietary Bio-Enzyme Blend, Purified Water",
+      "Botanicals: Natural Plant Extracts",
+      "Free from: Chlorine, Bleach, Artificial Fragrance, Alcohol"
+    ],
+    "careInstructions": "Store in a cool, dry place away from direct sunlight to maintain enzyme activity. Shake gently before use. Safe for use on bedding, carpets, furniture, and directly on pet's coat (avoid eyes).",
     "shipping": {
       "freeShippingThreshold": 49,
-      "location": "Toronto, Canada",
-      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
-    },
-    "giftWrapping": true,
-    "expectedDelivery": "Nov 23 - Nov 29"
-  },
-  {
-    "id": "4",
-    "slug": "apple-bunny-ceramic-plate",
-    "title": "Apple Bunny Ceramic Deep Plate �?8.2 Inch",
-    "vendor": "DenbyDen",
-    "price": 15.49,
-    "regularPrice": 19.99,
-    "currency": "CNY",
-    "image": "/example_photo/产品主图/主图4.png",
-    "images": [
-      "/example_photo/产品主图/主图4.png",
-      "/example_photo/产品主图/主图2.png",
-      "/example_photo/产品主图/主图1.png",
-      "/example_photo/产品主图/主图3.png"
-    ],
-    "description": "Beautiful ceramic deep plate with colorful bunny and apple designs. Perfect for everyday meals.",
-    "inStock": false,
-    "stockStatus": "Sold out",
-    "category": "Plates",
-    "variants": [],
-    "features": [
-      "8.2 Inch Diameter: Perfect size for main dishes",
-      "Deep Design: Holds more food without spilling",
-      "Colorful Design: Cute bunny and apple illustrations",
-      "Microwave & Dishwasher Safe: Easy to clean and maintain",
-      "Perfect for Daily Use: Makes every meal more enjoyable"
-    ],
-    "details": {
-      "diameter": "8.2 Inch",
-      "depth": "2.5cm"
-    },
-    "materials": {
-      "plate": "High-quality ceramic"
-    },
-    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
-    "shipping": {
-      "freeShippingThreshold": 49,
-      "location": "Toronto, Canada",
-      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
+      "location": "Central Warehouse",
+      "returnPolicy": "30-Day Fresh Home Guarantee. If the odor isn't gone, we refund you."
     },
     "giftWrapping": false,
-    "expectedDelivery": "Nov 23 - Nov 29"
+    "relatedProducts": ["3", "6", "7", "8"]
   },
+  {
+    "id": "invisible-coat-mist-white-dogs",
+    "slug": "invisible-coat-mist-white-dogs",
+    "title": "The 'Invisible' Coat Mist: Non-Staining Water-Based Deodorizer for White Dogs",
+    "vendor": "PureWhite Lab",
+    "price": 60.00,
+    "regularPrice": 128.00,
+    "currency": "CNY",
+    "image": "/example_photo/产品主图/dog-fragrance/dog-fragrance_0.webp",
+    "images": [
+        "/example_photo/产品主图/dog-fragrance/dog-fragrance_1.webp",
+        "/example_photo/产品主图/dog-fragrance/dog-fragrance_2.webp",
+        "/example_photo/产品主图/dog-fragrance/dog-fragrance_3.webp",
+        "/example_photo/产品主图/dog-fragrance/dog-fragrance_4.webp"
+      ],
+    "description": "Stop ruining your dog's expensive grooming session with oil-heavy sprays that turn pristine white coats yellow and sticky. The 'Invisible' Coat Mist is a premium, water-based formula designed exclusively for Bichons, Samoyeds, and Poodles, effectively neutralizing odors without depositing pigments or attracting dust. Experience a hypoallergenic, high-end spa fragrance that leaves your 'white cloud' smelling as pure and airy as they look.",
+    "inStock": true,
+    "stockStatus": "In Stock",
+    "category": "Dog Grooming & Deodorizers",
+    "variants": [],
+    "features": [
+      "Zero-Stain Water-Based Formula: A crystal-clear liquid that guarantees your dog's coat stays snowy white, preventing the dreaded yellow tint caused by cheap oil-based perfumes.",
+      "0% Oil, Non-Sticky Finish: A weightless mist that dries instantly without residue, ensuring fur remains fluffy and dust-free rather than turning into a sticky mop.",
+      "High-End Spa Fragrance: Replaces chemical odors with a sophisticated, airy scent, making your home smell like a luxury salon rather than a chemical lab.",
+      "Hypoallergenic Care: Free from harsh alcohols and allergens, specifically formulated for sensitive skin to prevent tear staining or irritation.",
+      "Exclusively for White Coats: Tailored specifically for the porous hair structure of white breeds to maintain that expensive, fresh-from-the-groomer look between visits."
+    ],
+    "details": [
+      "Volume: 150ml / 5.07 fl oz",
+      "Applicator: Ultra-fine continuous mist sprayer",
+      "pH Balanced: 7.0 (Neutral)"
+    ],
+  
+    "materials": [
+      "Base: Purified Water (Aqua)",
+      "Scent: Low-sensitivity premium fragrance",
+      "Additives: 0% Alcohol, 0% Silicones, 0% Dyes"
+  
+    ],
+    "careInstructions": "Store in a cool, dry place away from direct sunlight. Avoid spraying directly into eyes or open wounds. Shake gently before use.",
+    "shipping": {
+      "freeShippingThreshold": 49,
+      "location": "Toronto, Canada",
+      "returnPolicy": "Risk-free trial. If it stains your dog's coat, we offer a full refund including shipping."
+    },
+    "giftWrapping": true,
+    "relatedProducts": ["czm-001-spray"]
+  },
+  {
+    "id": "mws-001-cordless",
+    "slug": "cordless-magnetic-reading-sconce-metal",
+    "title": "Cordless Magnetic Reading Sconce | 30-Day Battery Life & Zero-Drill Installation | Cinema-Grade Warm Light",
+    "vendor": "LumiereLiving",
+    "price": 49.99,
+    "regularPrice": 89.00,
+    "currency": "USD",
+    "image": "/example_photo/产品主图/bedside-lamp/bedside-lamp_0.webp",
+    "images": [
+      "/example_photo/产品主图/bedside-lamp/bedside-lamp_1.webp",
+      "/example_photo/产品主图/bedside-lamp/bedside-lamp_2.webp",
+      "/example_photo/产品主图/bedside-lamp/bedside-lamp_3.webp",
+      "/example_photo/产品主图/bedside-lamp/bedside-lamp_4.webp"
+    ],
+    "description": "Transform your rental into a sanctuary without the landlord-forbidden drill holes. This Cordless Magnetic Sconce offers a '5-Star Hotel' reading ambiance while shattering the 'daily charging' curse common in wireless lighting. With a premium all-metal build and a battery that actually lasts, you can finally reclaim your bedside aesthetic and your peace of mind.",
+    "inStock": true,
+    "stockStatus": "In Stock",
+    "category": "Lights",
+    "variants": [
+      {
+        "id": "v1",
+        "name": "Matte Black",
+        "value": "matte-black",
+        "finish": "Anodized Aluminum",
+        "available": true
+      }
+    ],
+    "features": [
+      "30-Day True-Wireless Freedom: Stop being a 'charging slave.' Our reimagined energy management system delivers a full month of nightly reading (30 mins/night) on a single charge, ensuring the light never dies in the middle of a chapter.",
+      "Zero-Gravity Magnetic Mount: Achieve a 'hardwired' designer look in 30 seconds. The industrial-strength adhesive and precision magnetic dock hold the full-metal body securely—no drilling, no wall damage, and no cheap plastic wobbles.",
+      "2700K Cinema-Grade Ambiance: Turn off 'The Big Light' and the anxiety that comes with it. This specific warm color temperature creates a private 'emotional barrier,' instantly switching your brain from work mode to deep relaxation.",
+      "Detachable & Portable: Need a flashlight? Simply pull the light bar from the magnetic base to navigate your home at night without waking the household."
+    ],
+    "details": [
+      "Color Temperature: 2700K (Warm White)",
+      "Battery Life: Approx. 15-30 hours (depending on brightness)",
+      "Charging Port: USB-C",
+      "Control: Touch Sensor with Stepless Dimming"
+    ],
+    "materials": [
+      "Body: Aviation-Grade Aluminum Alloy",
+      "Diffuser: Anti-glare PMMA",
+      "Mount: N52 Neodymium Magnets"
+    ],
+    "careInstructions": "Wipe dust with a dry microfiber cloth. Avoid using harsh chemical cleaners on the metal finish. Recharge when brightness dims noticeably.",
+    "shipping": {
+      "freeShippingThreshold": 99,
+      "location": "Central Warehouse",
+      "returnPolicy": "30-Day 'Love Your Light' Guarantee."
+    },
+    "giftWrapping": true,
+    "relatedProducts": ["4"]
+  },
+  {
+    "id": "zenden-001-ceramic-burner",
+    "slug": "zenden-cordless-ceramic-aromatherapy-burner",
+    "title": "ZenDen Cordless Ceramic Aromatherapy Burner | Anti-Flicker Ambient Light | Minimalist Home Spa",
+    "vendor": "ZenDen Home",
+    "price": 25.00,
+    "regularPrice": 65.00,
+    "currency": "USD",
+    "image": "/example_photo/产品主图/oil-burner/oil-burner_0.webp",
+    "images": [
+      "/example_photo/产品主图/oil-burner/oil-burner_1.webp",
+      "/example_photo/产品主图/oil-burner/oil-burner_2.webp",
+      "/example_photo/产品主图/oil-burner/oil-burner_3.webp",
+      "/example_photo/产品主图/oil-burner/oil-burner_4.webp"
+    ],
+    "description": "Escape the anxiety of harsh overhead lighting and the constant hum of electronics. This handcrafted ceramic burner replaces digital noise with the primal, soothing rhythm of a real flame and diffusing essential oils. It is not just a diffuser; it is an analogue 'mute button' for your brain, offering true wireless freedom to create a sanctuary anywhere in your home.",
+    "inStock": true,
+    "stockStatus": "In Stock",
+    "category": "Home Fragrance & Decor",
+    "variants": [
+      {
+        "id": "v1",
+        "name": "Matte White",
+        "value": "matte-white",
+        "size": "Standard",
+        "available": true
+      },
+      {
+        "id": "v2",
+        "name": "Sandstone Grey",
+        "value": "sandstone-grey",
+        "size": "Standard",
+        "available": true
+      }
+    ],
+    "features": [
+      "The 'Anti-Big Light' Solution: Designed to combat the stress of stark overhead lighting and electronic flicker. The cut-out ceramic body casts dancing, natural shadows that act as an optical sedative, regulating your circadian rhythm better than any artificial 'warm mode' bulb.",
+      "100% Wireless Freedom: No cords, no plugs, and no short-circuit risks. Whether placed on a bathtub ledge, a cluttered desk, or a breezy balcony, this burner creates a '1-square-meter sanctuary' anywhere, unbound by the proximity of electrical outlets.",
+      "Mindful Analogue Ritual: In an era of 'one-click' efficiency, striking a match and watching the water gently steam offers a necessary pause. This tactile ritual signals to your nervous system that the workday is over and personal time has begun.",
+      "Sensory Architecture: High-fired ceramic retains heat efficiently while serving as a sculptural art piece. Even when unlit, its minimalist form adds a layer of texture and calm to your space, proving that healing tools can also be aesthetically pleasing."
+    ],
+    "details": [
+      "Material: High-fired stoneware ceramic",
+      "Heat Source: Standard tea light candle",
+      "Dimensions: 10cm x 10cm x 12cm",
+      "Usage: Essential oils, wax melts, or water"
+    ],
+    "materials": [
+      "Body: 100% Natural Ceramic Clay",
+      "Finish: Non-toxic Glaze"
+    ],
+    "careInstructions": "Hand wash only with mild soap. Allow to cool completely before touching or cleaning. Do not leave burning candles unattended.",
+    "shipping": {
+      "freeShippingThreshold": 99,
+      "location": "Global Fulfillment Center",
+      "returnPolicy": "30-Day Serenity Guarantee"
+    },
+    "giftWrapping": true,
+    "relatedProducts": ["mws-001-cordless"]
+},
   {
     "id": "5",
     "slug": "twinkling-stars-ceramic-mug",
@@ -201,21 +243,20 @@
       "Microwave & Dishwasher Safe: Easy to clean and maintain",
       "Perfect for Coffee Lovers: Makes your morning routine special"
     ],
-    "details": {
-      "capacity": "350ML",
-      "dimensions": "Height: 11cm, Diameter: 8.5cm"
-    },
-    "materials": {
-      "cup": "High-quality ceramic"
-    },
+    "details": [
+      "350ML Capacity: Perfect size for your favorite beverages",
+      "Dimensions: Height: 11cm, Diameter: 8.5cm"
+    ],
+    "materials": [
+      "Cup: High-quality ceramic"
+    ],
     "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
     "shipping": {
       "freeShippingThreshold": 49,
       "location": "Toronto, Canada",
       "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
     },
-    "giftWrapping": false,
-    "expectedDelivery": "Nov 23 - Nov 29"
+    "giftWrapping": false
   },
   {
     "id": "6",
@@ -244,14 +285,14 @@
       "Microwave Safe: Just remove the lid before microwaving",
       "Perfect Gift: Ideal for Christmas celebrations"
     ],
-    "details": {
-      "capacity": "420ML",
-      "dimensions": "Height: 12cm, Diameter: 9cm"
-    },
-    "materials": {
-      "cup": "High-quality ceramic",
-      "lid": "Ceramic"
-    },
+    "details": [
+      "420ML Capacity: Generous size for your favorite drinks",
+      "Dimensions: Height: 12cm, Diameter: 9cm"
+    ],
+    "materials": [
+      "Cup: High-quality ceramic",
+      "Lid: Ceramic"
+    ],
     "careInstructions": "Microwave safe (remove lid). Dishwasher safe. Hand wash recommended for best results.",
     "shipping": {
       "freeShippingThreshold": 49,
@@ -259,7 +300,7 @@
       "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
     },
     "giftWrapping": true,
-    "expectedDelivery": "Nov 23 - Nov 29"
+    "relatedProducts": ["8", "7", "3", "czm-001-spray"]
   },
   {
     "id": "7",
@@ -301,14 +342,14 @@
       "Microwave & Dishwasher Safe: Made from high-quality ceramic that's easy to clean and maintain. Just remove the lid and glass straw before microwaving.",
       "Perfect Gift for Kawaii Lovers: An ideal gift for students, friends, or anyone who loves cute drinkware and playful home decor. Makes every sip more enjoyable!"
     ],
-    "details": {
-      "capacity": "500ML"
-    },
-    "materials": {
-      "cup": "High-quality ceramic",
-      "lid": "High-quality ceramic",
-      "straw": "Durable glass"
-    },
+    "details": [
+      "500ML Capacity: Perfect size for bubble tea, smoothies, iced coffee, or any cold beverages"
+    ],
+    "materials": [
+      "Cup: High-quality ceramic",
+      "Lid: High-quality ceramic",
+      "Straw: Durable glass"
+    ],
     "careInstructions": "Microwave, Dishwasher, and Oven Safe",
     "shipping": {
       "freeShippingThreshold": 49,
@@ -316,7 +357,7 @@
       "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
     },
     "giftWrapping": true,
-    "expectedDelivery": "Nov 23 - Nov 29"
+    "relatedProducts": ["6", "8", "3", "czm-001-spray"]
   },
   {
     "id": "8",
@@ -345,13 +386,13 @@
       "Cream Color: Warm and inviting appearance",
       "Microwave & Dishwasher Safe: Easy to clean and maintain"
     ],
-    "details": {
-      "capacity": "400ML",
-      "dimensions": "Height: 11.5cm, Diameter: 9cm"
-    },
-    "materials": {
-      "cup": "High-quality ceramic"
-    },
+    "details": [
+      "400ML Capacity: Perfect size for your morning coffee or tea",
+      "Dimensions: Height: 11.5cm, Diameter: 9cm"
+    ],
+    "materials": [
+      "Cup: High-quality ceramic"
+    ],
     "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
     "shipping": {
       "freeShippingThreshold": 49,
@@ -359,6 +400,6 @@
       "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
     },
     "giftWrapping": false,
-    "expectedDelivery": "Nov 23 - Nov 29"
+    "relatedProducts": ["6", "7", "3", "czm-001-spray"]
   }
 ]

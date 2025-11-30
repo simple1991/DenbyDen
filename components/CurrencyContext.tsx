@@ -73,8 +73,9 @@ const currencyConfigs: Record<CurrencyCode, CurrencyConfig> = {
 interface CurrencyContextValue {
   selectedCurrency: CurrencyCode
   setSelectedCurrency: (currency: CurrencyCode) => void
-  formatPrice: (valueInCny: number, currency?: CurrencyCode) => string
+  formatPrice: (price: number, currency?: CurrencyCode, fromCurrency?: CurrencyCode) => string
   convertPrice: (valueInCny: number, currency?: CurrencyCode) => number
+  convertToCny: (price: number, fromCurrency: CurrencyCode) => number
   currencyOptions: Array<{
     code: CurrencyCode
     label: string
@@ -109,8 +110,24 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     [selectedCurrency]
   )
 
+  const convertToCny = useCallback(
+    (price: number, fromCurrency: CurrencyCode) => {
+      if (fromCurrency === 'CNY') {
+        return price
+      }
+      const fromConfig = currencyConfigs[fromCurrency]
+      // 将原始货币转换为 CNY: 价格 / 汇率 = CNY价值
+      // 例如: USD 的 rate 是 0.14，意味着 1 CNY = 0.14 USD，所以 1 USD = 1/0.14 CNY
+      return price / fromConfig.rate
+    },
+    []
+  )
+
   const formatPrice = useCallback(
-    (valueInCny: number, currency: CurrencyCode = selectedCurrency) => {
+    (price: number, currency: CurrencyCode = selectedCurrency, fromCurrency?: CurrencyCode) => {
+      // 如果提供了原始货币，先将价格从原始货币转换为 CNY
+      const valueInCny = fromCurrency ? convertToCny(price, fromCurrency) : price
+      
       const config = currencyConfigs[currency]
       const decimals = config.decimals ?? 2
       const formatter = new Intl.NumberFormat(config.locale, {
@@ -119,7 +136,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
       })
       return `${currency} ${config.symbol}${formatter.format(convertPrice(valueInCny, currency))}`
     },
-    [convertPrice, selectedCurrency]
+    [convertPrice, convertToCny, selectedCurrency]
   )
 
   const currencyOptions = useMemo(
@@ -140,10 +157,11 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
       setSelectedCurrency,
       formatPrice,
       convertPrice,
+      convertToCny,
       currencyOptions,
       baseCurrency: 'CNY' as const,
     }),
-    [selectedCurrency, formatPrice, convertPrice, currencyOptions]
+    [selectedCurrency, formatPrice, convertPrice, convertToCny, currencyOptions]
   )
 
   return <CurrencyContext.Provider value={value}>{children}</CurrencyContext.Provider>

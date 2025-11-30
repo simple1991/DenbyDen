@@ -1,8 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://yviaelacdlfarkpbgxps.supabase.co'
-// 使用用户提供的密钥
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_secret_terZJb5evnYgpKtpfK1A0w_S7NL_7xR'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://yviaelacdlfarkpbgxps.supabase.co'
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY
+
+if (!supabaseKey) {
+  throw new Error('Missing NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY environment variable')
+}
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
 

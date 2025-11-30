@@ -65,7 +65,7 @@ export default function ProductCard({
         title: product.title,
         vendor: product.vendor,
         price: product.price,
-        currency: 'CNY',
+        currency: (product as any).currency || 'CNY',
         image: product.image,
       })
       // 触发加入购物车埋点
@@ -124,7 +124,7 @@ export default function ProductCard({
           </h3>
         </Link>
         <p className="text-sm text-text-muted mb-2">{product.vendor}</p>
-        <p className="text-base sm:text-lg font-semibold text-text">{formatPrice(product.price)}</p>
+        <p className="text-base sm:text-lg font-semibold text-text">{formatPrice(product.price, undefined, (product as any).currency as any)}</p>
       </div>
     </div>
   )
