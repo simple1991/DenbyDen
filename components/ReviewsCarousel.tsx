@@ -1,42 +1,84 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState, useRef } from 'react'
 import { useReviewCarouselNav } from '@/hooks/useAnalytics'
 import { usePathname } from 'next/navigation'
+import productsData from '@/data/products.json'
+import type { Product } from '@/types/product'
 
-const reviews = [
+type BaseReview = {
+  id: string
+  tag: string
+  quote: string
+  name: string
+  image?: string
+}
+
+const baseReviews: BaseReview[] = [
   {
-    name: 'Luna',
-    product: 'Creamy Emo Bear Handled Baking Dish',
-    quote: 'Absolutely love the little bear design. So cute!',
-    image: '/example_photo/产品主图/主图1.png',
+    id: 'dd-cloud-tray-001',
+    tag: '首饰盘',
+    name: 'Ava',
+    quote:
+      "Got this for my sister since she just moved. It’s smaller than I thought, fits right in my palm, but looks super cute on her nightstand. She uses it for her daily rings. Def gonna grab another one for myself. The box made it easy to gift.",
+    image: '/example_photo/评价图片/dd-cloud-tray-001_2.webp',
   },
   {
-    name: 'Sophie',
-    product: 'Chocolate Strawberry Bunny Ceramic Bowls',
-    quote: 'Got the plate and bowl — both are amazing!',
-    image: '/example_photo/产品主图/主图2.png',
+    id: 'dd-cloud-tray-001',
+    tag: '首饰盘',
+    name: 'J.',
+    quote:
+      "Needed a spot for my rings while I wash my face. This is perfect right next to the bathroom sink. The 'basin' is actually deep so nothing rolls out. Gold trim matches my vanity faucet nicely. Simple but does the job well. Came super fast too.",
+    image: '/example_photo/评价图片/dd-cloud-tray-001_1.webp',
   },
   {
-    name: 'Emma',
-    product: 'Chocolate Strawberry Bunny Ceramic Bowls',
-    quote: 'This bunny set is seriously the cutest thing ever!',
-    image: '/example_photo/产品主图/主图3.png',
+    id: 'zenden-001-ceramic-burner',
+    tag: '香薰炉',
+    name: 'Noah',
+    quote:
+      "Got for my wife. She falls asleep faster now. Says the light isn't annoying like our old one.",
+    image: '/example_photo/评价图片/zenden-001-ceramic-burner.webp',
   },
   {
-    name: 'Mia',
-    product: 'Chocolate Strawberry Bunny Ceramic Bowls',
-    quote: 'Perfect for breakfast time, especially the bunny plate!',
-    image: '/example_photo/产品主图/主图4.png',
+    id: 'lh-042-slim-pastel',
+    tag: '收纳篮',
+    name: 'Lily',
+    quote:
+      "Husband’s 'chair of clothes' is finally gone. He tosses his gym stuff in here now. Fits the corner perfectly. He hasn't complained, which is a miracle.",
+    image: '/example_photo/评价图片/lh-042-slim-pastel.webp',
   },
   {
-    name: 'Ella',
-    product: 'Cute Footed Ceramic Bowl',
-    quote: 'My favorite bowl now. It is just so fun to use!',
-    image: '/example_photo/自媒体图片/f1c7b3674a516120ac12efa078dd73e.jpg',
+    id: 'invisible-coat-mist-white-dogs',
+    tag: '宠物香水',
+    name: 'M.',
+    quote:
+      'Works as described. 0% oil so no stains on furniture. Scent is light, not chemical. Pump mechanism is sturdy. Recieved package on time.',
+    image: '/example_photo/评价图片/invisible-coat-mist-white-dogs.webp',
   },
 ]
+
+const productMap: Record<string, Product> = (productsData as Product[]).reduce(
+  (acc, product) => {
+    acc[product.id] = product
+    return acc
+  },
+  {} as Record<string, Product>
+)
+
+const reviews = baseReviews
+  .map((review) => {
+    const product = productMap[review.id]
+    if (!product) return null
+    return {
+      ...review,
+      productTitle: product.title,
+      image: review.image ?? product.image,
+      slug: product.slug,
+    }
+  })
+  .filter((item): item is NonNullable<typeof item> => item !== null)
 
 export default function ReviewsCarousel() {
   const [index, setIndex] = useState(0)
@@ -189,7 +231,7 @@ export default function ReviewsCarousel() {
             {/* 固定高度容器，确保所有卡片大小一致 */}
             <div 
               ref={containerRef}
-              className="relative h-32 overflow-hidden mb-4"
+              className="relative h-40 overflow-hidden mb-4"
             >
               {reviews.map((review, idx) => (
                 <div
@@ -198,23 +240,28 @@ export default function ReviewsCarousel() {
                     idx === index ? 'opacity-100' : 'opacity-0 pointer-events-none'
                   }`}
                 >
-                  <div className="bg-white rounded-md shadow-card p-3 h-full flex gap-3">
+                  <Link
+                    href={`/product/${review.slug}`}
+                    className="bg-white rounded-md shadow-card p-3 h-full flex gap-3"
+                  >
                     <div className="relative w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
                       <Image
                         src={review.image}
-                        alt={review.product}
+                        alt={review.productTitle}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <div className="flex-1 min-w-0 flex flex-col justify-center">
-                      <p className="text-xs text-primary mb-1 leading-tight">{review.product}</p>
-                      <p className="text-xs font-semibold text-text mb-1.5 leading-snug">
+                      <p className="text-xs text-primary mb-1 leading-tight line-clamp-1">
+                        {review.productTitle}
+                      </p>
+                      <p className="text-sm font-semibold text-text mb-1.5 leading-snug line-clamp-4">
                         "{review.quote}"
                       </p>
                       <p className="text-xs text-text-muted">— {review.name}</p>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -249,26 +296,31 @@ export default function ReviewsCarousel() {
                   {/* 重复数组3次以实现真正的无限循环 */}
                   {[...reviews, ...reviews, ...reviews].map((review, idx) => (
                     <div
-                      key={`${review.name}-${idx}`}
+                      key={`${review.id}-${idx}`}
                       className="flex-shrink-0 w-1/2 px-2"
                     >
-                      <div className="bg-white rounded-md shadow-card p-6 flex gap-5 h-full">
+                      <Link
+                        href={`/product/${review.slug}`}
+                        className="bg-white rounded-md shadow-card p-6 flex gap-5 h-full"
+                      >
                         <div className="relative w-24 h-24 rounded-md overflow-hidden flex-shrink-0">
                           <Image
                             src={review.image}
-                            alt={review.product}
+                            alt={review.productTitle}
                             fill
                             className="object-cover"
                           />
                         </div>
                         <div className="flex-1 min-w-0 flex flex-col justify-center">
-                          <p className="text-base text-primary mb-1 line-clamp-1">{review.product}</p>
-                          <p className="text-lg font-semibold text-text mb-2 line-clamp-3">
+                          <p className="text-sm text-primary mb-1 line-clamp-1">
+                            {review.productTitle}
+                          </p>
+                          <p className="text-sm font-semibold text-text mb-2 line-clamp-3">
                             "{review.quote}"
                           </p>
-                          <p className="text-base text-text-muted">— {review.name}</p>
+                          <p className="text-sm text-text-muted">— {review.name}</p>
                         </div>
-                      </div>
+                      </Link>
                     </div>
                   ))}
                 </div>

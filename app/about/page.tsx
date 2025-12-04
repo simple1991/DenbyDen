@@ -41,7 +41,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
               <div className="relative aspect-square bg-beige-light rounded-md overflow-hidden">
                 <Image
-                  src="/example_photo/产品主图/主图1.png"
+                  src="/example_photo/about-me/Gemini_Generated_Image_x2oazix2oazix2oa.webp"
                   alt="DenbyDen Products"
                   fill
                   className="object-cover"
@@ -49,7 +49,7 @@ export default function AboutPage() {
               </div>
               <div className="relative aspect-square bg-pink-light rounded-md overflow-hidden">
                 <Image
-                  src="/example_photo/产品主图/主图2.png"
+                  src="/example_photo/about-me/Gemini_Generated_Image_bv6gvobv6gvobv6g.webp"
                   alt="DenbyDen Products"
                   fill
                   className="object-cover"

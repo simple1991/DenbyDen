@@ -58,7 +58,7 @@
     "id": "invisible-coat-mist-white-dogs",
     "slug": "invisible-coat-mist-white-dogs",
     "title": "The 'Invisible' Coat Mist: Non-Staining Water-Based Deodorizer for White Dogs",
-    "vendor": "PureWhite Lab",
+    "vendor": "DenbyDen",
     "price": 60.00,
     "regularPrice": 128.00,
     "currency": "CNY",
@@ -106,7 +106,7 @@
     "id": "mws-001-cordless",
     "slug": "cordless-magnetic-reading-sconce-metal",
     "title": "Cordless Magnetic Reading Sconce | 30-Day Battery Life & Zero-Drill Installation | Cinema-Grade Warm Light",
-    "vendor": "LumiereLiving",
+    "vendor": "DenbyDen",
     "price": 49.99,
     "regularPrice": 89.00,
     "currency": "USD",
@@ -154,13 +154,13 @@
       "returnPolicy": "30-Day 'Love Your Light' Guarantee."
     },
     "giftWrapping": true,
-    "relatedProducts": ["4"]
+    "relatedProducts": ["zenden-001-ceramic-burner"]
   },
   {
     "id": "zenden-001-ceramic-burner",
     "slug": "zenden-cordless-ceramic-aromatherapy-burner",
     "title": "ZenDen Cordless Ceramic Aromatherapy Burner | Anti-Flicker Ambient Light | Minimalist Home Spa",
-    "vendor": "ZenDen Home",
+    "vendor": "DenbyDen",
     "price": 25.00,
     "regularPrice": 65.00,
     "currency": "USD",
@@ -174,7 +174,7 @@
     "description": "Escape the anxiety of harsh overhead lighting and the constant hum of electronics. This handcrafted ceramic burner replaces digital noise with the primal, soothing rhythm of a real flame and diffusing essential oils. It is not just a diffuser; it is an analogue 'mute button' for your brain, offering true wireless freedom to create a sanctuary anywhere in your home.",
     "inStock": true,
     "stockStatus": "In Stock",
-    "category": "Home Fragrance & Decor",
+    "category": "Lights",
     "variants": [
       {
         "id": "v1",
@@ -216,190 +216,218 @@
     "giftWrapping": true,
     "relatedProducts": ["mws-001-cordless"]
 },
-  {
-    "id": "5",
-    "slug": "twinkling-stars-ceramic-mug",
-    "title": "Twinkling Stars Ceramic Mug �?350ML Capacity",
-    "vendor": "DenbyDen",
-    "price": 10.99,
-    "regularPrice": 13.99,
-    "currency": "CNY",
-    "image": "/example_photo/产品主图/主图1.png",
-    "images": [
-      "/example_photo/产品主图/主图1.png",
-      "/example_photo/产品主图/主图3.png",
-      "/example_photo/产品主图/主图4.png",
-      "/example_photo/产品主图/主图2.png"
-    ],
-    "description": "Cream-colored ceramic mug decorated with twinkling stars. Perfect for your morning coffee.",
-    "inStock": false,
-    "stockStatus": "Sold out",
-    "category": "Ceramic Mugs",
-    "variants": [],
-    "features": [
-      "350ML Capacity: Perfect size for your favorite beverages",
-      "Twinkling Stars Design: Beautiful star pattern decoration",
-      "Cream Color: Elegant and timeless appearance",
-      "Microwave & Dishwasher Safe: Easy to clean and maintain",
-      "Perfect for Coffee Lovers: Makes your morning routine special"
-    ],
-    "details": [
-      "350ML Capacity: Perfect size for your favorite beverages",
-      "Dimensions: Height: 11cm, Diameter: 8.5cm"
-    ],
-    "materials": [
-      "Cup: High-quality ceramic"
-    ],
-    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
-    "shipping": {
-      "freeShippingThreshold": 49,
-      "location": "Toronto, Canada",
-      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
-    },
-    "giftWrapping": false
+{
+  "id": "cwl-005-amber",
+  "slug": "nook-sanctuary-amber-petal-candle-warmer",
+  "title": "Nook Sanctuary Candle Warmer Lamp | Amber Petal Shade & Walnut Base | Large Jar Compatible",
+  "vendor": "DenbyDen",
+  "price": 65.00,
+  "regularPrice": 89.00,
+  "currency": "USD",
+  "image": "/example_photo/产品主图/aromatherapy-lamp/aromatherapy-lamp_0.webp",
+  "images": [
+    "/example_photo/产品主图/aromatherapy-lamp/aromatherapy-lamp_1.webp",
+    "/example_photo/产品主图/aromatherapy-lamp/aromatherapy-lamp_2.webp",
+    "/example_photo/产品主图/aromatherapy-lamp/aromatherapy-lamp_3.webp",
+    "/example_photo/产品主图/aromatherapy-lamp/aromatherapy-lamp_4.webp"
+  ],
+  "description": "Escape the tyranny of the 'Big Light' and the anxiety of open flames with a lighting solution designed for your mental downtime. The Nook Sanctuary Lamp combines a high-clearance arch that fits even the largest 3-wick jars with a soothing amber glow, instantly switching your environment from 'survival mode' to 'sanctuary.' Experience the purest fragrance throw without soot, smoke, or the midnight panic of wondering if you blew the candle out.",
+  "inStock": true,
+  "stockStatus": "In Stock",
+  "category": "Home Decor & Fragrance",
+  "variants": [
+    {
+      "id": "v1-walnut",
+      "name": "Dark Walnut Base",
+      "value": "dark-walnut",
+      "material": "Solid Wood",
+      "available": true
+    }
+  ],
+  "features": [
+    "Universal 'Ample-Clearance' Design: Frustrated by warmers that are too short? Our elevated arch allows enough vertical space to accommodate oversized jars (like Bath & Body Works or Yankee) easily, ensuring a flat, even melt pool that cures 'tunneling' forever.",
+    "The 'Anti-Big Light' Glow: The vintage-inspired amber petal shade filters light into a soft, calming hue. It functions as a visual cue to your brain that the workday is done, softening the hard edges of your room and your mood.",
+    "Pet-Safe & Lease-Friendly: Achieve a soot-free, flame-free home. The flameless technology eliminates fire hazards and wall-staining smoke, making it perfectly safe for households with 'tail-happy' pets or renters worried about security deposits.",
+    "Pure Scent Extraction: Our optimized halogen heat source melts the wax at a precise temperature to release the candle's middle and base notes without the acrid smell of burning wicks, extending the life of your luxury candles by up to 50%.",
+    "Weighted Stability Base: Unlike flimsy plastic alternatives, our non-slip solid wood base is weighted to remain grounded, providing a secure station for your favorite scents."
+  ],
+  "details": [
+    "Height: Adjustable (Fits candles up to 18cm tall)",
+    "Bulb Type: 50W Halogen (2 included)",
+    "Control: Stepless Dimmer Switch",
+    "Voltage: 110V-220V Compatible"
+  ],
+  "materials": [
+    "Base: Sustainable Solid Wood (Walnut/Oak finish)",
+    "Shade: Amber-Tinted Glass",
+    "Hardware: Anti-Oxidation Brass Alloy"
+  ],
+  "careInstructions": "Wipe base with a soft, dry cloth. Ensure lamp is cool before changing bulbs.",
+  "shipping": {
+    "freeShippingThreshold": 99,
+    "location": "Home Goods Distribution Center",
+    "returnPolicy": "30-Day 'Vibe Check' Guarantee."
   },
-  {
-    "id": "6",
-    "slug": "christmas-apple-ceramic-mug",
-    "title": "Christmas Apple Ceramic Mug with Lid, 420ML | Christmas Gift",
-    "vendor": "DenbyDen",
-    "price": 14.99,
-    "regularPrice": 18.99,
-    "currency": "CNY",
-    "image": "/example_photo/产品主图/主图2.png",
-    "images": [
-      "/example_photo/产品主图/主图2.png",
-      "/example_photo/产品主图/主图4.png",
-      "/example_photo/产品主图/主图1.png",
-      "/example_photo/产品主图/主图3.png"
-    ],
-    "description": "White ceramic mug with Christmas-themed illustrations and a bright red apple-shaped lid.",
-    "inStock": true,
-    "stockStatus": "In Stock",
-    "category": "Ceramic Mugs",
-    "variants": [],
-    "features": [
-      "420ML Capacity: Generous size for your favorite drinks",
-      "Apple-shaped Lid: Adorable red ceramic lid",
-      "Christmas Theme: Festive holiday illustrations",
-      "Microwave Safe: Just remove the lid before microwaving",
-      "Perfect Gift: Ideal for Christmas celebrations"
-    ],
-    "details": [
-      "420ML Capacity: Generous size for your favorite drinks",
-      "Dimensions: Height: 12cm, Diameter: 9cm"
-    ],
-    "materials": [
-      "Cup: High-quality ceramic",
-      "Lid: Ceramic"
-    ],
-    "careInstructions": "Microwave safe (remove lid). Dishwasher safe. Hand wash recommended for best results.",
-    "shipping": {
-      "freeShippingThreshold": 49,
-      "location": "Toronto, Canada",
-      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
-    },
-    "giftWrapping": true,
-    "relatedProducts": ["8", "7", "3", "czm-001-spray"]
+  "giftWrapping": true,
+  "relatedProducts": ["mws-001-cordless", "zenden-001-ceramic-burner"]
+},
+{
+  "id": "org-055-underbed",
+  "slug": "stealthglide-underbed-rolling-metal-storage-bin",
+  "title": "StealthGlide Under-Bed Rolling Storage | Heavy-Duty Metal Frame | 'The Chair' Alternative",
+  "vendor": "DenbyDen",
+  "price": 49.99,
+  "regularPrice": 79.00,
+  "currency": "USD",
+  "image": "/example_photo/产品主图/sliding-laundry-hamper/sliding-laundry-hamper_0.webp",
+  "images": [
+    "/example_photo/产品主图/sliding-laundry-hamper/sliding-laundry-hamper_1.webp",
+    "/example_photo/产品主图/sliding-laundry-hamper/sliding-laundry-hamper_2.webp",
+    "/example_photo/产品主图/sliding-laundry-hamper/sliding-laundry-hamper_3.webp",
+    "/example_photo/产品主图/sliding-laundry-hamper/sliding-laundry-hamper_4.webp"
+  ],
+  "description": "Stop sacrificing your bedroom chair to the pile of 'not quite dirty' clothes. The StealthGlide is the heavy-duty solution for the 'wear it again' dilemma, replacing flimsy fabric organizers with a robust, crush-proof metal frame. Simply slide it under your bed to instantly eliminate visual noise and reclaim your sanctuary's peace.",
+  "inStock": true,
+  "stockStatus": "In Stock",
+  "category": "Home Organization & Storage",
+  "variants": [
+    {
+      "id": "v1",
+      "name": "Matte Black",
+      "value": "matte-black",
+      "size": "Standard (60x40x16cm)",
+      "available": true
+    }
+  ],
+  "features": [
+    "Heavy-Duty Metal Architecture: Say goodbye to the 'rip and tear' of cheap non-woven fabric bags. Our reinforced steel grid is built to hold heavy denim and winter sweaters without bowing, breaking, or bursting at the seams.",
+    "Toe-Touch Glide System: Designed for effortless 'lazy' organizing. High-quality 360° rotating wheels allow you to slide the bin out and kick it back under with a single foot motion—no bending or heavy lifting required.",
+    "Visual Decompression: Clears the infamous 'clothes chair' instantly. By tucking semi-clean laundry completely out of sight, you lower cortisol levels and restore a hotel-like calm to your bedroom environment.",
+    "Breathable Open-Grid Design: Unlike sealed plastic bins that trap odors, our wire mesh ensures air circulation, keeping worn-once clothes fresh until you're ready to wear them again."
+  ],
+  "details": [
+    "Dimensions: 60cm L x 40cm W x 15.8cm H (Includes wheels)",
+    "Load Capacity: Up to 20kg",
+    "Assembly: Tool-free snap-lock system",
+    "Wheel Type: 360° Silent Castors (2 Lockable)"
+  ],
+  "materials": [
+    "Frame: Powder-Coated Carbon Steel",
+    "Wheels: Durable PVC & Steel"
+  ],
+  "careInstructions": "Wipe clean with a damp cloth. Check wheel tightness periodically.",
+  "shipping": {
+    "freeShippingThreshold": 60,
+    "location": "Regional Distribution Center",
+    "returnPolicy": "30-Day Clutter-Free Guarantee."
   },
-  {
-    "id": "7",
-    "slug": "bear-piggy-milk-tea-cup",
-    "title": "Bear & Piggy Milk Tea Ceramic Cup with Straw �?500ML",
-    "vendor": "DenbyDen",
-    "price": 13.00,
-    "regularPrice": 15.00,
-    "currency": "CNY",
-    "image": "/example_photo/产品主图/主图3.png",
-    "images": [
-      "/example_photo/产品主图/主图3.png",
-      "/example_photo/产品主图/主图2.png",
-      "/example_photo/产品主图/主图4.png",
-      "/example_photo/产品主图/主图1.png"
-    ],
-    "description": "Adorable ceramic cup featuring bear and piggy designs. Comes with a clear straw for your favorite drinks.",
-    "inStock": true,
-    "stockStatus": "Almost gone!",
-    "category": "Drinkware",
-    "variants": [
+  "giftWrapping": true,
+  "relatedProducts": ["mws-001-cordless"]
+},
+{
+  "id": "lh-042-slim-pastel",
+  "slug": "slim-structured-laundry-hamper-fiberglass-free",
+  "title": "Slim Structured Laundry Hamper | The 'Semi-Dirty' Clothes Organizer | Fiberglass-Free Design",
+  "vendor": "DenbyDen",
+  "price": 24.90,
+  "regularPrice": 35.00,
+  "currency": "USD",
+  "image": "/example_photo/产品主图/vertical-laundry-hamper/vertical-laundry-hamper_0.webp",
+  "images": [
+      "/example_photo/产品主图/vertical-laundry-hamper/vertical-laundry-hamper_1.webp",
+      "/example_photo/产品主图/vertical-laundry-hamper/vertical-laundry-hamper_2.webp",
+      "/example_photo/产品主图/vertical-laundry-hamper/vertical-laundry-hamper_3.webp",
+      "/example_photo/产品主图/vertical-laundry-hamper/vertical-laundry-hamper_4.webp"
+  ],
+  "description": "Stop the anxiety of seeing 'The Chair' buried under a mountain of clothes when you just want to relax. Designed specifically for the 'semi-dirty' laundry limbo—jeans worn once or hoodies not ready for the wash—this hamper provides a dedicated, guilt-free zone to clear your visual space. Unlike cheaper alternatives, our reinforced structure stands tall without dangerous fiberglass rods, offering a safe, breathable, and sturdy solution for tight living spaces.",
+  "inStock": true,
+  "stockStatus": "In Stock",
+  "category": "Home Organization & Storage",
+  "variants": [
       {
-        "name": "Pink Piggy",
-        "value": "pink-piggy",
-        "available": true,
-        "image": "/example_photo/产品主图/主图3.png"
-      },
-      {
-        "name": "Brown Bear",
-        "value": "brown-bear",
-        "available": false,
-        "image": "/example_photo/产品主图/主图3.png"
+          "id": "v1",
+          "name": "Pastel Characters",
+          "value": "pastel-pattern",
+          "size": "40L (Slim)",
+          "available": true
       }
-    ],
-    "features": [
-      "Generous 500ML Capacity: Perfect size for bubble tea, smoothies, iced coffee, or any cold beverages. The wide opening makes it easy to add ice and toppings.",
-      "Two Cute Designs: Choose between Pink Piggy or Brown Bear, each with adorable 3D raised ears and sweet facial expressions. The playful boba pearl pattern adds extra charm.",
-      "Complete with Lid & Glass Straw: Comes with a matching ceramic lid and reusable glass straw for eco-friendly sipping. The straw slot keeps your straw in place while you enjoy your drink.",
-      "Microwave & Dishwasher Safe: Made from high-quality ceramic that's easy to clean and maintain. Just remove the lid and glass straw before microwaving.",
-      "Perfect Gift for Kawaii Lovers: An ideal gift for students, friends, or anyone who loves cute drinkware and playful home decor. Makes every sip more enjoyable!"
-    ],
-    "details": [
-      "500ML Capacity: Perfect size for bubble tea, smoothies, iced coffee, or any cold beverages"
-    ],
-    "materials": [
-      "Cup: High-quality ceramic",
-      "Lid: High-quality ceramic",
-      "Straw: Durable glass"
-    ],
-    "careInstructions": "Microwave, Dishwasher, and Oven Safe",
-    "shipping": {
-      "freeShippingThreshold": 49,
-      "location": "Toronto, Canada",
-      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
-    },
-    "giftWrapping": true,
-    "relatedProducts": ["6", "8", "3", "czm-001-spray"]
+  ],
+  "features": [
+      "Liberate 'The Chair': Creates a legitimate transition zone for 'semi-dirty' clothes that aren't ready for the wash but feel wrong going back into the closet, keeping your bedroom furniture usable.",
+      "Zero-Collapse, Fiberglass-Free Structure: Engineered to solve the 'sudden collapse' issue found in generic hampers. Our safe, reinforced support system stands rigid like a guard, eliminating the risk of painful fiberglass splinters common in inferior products.",
+      "Visual Noise Cancellation: The ultra-slim profile is designed to slide into narrow 15cm 'dead zones' or corners. By hiding clutter behind a cute, structured exterior, it literally gives your brain a break from the mess.",
+      "Breathable Moisture Defense: Features a mesh drawstring top that secures contents while allowing airflow. This prevents the 'musty closet smell' in humid environments, ensuring your semi-worn clothes stay fresh."
+  ],
+  "details": [
+      "Dimensions: 39cm x 19cm x 60cm (Approx)",
+      "Capacity: ~40 Liters",
+      "Closure Type: Breathable Mesh Drawstring",
+      "Pattern: Pastel Bears & Clouds"
+  ],
+  "materials": [
+      "Fabric: 600D Oxford Cloth (Water-resistant coating)",
+      "Support: Safe PE Rods (No Fiberglass)",
+      "Handles: Reinforced Webbing"
+  ],
+  "careInstructions": "Wipe clean with a damp cloth. Do not machine wash to preserve the structural coating.",
+  "shipping": {
+      "freeShippingThreshold": 99,
+      "location": "Central Warehouse",
+      "returnPolicy": "30-Day 'No-Sag' Guarantee."
   },
-  {
-    "id": "8",
-    "slug": "bread-bagel-bunny-mug",
-    "title": "Cute Bread & Bagel Bunny Mug �?400ML",
-    "vendor": "DenbyDen",
-    "price": 13.00,
-    "regularPrice": 16.00,
-    "currency": "CNY",
-    "image": "/example_photo/产品主图/主图4.png",
-    "images": [
-      "/example_photo/产品主图/主图4.png",
-      "/example_photo/产品主图/主图3.png",
-      "/example_photo/产品主图/主图2.png",
-      "/example_photo/产品主图/主图1.png"
-    ],
-    "description": "Cream-colored ceramic mug with whimsical breakfast illustration and 'There is No Place Like Home' text.",
-    "inStock": true,
-    "stockStatus": "In Stock",
-    "category": "Ceramic Mugs",
-    "variants": [],
-    "features": [
-      "400ML Capacity: Perfect size for your morning coffee or tea",
-      "Whimsical Design: Cute bread and bagel bunny illustration",
-      "Inspiring Text: 'There is No Place Like Home' message",
-      "Cream Color: Warm and inviting appearance",
-      "Microwave & Dishwasher Safe: Easy to clean and maintain"
-    ],
-    "details": [
-      "400ML Capacity: Perfect size for your morning coffee or tea",
-      "Dimensions: Height: 11.5cm, Diameter: 9cm"
-    ],
-    "materials": [
-      "Cup: High-quality ceramic"
-    ],
-    "careInstructions": "Microwave and dishwasher safe. Hand wash recommended for best results.",
-    "shipping": {
-      "freeShippingThreshold": 49,
-      "location": "Toronto, Canada",
-      "returnPolicy": "All items are final sale. In case of damage during transit, we offer refunds or replacements."
-    },
-    "giftWrapping": false,
-    "relatedProducts": ["6", "7", "3", "czm-001-spray"]
-  }
+  "giftWrapping": true,
+  "relatedProducts": ["mws-001-cordless","org-055-underbed"]
+},
+{
+  "id": "dd-cloud-tray-001",
+  "slug": "cloud-aesthetic-ceramic-jewelry-tray-gold-rim",
+  "title": "Cloud Aesthetic Ceramic Jewelry Tray | Gold-Rimmed Catchall Dish | Anti-Slip & Deep Basin",
+  "vendor": "DenbyDen",
+  "price": 24.50,
+  "regularPrice": 35.00,
+  "currency": "USD",
+  "image": "/example_photo/产品主图/jewelry-dish/jewelry-dish_0.webp",
+  "images": [
+      "/example_photo/产品主图/jewelry-dish/jewelry-dish_1.webp",
+      "/example_photo/产品主图/jewelry-dish/jewelry-dish_2.webp",
+      "/example_photo/产品主图/jewelry-dish/jewelry-dish_3.webp",
+      "/example_photo/产品主图/jewelry-dish/jewelry-dish_4.webp"
+  ],
+  "description": "Transform your chaotic nightstand into a curated art display with the Cloud Aesthetic Jewelry Tray. Unlike standard miniature dishes that barely fit a ring, this spacious, gold-rimmed organic vessel acts as a secure 'landing pad' for your daily essentials—from watches to hair ties. Experience the visual magic where even casually tossed items look intentionally styled, keeping your treasures safe from rolling off or playful pets.",
+  "inStock": true,
+  "stockStatus": "In Stock",
+  "category": "Home Decor & Storage",
+  "variants": [
+      {
+          "id": "v1",
+          "name": "Cloud White & Gold",
+          "value": "white-gold",
+          "size": "Standard",
+          "available": true
+      }
+  ],
+  "features": [
+      "Spacious 'Landing Pad' Capacity: Say goodbye to 'miniature toy' dishes that fit nothing. Designed with a generous surface area and organic depth, this tray accommodates your full unwinding routine—watches, necklaces, and earrings—without crowding.",
+      "Secure Deep-Basin Design: Engineered with raised, irregular edges that act as a barrier. This thoughtful curvature ensures spherical items (like pearl earrings) stay centered and prevents curious cats from easily batting your valuables onto the floor.",
+      "Effortless 'Drop-and-Style' Aesthetic: The fluid, cloud-like geometry turns a pile of clutter into a modern art installation. Whether it's loose change or a diamond ring, the stark white ceramic against the hand-painted gold rim creates immediate visual order.",
+      "Pristine Gifting Experience: Arrives flawlessly without stubborn, residue-leaving price tags. Crafted from high-fired ceramic with a durable glaze to ensure no color fading or disappointing 'buyer vs. reality' moments."
+  ],
+  "details": [
+      "Shape: Irregular Organic Cloud",
+      "Finish: Glossy Glaze with Hand-Painted Copper Rim",
+      "Usage: Jewelry, Keys, Coins, Hair Accessories"
+  ],
+  "materials": [
+      "Body: High-Fired Porcelain Ceramic",
+      "Rim: Electroplated Copper"
+  ],
+  "careInstructions": "Wipe clean with a soft, damp cloth. Avoid abrasive scrubbers to protect the copper plating.",
+  "shipping": {
+      "freeShippingThreshold": 99,
+      "location": "Central Warehouse",
+      "returnPolicy": "30-Day Breakage-Free Guarantee."
+  },
+  "giftWrapping": true,
+  "relatedProducts": []
+}
 ]

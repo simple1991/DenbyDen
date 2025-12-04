@@ -6,6 +6,7 @@ import TopBar from '@/components/TopBar'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useCurrency } from '@/components/CurrencyContext'
+import { FREE_SHIPPING_THRESHOLD_CNY, SHIPPING_FEE_PER_ITEM_CNY } from '@/utils/shippingThreshold'
 import { usePageView, usePageDwell, useFAQExpand } from '@/hooks/useAnalytics'
 
 type FAQItem = {
@@ -17,8 +18,8 @@ const faqs: FAQItem[] = [
   {
     question: 'What are the shipping costs?',
     answer: (formatPrice) =>
-      `Flat shipping fee of ${formatPrice(7.95)} for Canada & the US. Free shipping on orders over ${formatPrice(
-        49
+      `For orders under ${formatPrice(FREE_SHIPPING_THRESHOLD_CNY)}, a shipping fee of ${formatPrice(SHIPPING_FEE_PER_ITEM_CNY)} per item applies for Canada & the US. Free shipping on orders over ${formatPrice(
+        FREE_SHIPPING_THRESHOLD_CNY
       )}.`,
   },
   {

@@ -121,74 +121,90 @@ ALTER TABLE email_captures ENABLE ROW LEVEL SECURITY;
 ALTER TABLE page_interactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE page_dwell_time ENABLE ROW LEVEL SECURITY;
 
--- 创建策略：允许匿名用户插入数据
-CREATE POLICY "Allow anonymous insert" ON events
+-- 删除可能存在的旧策略（如果之前运行过有问题的脚本）
+DROP POLICY IF EXISTS "Allow anonymous insert" ON events;
+DROP POLICY IF EXISTS "Allow anonymous insert" ON product_exposures;
+DROP POLICY IF EXISTS "Allow anonymous insert" ON product_clicks;
+DROP POLICY IF EXISTS "Allow anonymous insert" ON cart_actions;
+DROP POLICY IF EXISTS "Allow anonymous insert" ON email_captures;
+DROP POLICY IF EXISTS "Allow anonymous insert" ON page_interactions;
+DROP POLICY IF EXISTS "Allow anonymous insert" ON page_dwell_time;
+DROP POLICY IF EXISTS "Allow service role read" ON events;
+DROP POLICY IF EXISTS "Allow service role read" ON product_exposures;
+DROP POLICY IF EXISTS "Allow service role read" ON product_clicks;
+DROP POLICY IF EXISTS "Allow service role read" ON cart_actions;
+DROP POLICY IF EXISTS "Allow service role read" ON email_captures;
+DROP POLICY IF EXISTS "Allow service role read" ON page_interactions;
+DROP POLICY IF EXISTS "Allow service role read" ON page_dwell_time;
+
+-- 创建策略：允许匿名用户插入数据（每个表使用唯一的策略名称）
+CREATE POLICY "events_allow_anonymous_insert" ON events
   FOR INSERT
   TO anon
   WITH CHECK (true);
 
-CREATE POLICY "Allow anonymous insert" ON product_exposures
+CREATE POLICY "product_exposures_allow_anonymous_insert" ON product_exposures
   FOR INSERT
   TO anon
   WITH CHECK (true);
 
-CREATE POLICY "Allow anonymous insert" ON product_clicks
+CREATE POLICY "product_clicks_allow_anonymous_insert" ON product_clicks
   FOR INSERT
   TO anon
   WITH CHECK (true);
 
-CREATE POLICY "Allow anonymous insert" ON cart_actions
+CREATE POLICY "cart_actions_allow_anonymous_insert" ON cart_actions
   FOR INSERT
   TO anon
   WITH CHECK (true);
 
-CREATE POLICY "Allow anonymous insert" ON email_captures
+CREATE POLICY "email_captures_allow_anonymous_insert" ON email_captures
   FOR INSERT
   TO anon
   WITH CHECK (true);
 
-CREATE POLICY "Allow anonymous insert" ON page_interactions
+CREATE POLICY "page_interactions_allow_anonymous_insert" ON page_interactions
   FOR INSERT
   TO anon
   WITH CHECK (true);
 
-CREATE POLICY "Allow anonymous insert" ON page_dwell_time
+CREATE POLICY "page_dwell_time_allow_anonymous_insert" ON page_dwell_time
   FOR INSERT
   TO anon
   WITH CHECK (true);
 
 -- 创建策略：允许服务角色读取所有数据（用于数据分析）
-CREATE POLICY "Allow service role read" ON events
+CREATE POLICY "events_allow_service_role_read" ON events
   FOR SELECT
   TO service_role
   USING (true);
 
-CREATE POLICY "Allow service role read" ON product_exposures
+CREATE POLICY "product_exposures_allow_service_role_read" ON product_exposures
   FOR SELECT
   TO service_role
   USING (true);
 
-CREATE POLICY "Allow service role read" ON product_clicks
+CREATE POLICY "product_clicks_allow_service_role_read" ON product_clicks
   FOR SELECT
   TO service_role
   USING (true);
 
-CREATE POLICY "Allow service role read" ON cart_actions
+CREATE POLICY "cart_actions_allow_service_role_read" ON cart_actions
   FOR SELECT
   TO service_role
   USING (true);
 
-CREATE POLICY "Allow service role read" ON email_captures
+CREATE POLICY "email_captures_allow_service_role_read" ON email_captures
   FOR SELECT
   TO service_role
   USING (true);
 
-CREATE POLICY "Allow service role read" ON page_interactions
+CREATE POLICY "page_interactions_allow_service_role_read" ON page_interactions
   FOR SELECT
   TO service_role
   USING (true);
 
-CREATE POLICY "Allow service role read" ON page_dwell_time
+CREATE POLICY "page_dwell_time_allow_service_role_read" ON page_dwell_time
   FOR SELECT
   TO service_role
   USING (true);

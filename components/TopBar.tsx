@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useCurrency } from './CurrencyContext'
+import { FREE_SHIPPING_THRESHOLD_CNY } from '@/utils/shippingThreshold'
 
 export default function TopBar() {
   const [isVisible, setIsVisible] = useState(true)
@@ -13,7 +14,7 @@ export default function TopBar() {
     <div className="bg-topbar text-text text-sm py-2 text-center animate-fade-in">
       <div className="container-custom">
         <p>
-          Free shipping on orders over {formatPrice(49)} for Canada & USA •{' '}
+          Free shipping on orders over {formatPrice(FREE_SHIPPING_THRESHOLD_CNY)} for Canada & USA •{' '}
           <span className="font-semibold">U.S. Shipping is Back🎉</span> All prices include taxes & duties with no extra fees.
         </p>
       </div>

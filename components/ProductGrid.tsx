@@ -22,8 +22,10 @@ export default function ProductGrid({
   onAddToCart,
   pageType = 'home',
 }: ProductGridProps) {
+  const sectionPadding = pageType === 'shop' ? 'py-1 md:py-3' : 'py-4 md:py-12'
+
   return (
-    <section className="py-4 md:py-12">
+    <section className={sectionPadding}>
       <div className="container-custom">
         {(title || subtitle) && (
           <div className="text-center mb-8 md:mb-12">

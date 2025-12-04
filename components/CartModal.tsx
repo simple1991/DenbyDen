@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCurrency } from './CurrencyContext'
+import { FREE_SHIPPING_THRESHOLD_CNY } from '@/utils/shippingThreshold'
 import {
   useCartItemUpdate,
   useCartItemRemove,
@@ -154,7 +155,8 @@ export default function CartModal({
     const priceInCny = convertToCny(item.price, (item.currency as any) || 'CNY')
     return sum + priceInCny * item.quantity
   }, 0)
-  const freeShippingThreshold = 49
+  // subtotal 与门槛都以 CNY 为基准，展示时再根据当前货币转换
+  const freeShippingThreshold = FREE_SHIPPING_THRESHOLD_CNY
   const hasFreeShipping = subtotal >= freeShippingThreshold
   const itemCount = selectedItemsList.reduce((sum, item) => sum + item.quantity, 0)
   const allSelected = items.length > 0 && selectedItems.size === items.length

@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from 'react'
 import Image from 'next/image'
 import { useCurrency } from './CurrencyContext'
+import { FREE_SHIPPING_THRESHOLD_CNY, SHIPPING_FEE_PER_ITEM_CNY } from '@/utils/shippingThreshold'
 import { useFAQExpand } from '@/hooks/useAnalytics'
 import { usePathname } from 'next/navigation'
 
@@ -16,8 +17,8 @@ const faqs: FAQItem[] = [
     question: 'What are the shipping costs?',
     answer: (formatPrice) => (
       <>
-        Flat shipping fee of {formatPrice(7.95)} for Canada & the US. Free shipping on orders over{' '}
-        {formatPrice(49)}.
+        For orders under {formatPrice(FREE_SHIPPING_THRESHOLD_CNY)}, a shipping fee of {formatPrice(SHIPPING_FEE_PER_ITEM_CNY)} per item applies for Canada & the US. Free shipping on orders over{' '}
+        {formatPrice(FREE_SHIPPING_THRESHOLD_CNY)}.
       </>
     ),
   },

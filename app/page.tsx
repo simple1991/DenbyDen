@@ -122,58 +122,58 @@ function ScrollableCollections({ collections }: { collections: Collection[] }) {
 
 const collections = [
   {
+    name: 'Pet Care',
+    description: 'Pamper your furry best friends with fresh scents and gentle care.',
+    image: '/example_photo/分类图片/group_01.webp',
+    url: '/shop/pet-care',
+  },
+  {
+    name: 'Scent & Glow',
+    description: 'Set the perfect mood with soothing aromas and a warm, gentle glow.',
+    image: '/example_photo/分类图片/group_02.webp',
+    url: '/shop/scent-glow',
+  },
+  {
+    name: 'Tidy & Store',
+    description: 'Turn clutter into calm with chic baskets and smart organizers.',
+    image: '/example_photo/分类图片/group_03.webp',
+    url: '/shop/tidy-store',
+  },
+  {
     name: 'Bowls',
     description: 'From cereal to soup, find the perfect bowl to brighten up every meal.',
-    image: '/example_photo/产品主图/主图1.png',
+    image: '/example_photo/分类图片/group_04.webp',
     url: '/shop/bowls',
-  },
-  {
-    name: 'Plates',
-    description: 'Dine in style with our collection of charming plates.',
-    image: '/example_photo/产品主图/主图2.png',
-    url: '/shop/plates',
-  },
-  {
-    name: 'Dinnerware Set',
-    description: 'Make every meal a special occasion with beautifully designed sets.',
-    image: '/example_photo/产品主图/主图3.png',
-    url: '/shop/dinnerware',
-  },
-  {
-    name: 'Glassware',
-    description: 'Raise a glass with our stunning glassware collection.',
-    image: '/example_photo/产品主图/主图4.png',
-    url: '/shop/glassware',
   },
   {
     name: 'Ceramic Mugs',
     description: 'Sipping your favorite drink just got cuter!',
-    image: '/example_photo/产品主图/主图1.png',
+    image: '/example_photo/分类图片/group_05.webp',
     url: '/shop/mugs',
   },
   {
-    name: 'Home Storage',
-    description: 'Get organized in style with chic and functional storage.',
-    image: '/example_photo/产品主图/主图2.png',
-    url: '/shop/storage',
-  },
-  {
-    name: 'Home Accessories',
-    description: 'Sprinkle personality into your space with charming decor.',
-    image: '/example_photo/产品主图/主图3.png',
-    url: '/shop/accessories',
+    name: 'Plates',
+    description: 'Dine in style with our collection of charming plates.',
+    image: '/example_photo/分类图片/group_06.webp',
+    url: '/shop/plates',
   },
   {
     name: 'Bath Mat&Rugs',
     description: 'Cozy up your bathroom with soft and stylish mats.',
-    image: '/example_photo/产品主图/主图4.png',
+    image: '/example_photo/分类图片/group_07.webp',
     url: '/shop/rugs',
   },
   {
     name: 'Welcome Doormats',
     description: 'Make a cute first impression with playful doormats.',
-    image: '/example_photo/自媒体图片/f1c7b3674a516120ac12efa078dd73e.jpg',
+    image: '/example_photo/分类图片/group_08.webp',
     url: '/shop/doormats',
+  },
+  {
+    name: 'Wall decal',
+    description: 'These delicate wall decals bloom on the wall like warm sunlight, filling the space with tender, homey vibes.',
+    image: '/example_photo/分类图片/group_09.webp',
+    url: '/shop/decal',
   },
 ]
 
@@ -261,7 +261,7 @@ function HomeContent() {
         {/* Background Image */}
         <div className="absolute inset-0 opacity-30">
           <Image
-            src="/example_photo/自媒体图片/f1c7b3674a516120ac12efa078dd73e.jpg"
+            src="/example_photo/自媒体图片/f1c7b3674a516120ac12efa078dd73e.webp"
             alt="Christmas Gift Background"
             fill
             className="object-cover"
@@ -271,10 +271,10 @@ function HomeContent() {
         <div className="container-custom relative z-10">
           <div className="text-center space-y-6 max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-text">
-              Find the Perfect Christmas Gift
+              Find a Little Gift for Your Favorite People
             </h2>
             <p className="text-lg md:text-xl text-text-muted">
-              All wrapped up and ready to share the holiday joy.
+              Thoughtful everyday pieces that quietly say “I saw this and thought of you.”
             </p>
             <div className="pt-4">
               <Link
@@ -282,7 +282,7 @@ function HomeContent() {
                 className="inline-block px-8 py-4 rounded-full bg-text text-white font-semibold text-base md:text-lg hover:bg-primary transition-colors duration-200 shadow-card hover:shadow-modal"
                 onClick={() => handleButtonClick('Shop Gifts', '/christmas', 'primary_cta', 'christmas_section', 'home')}
               >
-                Shop Gifts
+                Browse Friend Gifts
               </Link>
             </div>
           </div>
@@ -416,7 +416,7 @@ function HomeContent() {
             {/* Desktop: 图片在右侧 */}
             <div className="relative aspect-square bg-pink-light rounded-md overflow-hidden order-1 lg:order-2 hidden lg:block">
               <Image
-                src="/example_photo/产品主图/主图1.png"
+                src="/example_photo/about-me/Gemini_Generated_Image_x2oazix2oazix2oa.webp"
                 alt="DenbyDen Products"
                 fill
                 className="object-cover"

@@ -11,6 +11,7 @@ import CartModal from '@/components/CartModal'
 import { useCart } from '@/components/CartContext'
 import { useCurrency } from '@/components/CurrencyContext'
 import productsData from '@/data/products.json'
+import { FREE_SHIPPING_THRESHOLD_CNY } from '@/utils/shippingThreshold'
 import {
   useProductDetailView,
   usePageDwell,
@@ -173,7 +174,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   const availableVariant = product.variants?.find(v => v.value === selectedVariant)
   const isVariantAvailable = !selectedVariant || availableVariant?.available !== false
   const isProductAvailable = product.inStock && isVariantAvailable
-  const shippingThreshold = product.shipping?.freeShippingThreshold || 49
+  // 全局规则：订单满 49 USD（按固定汇率折算）免运费
+  const shippingThreshold = FREE_SHIPPING_THRESHOLD_CNY
 
   const handleAddToCart = () => {
     if (isProductAvailable) {

@@ -541,6 +541,7 @@ const BATCH_SIZE = 10
 const BATCH_INTERVAL = 5000 // 5秒
 
 let batchTimer: NodeJS.Timeout | null = null
+let isAnalyticsDisabled = false // 当表不存在时禁用分析功能
 
 /**
  * 批量上报事件
@@ -569,9 +570,95 @@ async function flushEventQueue() {
       .select()
 
     if (eventsError) {
-      console.error('Failed to insert events:', eventsError)
-      // 失败的事件重新加入队列
-      eventQueue.push(...eventsToSend)
+      // 检查是否是表不存在的错误
+      if (eventsError.code === 'PGRST205' || eventsError.message?.includes('Could not find the table')) {
+        // 表不存在，禁用分析功能，避免无限重试
+        isAnalyticsDisabled = true
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            '⚠️ Analytics disabled: Events table not found in Supabase.\n' +
+            'Please run the SQL script at docs/supabase_schema.sql in your Supabase Dashboard SQL Editor.'
+          )
+        }
+        // 清空队列，不再重试
+        eventQueue.length = 0
+        if (batchTimer) {
+          clearInterval(batchTimer)
+          batchTimer = null
+        }
+        return
+      }
+      
+      // 检查是否是 RLS 策略错误
+      if (eventsError.code === '42501' || eventsError.message?.includes('row-level security policy')) {
+        // RLS 策略错误，禁用分析功能并提示修复
+        isAnalyticsDisabled = true
+        if (process.env.NODE_ENV === 'development') {
+          console.error('❌ RLS Policy Error Details:', {
+            code: eventsError.code,
+            message: eventsError.message,
+            details: eventsError.details,
+            hint: eventsError.hint
+          })
+          console.warn(
+            '⚠️ Analytics disabled: Row Level Security (RLS) policy error.\n' +
+            'Please run the fix script at docs/fix_rls_policies_complete.sql in your Supabase Dashboard SQL Editor.'
+          )
+        }
+        // 清空队列，不再重试
+        eventQueue.length = 0
+        if (batchTimer) {
+          clearInterval(batchTimer)
+          batchTimer = null
+        }
+        return
+      }
+      
+      // 检查是否是 401 未授权错误
+      if (eventsError.message?.includes('401') || eventsError.code === 'PGRST301') {
+        isAnalyticsDisabled = true
+        if (process.env.NODE_ENV === 'development') {
+          console.error('❌ 401 Unauthorized Error Details:', {
+            code: eventsError.code,
+            message: eventsError.message,
+            details: eventsError.details,
+            hint: eventsError.hint
+          })
+          console.warn(
+            '⚠️ Analytics disabled: 401 Unauthorized error.\n' +
+            'This could mean:\n' +
+            '1. API key is incorrect or missing\n' +
+            '2. RLS policies are not configured correctly\n' +
+            'Please check:\n' +
+            '- API key in lib/supabase.ts\n' +
+            '- RLS policies in Supabase Dashboard'
+          )
+        }
+        eventQueue.length = 0
+        if (batchTimer) {
+          clearInterval(batchTimer)
+          batchTimer = null
+        }
+        return
+      }
+      
+      // 其他错误，显示详细错误信息
+      if (process.env.NODE_ENV === 'development') {
+        console.error('❌ Failed to insert events:', {
+          code: eventsError.code,
+          message: eventsError.message,
+          details: eventsError.details,
+          hint: eventsError.hint,
+          fullError: eventsError
+        })
+        console.error('💡 Error details:', JSON.stringify(eventsError, null, 2))
+      }
+      
+      // 失败的事件重新加入队列（但限制重试次数）
+      // 避免队列无限增长
+      if (eventQueue.length < 100) {
+        eventQueue.push(...eventsToSend)
+      }
       return
     }
 
@@ -727,9 +814,50 @@ async function flushEventQueue() {
       }
     }
   } catch (error) {
-    console.error('Failed to flush event queue:', error)
-    // 失败的事件重新加入队列
-    eventQueue.push(...eventsToSend)
+    // 检查是否是表不存在的错误
+    if (error && typeof error === 'object' && 'code' in error) {
+      if (error.code === 'PGRST205') {
+        isAnalyticsDisabled = true
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            '⚠️ Analytics disabled: Events table not found in Supabase.\n' +
+            'Please run the SQL script at docs/supabase_schema.sql in your Supabase Dashboard SQL Editor.'
+          )
+        }
+        eventQueue.length = 0
+        if (batchTimer) {
+          clearInterval(batchTimer)
+          batchTimer = null
+        }
+        return
+      }
+      
+      // 检查是否是 RLS 策略错误
+      if (error.code === '42501') {
+        isAnalyticsDisabled = true
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            '⚠️ Analytics disabled: Row Level Security (RLS) policy error.\n' +
+            'This usually means there are conflicting policy names.\n' +
+            'Please run the fix script at docs/fix_rls_policies.sql in your Supabase Dashboard SQL Editor.'
+          )
+        }
+        eventQueue.length = 0
+        if (batchTimer) {
+          clearInterval(batchTimer)
+          batchTimer = null
+        }
+        return
+      }
+    }
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to flush event queue:', error)
+    }
+    // 失败的事件重新加入队列（限制队列大小）
+    if (eventQueue.length < 100) {
+      eventQueue.push(...eventsToSend)
+    }
   }
 }
 
@@ -750,6 +878,11 @@ function startBatchTimer() {
  * 上报事件（主函数）
  */
 export async function trackEvent(event: AnalyticsEvent) {
+  // 如果分析功能已禁用（表不存在），直接返回
+  if (isAnalyticsDisabled) {
+    return
+  }
+  
   // 添加用户和会话信息
   const enrichedEvent: AnalyticsEvent = {
     ...event,
