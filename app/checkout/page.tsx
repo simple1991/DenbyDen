@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { trackEvent, isNewUser, type EmailSubmitEvent } from '@/lib/analytics'
 
 export default function CheckoutPage() {
   const [email, setEmail] = useState('')
@@ -53,6 +54,18 @@ export default function CheckoutPage() {
         discount: '30%'
       })
       localStorage.setItem('subscriptions', JSON.stringify(subscriptions))
+
+      // 将邮箱提交到数据库
+      const emailEvent: EmailSubmitEvent = {
+        event_type: 'email_submit',
+        event_category: 'lead',
+        page_type: 'home', // checkout 页面类型使用 home
+        page_url: window.location.pathname,
+        email,
+        source_page: 'checkout', // 标记来源为 checkout 页面
+        is_new_user: isNewUser(),
+      }
+      trackEvent(emailEvent)
 
       setIsSuccess(true)
       setEmail('')

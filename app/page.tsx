@@ -7,7 +7,7 @@ import HeroBanner from '@/components/HeroBanner'
 import FeatureBanner from '@/components/FeatureBanner'
 import ProductGrid from '@/components/ProductGrid'
 import Footer from '@/components/Footer'
-import EmailCaptureModal from '@/components/EmailCaptureModal'
+// import EmailCaptureModal from '@/components/EmailCaptureModal'
 import ReviewsCarousel from '@/components/ReviewsCarousel'
 import FAQSection from '@/components/FAQSection'
 import CartModal from '@/components/CartModal'
@@ -178,7 +178,7 @@ const collections = [
 ]
 
 function HomeContent() {
-  const [showEmailModal, setShowEmailModal] = useState(false)
+  // const [showEmailModal, setShowEmailModal] = useState(false)
   const [showCartModal, setShowCartModal] = useState(false)
   const [cartModalOpenTime, setCartModalOpenTime] = useState<number | null>(null)
   const { items, updateQuantity, removeItem, getTotal } = useCart()
@@ -199,15 +199,15 @@ function HomeContent() {
   const handleCartModalClose = useCartModalClose()
 
   // 页面加载后延迟显示邮箱弹窗
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const hasSubscribed = localStorage.getItem('hasSubscribed')
-      if (!hasSubscribed) {
-        setShowEmailModal(true)
-      }
-    }, 2000)
-    return () => clearTimeout(timer)
-  }, [])
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     const hasSubscribed = localStorage.getItem('hasSubscribed')
+  //     if (!hasSubscribed) {
+  //       setShowEmailModal(true)
+  //     }
+  //   }, 2000)
+  //   return () => clearTimeout(timer)
+  // }, [])
 
   // 购物车弹窗打开
   useEffect(() => {
@@ -432,13 +432,13 @@ function HomeContent() {
       <Footer />
       
       {/* Email Capture Modal */}
-      <EmailCaptureModal
+      {/* <EmailCaptureModal
         isOpen={showEmailModal}
         onClose={() => {
           setShowEmailModal(false)
           localStorage.setItem('hasSubscribed', 'true')
         }}
-      />
+      /> */}
       
       {/* Cart Modal */}
       <CartModal
