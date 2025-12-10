@@ -27,9 +27,23 @@ export default function RootLayout({
         <CurrencyProvider>
           <CartProvider>{children}</CartProvider>
         </CurrencyProvider>
-        
+
+        {/* Microsoft Clarity */}
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "uje7qsgn8k");
+          `}
+        </Script>
+
         {/* MailerLite Universal Script */}
-        <Script id="mailerlite-universal" strategy="afterInteractive">
+        <Script 
+          id="mailerlite-universal" 
+          strategy="afterInteractive"
+        >
           {`
             (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
             .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
